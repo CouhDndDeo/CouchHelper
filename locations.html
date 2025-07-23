@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🌍 Генератор мест с картинкой</title>
+  <title>🌍 Генератор мест</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -20,11 +20,11 @@
     </nav>
 
     <main>
-      <p>Создаёт локацию с атмосферной картинкой:</p>
+      <p>Создаёт случайную локацию для приключения:</p>
 
-      <div class="image-container">
-        <img id="location-image" src="https://via.placeholder.com/800x600/3a2a1a/8b6f47?text=Загрузка+локации..." alt="Локация" class="npc-image" />
-        <div class="image-caption">Случайная локация</div>
+      <!-- Заглушка вместо картинки -->
+      <div class="location-placeholder">
+        🗺️
       </div>
 
       <div id="location-result" class="npc-output">
@@ -37,77 +37,11 @@
     </main>
 
     <footer>
-      <p>Каждое место — мини-сюжет</p>
+      <p>Каждое место — новая история</p>
     </footer>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const button = document.getElementById("generate-location");
-      const result = document.getElementById("location-result");
-      const image = document.getElementById("location-image");
-
-      const types = [
-        "заброшенный храм", "подземная пещера", "старинная библиотека",
-        "деревня на болоте", "замок на скале", "лес с призраками",
-        "потерянный монастырь", "пиратская бухта", "горная кузня гномов"
-      ];
-
-      const themes = {
-        фэнтези: { color: "#3498db", img: "fantasy, castle, magic, dragon" },
-        хоррор: { color: "#e74c3c", img: "horror, dark, scary, blood" },
-        стимпанк: { color: "#f39c12", img: "steampunk, gears, machine, airship" },
-        постапокалипсис: { color: "#2ecc71", img: "post-apocalyptic, ruins, wasteland, desert" }
-      };
-
-      const events = [
-        "начался странный ритуал", "обнаружен древний артефакт",
-        "появился портал", "все жители впали в транс"
-      ];
-
-      const themeNames = Object.keys(themes);
-
-      button.addEventListener("click", () => {
-        const theme = themeNames[Math.floor(Math.random() * themeNames.length)];
-        const type = types[Math.floor(Math.random() * types.length)];
-        const event = events[Math.floor(Math.random() * events.length)];
-        const name = generateName(theme);
-        const fullType = type;
-
-        // Формируем URL
-        const imgQuery = `${themes[theme].img}, ${type.replace(/ /g, ', ')}`;
-        const imageUrl = `https://corsproxy.io/?https://source.unsplash.com/random/800x600/?${imgQuery}&t=${Date.now()}`;
-
-        // Обновляем картинку
-        image.src = imageUrl;
-        image.alt = `Локация: ${type}`;
-
-        // Обработка ошибки
-        image.onerror = () => {
-          image.src = "https://via.placeholder.com/800x600/4a2f1a/d4af37?text=Локация+не+загружена";
-          image.alt = "Изображение недоступно";
-        };
-
-        result.innerHTML = `
-          <strong>📍 Название:</strong> <span style="color:${themes[theme].color}">${name}</span><br>
-          <strong>🌌 Тема:</strong> ${theme}<br>
-          <strong>🏰 Тип:</strong> ${fullType}<br>
-          <strong>💥 Событие:</strong> ${event}<br>
-          <strong>🔗 Возможность:</strong> здесь начинается цепочка событий
-        `;
-      });
-
-      function generateName(theme) {
-        const prefixes = {
-          фэнтези: ["Тёмный", "Священный", "Старый"],
-          хоррор: ["Гнилой", "Молчаливый", "Кровавый"],
-          стимпанк: ["Механический", "Паровой", "Железный"],
-          постапокалипсис: ["Обгоревший", "Ржавый", "Мёртвый"]
-        };
-        const suffixes = ["град", "холм", "остров", "лес", "город"];
-        return prefixes[theme][Math.floor(Math.random() * prefixes[theme].length)] + " " + suffixes[Math.floor(Math.random() * suffixes.length)];
-      }
-    });
-  </script>
-</body>
-</html>
+      const
