@@ -381,3 +381,17 @@ footer {
   font-size: 0.8em;
   opacity: 0.6;
 }
+/* === ССЫЛКИ В "О НАС" === */
+.link-highlight {
+  color: #d4af37;
+  text-decoration: none;
+  font-weight: bold;
+  border-bottom: 1px dashed #d4af37;
+  transition: all 0.3s;
+}
+
+.link-highlight:hover {
+  color: #f0d98f;
+  border-bottom-color: #f0d98f;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+}
