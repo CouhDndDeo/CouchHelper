@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🎲 Генераторы</title>
   <link rel="stylesheet" href="style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 <body>
   <div class="container">
@@ -19,9 +18,16 @@
 
     <main>
       <section>
-        <div class="content" id="md-content" data-md="content/generators.md">
-          Загрузка...
+        <h2>🎭 Генератор случайного НПС</h2>
+        <p>Нажмите кнопку, чтобы создать уникального персонажа для вашей кампании:</p>
+
+        <div id="npc-result" class="npc-output">
+          Здесь появится НПС...
         </div>
+
+        <button id="generate-npc" class="btn-primary">
+          🎲 Сгенерировать НПС
+        </button>
       </section>
     </main>
 
@@ -30,40 +36,11 @@
     </footer>
   </div>
 
-  <!-- Единый скрипт -->
+  <!-- Простой и надёжный JS -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const md = window.markdownit({
-        html: true,
-        linkify: true,
-        typographer: true
-      });
-
-      const contentBlock = document.getElementById("md-content");
-      const mdFile = contentBlock.getAttribute("data-md");
-
-      fetch(mdFile)
-        .then(r => {
-          if (!r.ok) throw new Error(`Файл не найден: ${mdFile}`);
-          return r.text();
-        })
-        .then(text => {
-          contentBlock.innerHTML = md.render(text);
-
-          // === ТОЛЬКО ТЕПЕРЬ добавляем функцию генератора ===
-          setupNPCGenerator();
-        })
-        .catch(err => {
-          contentBlock.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`;
-        });
-    });
-
-    // Функция генератора — после загрузки Markdown
-    function setupNPCGenerator() {
       const button = document.getElementById("generate-npc");
       const result = document.getElementById("npc-result");
-
-      if (!button || !result) return;
 
       const names = ["Альдред", "Бриззарда", "Громвальд", "Лира", "Морган", "Талия", "Фенрис", "Зельда", "Дроган", "Элария"];
       const races = ["человек", "эльф", "гном", "полурослик", "орк", "тифлинг", "драконорождённый", "халфлинг", "голиаф", "генази"];
@@ -86,7 +63,7 @@
           <strong>🤫 Секрет:</strong> ${secret}
         `;
       });
-    }
+    });
   </script>
 </body>
 </html>
