@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>⚔️ D&D Правила</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>⚔️ Dungeons & Dragons (5e)</h1>
+    </header>
+
+    <nav>
+      <a href="rules.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">К выбору системы</span>
+      </a>
+    </nav>
+
+    <main>
+      <section>
+        <div class="content" data-md="content/dnd.md">
+          Загрузка правил D&D...
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Основы 5-го издания D&D</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit({ html: true, linkify: true });
+      const block = document.querySelector(".content[data-md]");
+      const file = block.getAttribute("data-md");
+
+      fetch(file)
+        .then(r => r.ok ? r.text() : Promise.reject(new Error(`Файл не найден: ${file}`)))
+        .then(text => block.innerHTML = md.render(text))
+        .catch(err => block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`);
+    });
+  </script>
+</body>
+</html>
