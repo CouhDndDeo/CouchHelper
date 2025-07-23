@@ -313,28 +313,71 @@ footer {
   line-height: 1.6;
   text-align: center;
 }
-/* Контейнер изображения */
-/* === КАРТИНКИ ДЛЯ НПС И ЛОКАЦИЙ === */
-.image-container {
-  margin: 20px 0;
-  text-align: center;
-  border-radius: 10px;
-  overflow: hidden;
+/* === ЗАГЛУШКА ВМЕСТО КАРТИНКИ === */
+.npc-placeholder {
+  width: 180px;
+  height: 180px;
+  margin: 20px auto;
+  background: #5a3b26;
+  border: 3px solid #8b6f47;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5em;
+  color: #d4af37;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-.npc-image {
+.npc-placeholder::after {
+  content: '';
+  position: absolute;
   width: 100%;
-  max-width: 800px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 8px;
-  background: #3a2a1a;
+  height: 100%;
+  border-radius: 50%;
+  border: 2px dashed #d4af37;
+  opacity: 0.4;
+  animation: rotate 10s linear infinite;
 }
 
-.image-caption {
-  font-size: 0.9em;
-  color: #b8a594;
-  margin-top: 8px;
-  font-style: italic;
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* === ЗАГЛУШКА ДЛЯ ЛОКАЦИЙ === */
+.location-placeholder {
+  width: 180px;
+  height: 180px;
+  margin: 20px auto;
+  background: #4a2e1a;
+  border: 3px solid #8b6f47;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4.5em;
+  color: #d4af37;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  position: relative;
+}
+
+.location-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border: 1px solid #d4af37;
+  border-radius: 8px;
+  opacity: 0.3;
+}
+
+.location-placeholder::after {
+  content: '📍';
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  font-size: 0.8em;
+  opacity: 0.6;
 }
