@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎲 Бросок кубов</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎲 Бросок кубов</h1>
+    </header>
+
+    <nav>
+      <a href="index.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">В меню</span>
+      </a>
+    </nav>
+
+    <main>
+      <section>
+        <p>Выберите тип кубика и бросьте!</p>
+
+        <!-- Кнопки кубиков -->
+        <div class="dice-buttons">
+          <button class="dice-btn" data-sides="4">d4</button>
+          <button class="dice-btn" data-sides="6">d6</button>
+          <button class="dice-btn" data-sides="8">d8</button>
+          <button class="dice-btn" data-sides="10">d10</button>
+          <button class="dice-btn" data-sides="12">d12</button>
+          <button class="dice-btn" data-sides="20">d20</button>
+          <button class="dice-btn" data-sides="100">d100</button>
+        </div>
+
+        <!-- Результат -->
+        <div class="dice-result" id="result">
+          Готов к броску...
+        </div>
+
+        <!-- История -->
+        <div class="dice-history">
+          <h3>История бросков</h3>
+          <ul id="history-list"></ul>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Случайность решает судьбу героев</p>
+    </footer>
+  </div>
+
+  <!-- Скрипт броска куба -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const result = document.getElementById("result");
+      const historyList = document.getElementById("history-list");
+
+      // При клике на кнопку кубика
+      document.querySelectorAll(".dice-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const sides = parseInt(btn.dataset.sides);
+          const roll = Math.floor(Math.random() * sides) + 1;
+
+          // Показываем результат
+          result.innerHTML = `Вы бросили <strong>d${sides}</strong>: <span class="big-roll">${roll}</span>`;
+
+          // Добавляем в историю
+          const li = document.createElement("li");
+          li.innerHTML = `d${sides}: <strong>${roll}</strong>`;
+          historyList.prepend(li); // новый бросок сверху
+
+          // Ограничиваем историю 10 бросками
+          while (historyList.children.length > 10) {
+            historyList.removeChild(historyList.lastChild);
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
