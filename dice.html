@@ -20,38 +20,38 @@
     </nav>
 
     <main>
-      <section>
-        <p>Введите формулу или выберите кубик. Примеры: <code>2d20 + 5</code>, <code>d6 + d4</code></p>
+      <p>Введите формулу или выберите кубик. Примеры: <code>2d20 + 5</code>, <code>d6 + d4</code></p>
 
-        <!-- Поле ввода формулы -->
-        <div class="dice-form">
-          <input type="text" id="formula" placeholder="Например: 2d20 + 3" />
-          <button id="roll-formula">Бросить!</button>
-        </div>
+      <!-- Поле ввода и кнопка -->
+      <div class="dice-form">
+        <input type="text" id="formula" placeholder="Например: 2d20 + 3" />
+        <button id="roll-formula">Бросить!</button>
+      </div>
 
-        <!-- Кнопки быстрых бросков -->
-        <div class="dice-buttons">
-          <button class="dice-btn" data-sides="4">d4</button>
-          <button class="dice-btn" data-sides="6">d6</button>
-          <button class="dice-btn" data-sides="8">d8</button>
-          <button class="dice-btn" data-sides="10">d10</button>
-          <button class="dice-btn" data-sides="12">d12</button>
-          <button class="dice-btn" data-sides="20">d20</button>
-          <button class="dice-btn" data-sides="100">d100</button>
-        </div>
+      <!-- Кнопки кубиков -->
+      <div class="dice-buttons">
+        <button class="dice-btn" data-sides="4">d4</button>
+        <button class="dice-btn" data-sides="6">d6</button>
+        <button class="dice-btn" data-sides="8">d8</button>
+        <button class="dice-btn" data-sides="10">d10</button>
+        <button class="dice-btn" data-sides="12">d12</button>
+        <button class="dice-btn" data-sides="20">d20</button>
+        <button class="dice-btn" data-sides="100">d100</button>
+      </div>
 
-        <!-- Результат -->
-        <div class="dice-result" id="result">
+      <!-- КРАСИВЫЙ БЛОК РЕЗУЛЬТАТА -->
+      <div id="result" class="dice-result-container">
+        <div class="dice-result-placeholder">
           Готов к броску...
         </div>
+      </div>
 
-        <!-- История -->
-        <div class="dice-history">
-          <h3>История бросков</h3>
-          <ul id="history-list"></ul>
-          <button id="clear-history" class="btn-clear">🗑️ Очистить историю</button>
-        </div>
-      </section>
+      <!-- ИСТОРИЯ БРОСКОВ -->
+      <div class="dice-history">
+        <h3>📜 История бросков</h3>
+        <ul id="history-list"></ul>
+        <button id="clear-history" class="btn-clear">🗑️ Очистить историю</button>
+      </div>
     </main>
 
     <footer>
@@ -67,12 +67,8 @@
       const rollFormulaBtn = document.getElementById("roll-formula");
       const clearHistoryBtn = document.getElementById("clear-history");
 
-      // === Парсер бросков ===
       function rollDice(formula) {
-        // Удаляем пробелы
         formula = formula.trim();
-
-        // Проверяем, соответствует ли формат
         const diceRegex = /(\d*)d(\d+)/gi;
         let total = 0;
         let breakdown = [];
@@ -80,7 +76,6 @@
         let match;
         let valid = false;
 
-        // Заменяем каждый dX на результат броска
         formula = formula.replace(diceRegex, (match, count, sides) => {
           valid = true;
           count = count ? parseInt(count) : 1;
@@ -100,7 +95,6 @@
           return sum;
         });
 
-        // Если не было кубиков — попробуем просто вычислить
         if (!valid) {
           try {
             const val = eval(formula);
@@ -110,7 +104,6 @@
           }
         }
 
-        // Вычисляем итог (с модификаторами)
         try {
           const finalTotal = eval(formula);
           breakdown.push(`Итого: ${finalTotal}`);
@@ -120,11 +113,8 @@
         }
       }
 
-      // === Бросок по формуле ===
       function roll() {
         let formula = formulaInput.value.trim();
-
-        // Если пусто — используем d20
         if (!formula) {
           formula = "1d20";
           formulaInput.value = "1d20";
@@ -133,35 +123,48 @@
         const rollResult = rollDice(formula);
 
         if (!rollResult) {
-          result.innerHTML = `<span style="color:#c84e4e;">❌ Ошибка: неверная формула</span>`;
+          result.innerHTML = `
+            <div class="dice-result-error">
+              ❌ Ошибка: неверная формула
+            </div>
+          `;
           return;
         }
 
+        // Красивое отображение результата
         result.innerHTML = `
-          <strong>Формула:</strong> ${formula}<br>
-          <strong>Результат:</strong> <span class="big-roll">${rollResult.total}</span><br>
-          <small>${rollResult.breakdown.join("<br>")}</small>
+          <div class="dice-result-card">
+            <div class="dice-formula">
+              <span class="label">Формула:</span>
+              <code>${formula}</code>
+            </div>
+            <div class="dice-total">
+              🎯 <strong>${rollResult.total}</strong>
+            </div>
+            <div class="dice-breakdown">
+              ${rollResult.breakdown.map(line => `<small>${line}</small>`).join('<br>')}
+            </div>
+          </div>
         `;
 
         // Добавляем в историю
         const li = document.createElement("li");
-        li.innerHTML = `<strong>${formula}</strong> → ${rollResult.total}`;
-        li.title = rollResult.breakdown.join("; ");
+        li.innerHTML = `
+          <span class="history-formula">${formula}</span>
+          <span class="history-result">→ ${rollResult.total}</span>
+        `;
         historyList.prepend(li);
 
-        // Ограничиваем 10 записями
         while (historyList.children.length > 10) {
           historyList.removeChild(historyList.lastChild);
         }
       }
 
-      // === Обработчики ===
       rollFormulaBtn.addEventListener("click", roll);
       formulaInput.addEventListener("keypress", (e) => {
         if (e.key === "Enter") roll();
       });
 
-      // Быстрые броски
       document.querySelectorAll(".dice-btn").forEach(btn => {
         btn.addEventListener("click", () => {
           const sides = btn.dataset.sides;
@@ -170,12 +173,11 @@
         });
       });
 
-      // Очистить историю
       clearHistoryBtn.addEventListener("click", () => {
         historyList.innerHTML = "";
-        result.innerHTML = "История очищена.";
+        result.innerHTML = '<div class="dice-result-placeholder">История очищена</div>';
         setTimeout(() => {
-          result.innerHTML = "Готов к броску...";
+          result.innerHTML = '<div class="dice-result-placeholder">Готов к броску...</div>';
         }, 1500);
       });
     });
