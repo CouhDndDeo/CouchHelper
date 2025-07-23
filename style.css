@@ -150,7 +150,12 @@ footer {
   background: #e6c86e;
   transform: scale(1.05);
 }
-/* Кнопка "Назад в главное меню" */
+
+
+.btn-back .text {
+  display: inline-block;
+}
+/* === КНОПКА "НАЗАД" === */
 .btn-back {
   display: inline-flex;
   align-items: center;
@@ -167,7 +172,6 @@ footer {
     0 4px 0 #3a2410,
     0 4px 10px rgba(0, 0, 0, 0.5);
   transition: all 0.3s ease;
-  position: relative;
 }
 
 .btn-back:hover {
@@ -189,10 +193,4 @@ footer {
 .btn-back .arrow {
   font-weight: bold;
   font-size: 1.1em;
-  display: flex;
-  align-items: center;
-}
-
-.btn-back .text {
-  display: inline-block;
 }
