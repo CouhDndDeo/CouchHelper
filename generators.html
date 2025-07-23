@@ -1,45 +1,106 @@
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const button = document.getElementById("generate-npc");
-    const result = document.getElementById("npc-result");
-    const image = document.getElementById("npc-image");
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🎭 Генератор НПС с картинкой</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🎭 Генератор НПС</h1>
+    </header>
 
-    // Теги для Unsplash
-    const roleImages = {
-      "торговец зельями": "alchemist, potion, fantasy",
-      "бродячий бард": "minstrel, lute, bard",
-      "старый маг": "wizard, old, magic",
-      "шпион": "spy, cloak, stealth",
-      "священник": "priest, holy, temple",
-      "наёмник": "mercenary, armor, sword",
-      "археолог": "archaeologist, ruins, explorer",
-      "шут": "jester, clown, medieval",
-      "лесной страж": "ranger, forest, bow",
-      "целитель": "healer, herbs, mystical"
-    };
+    <nav>
+      <a href="index.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">В меню</span>
+      </a>
+    </nav>
 
-    button.addEventListener("click", () => {
-      const role = Object.keys(roleImages)[Math.floor(Math.random() * Object.keys(roleImages).length)];
-      const keywords = roleImages[role];
+    <main>
+      <p>Нажмите, чтобы создать персонажа с изображением:</p>
 
-      // Используем CORS-прокси для надёжности
-      const imageUrl = `https://corsproxy.io/?https://source.unsplash.com/random/800x600/?${keywords},dnd,fantasy`;
+      <div class="image-container">
+        <img id="npc-image" src="https://via.placeholder.com/800x600/3a2a1a/8b6f47?text=Генерация..." alt="Картинка НПС" class="npc-image" />
+        <div class="image-caption">Случайный персонаж</div>
+      </div>
 
-      // Обновляем картинку
-      image.src = imageUrl;
-      image.alt = role;
+      <div id="npc-result" class="npc-output">
+        Здесь появится НПС...
+      </div>
 
-      // На случай, если картинка не загрузится
-      image.onerror = () => {
-        image.src = "https://via.placeholder.com/800x600/3a2a1a/8b6f47?text=НПС+не+загрузился";
-        image.alt = "Картинка не доступна";
+      <button id="generate-npc" class="btn-primary">
+        🎲 Сгенерировать НПС
+      </button>
+    </main>
+
+    <footer>
+      <p>Каждый НПС — потенциальный союзник, враг или тайна</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const button = document.getElementById("generate-npc");
+      const result = document.getElementById("npc-result");
+      const image = document.getElementById("npc-image");
+
+      const names = ["Альдред", "Лира", "Громвальд", "Морган", "Фенрис", "Зельда", "Дроган", "Элария"];
+      const races = ["человек", "эльф", "гном", "полурослик", "орк", "тифлинг", "драконорождённый"];
+      const roles = [
+        "торговец зельями", "бродячий бард", "старый маг", "шпион",
+        "священник", "наёмник", "археолог", "шут", "лесной страж", "целитель"
+      ];
+      const traits = ["говорит загадками", "всегда врёт", "боится темноты", "носит маску", "поёт при каждой возможности"];
+      const secrets = ["работает на главного злодея", "проклят", "живёт под чужим именем", "может превращаться в зверя"];
+
+      // Ключевые слова для картинок
+      const roleImages = {
+        "торговец зельями": "alchemist, potion, shop, fantasy",
+        "бродячий бард": "minstrel, lute, musician, medieval",
+        "старый маг": "wizard, old, magic, spell",
+        "шпион": "spy, cloak, stealth, shadow",
+        "священник": "priest, holy, temple, ritual",
+        "наёмник": "mercenary, armor, sword, warrior",
+        "археолог": "archaeologist, ruins, explorer, ancient",
+        "шут": "jester, clown, court, funny",
+        "лесной страж": "ranger, forest, bow, nature",
+        "целитель": "healer, herbs, mystical, potion"
       };
 
-      // Обновляем текст
-      result.innerHTML = `
-        <strong>🎭 Роль:</strong> ${role}<br>
-        <em>Картинка загружается...</em>
-      `;
+      button.addEventListener("click", () => {
+        const name = names[Math.floor(Math.random() * names.length)];
+        const race = races[Math.floor(Math.random() * races.length)];
+        const role = roles[Math.floor(Math.random() * roles.length)];
+        const trait = traits[Math.floor(Math.random() * traits.length)];
+        const secret = secrets[Math.floor(Math.random() * secrets.length)];
+
+        // Формируем URL через CORS-прокси
+        const keywords = roleImages[role] || "fantasy, character";
+        const imageUrl = `https://corsproxy.io/?https://source.unsplash.com/random/800x600/?${keywords}&t=${Date.now()}`;
+
+        // Обновляем картинку
+        image.src = imageUrl;
+        image.alt = `НПС: ${role}`;
+
+        // Обработка ошибки загрузки
+        image.onerror = () => {
+          image.src = "https://via.placeholder.com/800x600/4a2f1a/d4af37?text=НПС+не+загрузился";
+          image.alt = "Изображение недоступно";
+        };
+
+        // Обновляем текст
+        result.innerHTML = `
+          <strong>👤 Имя:</strong> ${name}<br>
+          <strong>🧝‍♂️ Раса:</strong> ${race}<br>
+          <strong>💼 Роль:</strong> ${role}<br>
+          <strong>🎭 Черта:</strong> ${trait}<br>
+          <strong>🤫 Секрет:</strong> ${secret}
+        `;
+      });
     });
-  });
-</script>
+  </script>
+</body>
+</html>
