@@ -150,3 +150,49 @@ footer {
   background: #e6c86e;
   transform: scale(1.05);
 }
+/* Кнопка "Назад в главное меню" */
+.btn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  font-size: 0.95em;
+  font-weight: bold;
+  color: #d4af37;
+  background: linear-gradient(145deg, #5a3b26, #4a2e1a);
+  border: 2px solid #8b6f47;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 
+    0 4px 0 #3a2410,
+    0 4px 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.btn-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 0 #3a2410,
+    0 6px 15px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(145deg, #6b4426, #55351c);
+  color: #f0d98f;
+}
+
+.btn-back:active {
+  transform: translateY(1px);
+  box-shadow: 
+    0 1px 0 #3a2410,
+    0 1px 8px rgba(0, 0, 0, 0.4);
+}
+
+.btn-back .arrow {
+  font-weight: bold;
+  font-size: 1.1em;
+  display: flex;
+  align-items: center;
+}
+
+.btn-back .text {
+  display: inline-block;
+}
