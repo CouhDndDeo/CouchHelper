@@ -1,121 +1,45 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>🎭 Умный генератор НПС</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="container">
-    <header>
-      <h1>🎭 Умный генератор НПС</h1>
-    </header>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const button = document.getElementById("generate-npc");
+    const result = document.getElementById("npc-result");
+    const image = document.getElementById("npc-image");
 
-    <nav>
-      <a href="index.html" class="btn-back">
-        <span class="arrow">←</span>
-        <span class="text">В меню</span>
-      </a>
-    </nav>
+    // Теги для Unsplash
+    const roleImages = {
+      "торговец зельями": "alchemist, potion, fantasy",
+      "бродячий бард": "minstrel, lute, bard",
+      "старый маг": "wizard, old, magic",
+      "шпион": "spy, cloak, stealth",
+      "священник": "priest, holy, temple",
+      "наёмник": "mercenary, armor, sword",
+      "археолог": "archaeologist, ruins, explorer",
+      "шут": "jester, clown, medieval",
+      "лесной страж": "ranger, forest, bow",
+      "целитель": "healer, herbs, mystical"
+    };
 
-    <main>
-      <p>Нажмите кнопку, чтобы создать персонажа с картинкой, именем, ролью и тайной:</p>
+    button.addEventListener("click", () => {
+      const role = Object.keys(roleImages)[Math.floor(Math.random() * Object.keys(roleImages).length)];
+      const keywords = roleImages[role];
 
-      <!-- Картинка НПС -->
-      <div class="image-container">
-        <img id="npc-image" src="https://source.unsplash.com/random/800x600/?fantasy,character" alt="НПС" class="npc-image" />
-        <div class="image-caption">Случайный персонаж</div>
-      </div>
+      // Используем CORS-прокси для надёжности
+      const imageUrl = `https://corsproxy.io/?https://source.unsplash.com/random/800x600/?${keywords},dnd,fantasy`;
 
-      <div id="npc-result" class="npc-output">
-        Здесь появится НПС...
-      </div>
+      // Обновляем картинку
+      image.src = imageUrl;
+      image.alt = role;
 
-      <button id="generate-npc" class="btn-primary">
-        🎲 Сгенерировать НПС с картинкой
-      </button>
-    </main>
-
-    <footer>
-      <p>Каждый НПС — живой человек с прошлым и мотивацией</p>
-    </footer>
-  </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const button = document.getElementById("generate-npc");
-      const result = document.getElementById("npc-result");
-      const image = document.getElementById("npc-image");
-
-      const names = {
-        человек: ["Артур", "Лира", "Грегор", "Мира", "Томас"],
-        эльф: ["Фэларон", "Сильвия", "Эледриэль", "Каэрон", "Нимрод"],
-        гном: ["Бомбин", "Двалин", "Гризабелла", "Флин", "Орка"],
-        орк: ["Грумм", "Урга", "Зарг", "Харгаш", "Торук"],
-        тифлинг: ["Малак", "Зариэль", "Кассил", "Наббер", "Веспер"]
+      // На случай, если картинка не загрузится
+      image.onerror = () => {
+        image.src = "https://via.placeholder.com/800x600/3a2a1a/8b6f47?text=НПС+не+загрузился";
+        image.alt = "Картинка не доступна";
       };
 
-      const races = Object.keys(names);
-      const roles = {
-        "торговец зельями": "ищет редкие ингредиенты",
-        "бродячий бард": "пишет песню о герое",
-        "старый маг": "пытается снять проклятие",
-        "шпион": "собирает улики против знати",
-        "священник": "ищет священный артефакт",
-        "наёмник": "охотится за головой героя",
-        "археолог": "ищет потерянный город",
-        "шут": "на самом деле — принц",
-        "лесной страж": "охраняет запретный лес",
-        "целитель": "скрывает, что его зелья прокляты"
-      };
-
-      const statuses = ["враг", "союзник", "нейтрал", "двойной агент", "жертва", "наставник"];
-      const traits = ["говорит загадками", "всегда врёт", "боится воды", "носит маску", "поёт при каждой возможности", "верит в призраков", "влюблён в героя", "не спит по ночам"];
-      const secrets = ["знает, кто убил отца героя", "работает на главного злодея", "проклят", "живёт под чужим именем", "может превращаться в зверя", "владеет запретным заклинанием"];
-
-      // Ключевые слова для Unsplash
-      const roleImages = {
-        "торговец зельями": "alchemist, potion, shop",
-        "бродячий бард": "minstrel, lute, musician",
-        "старый маг": "wizard, old, magic",
-        "шпион": "spy, cloak, shadow",
-        "священник": "priest, holy, temple",
-        "наёмник": "mercenary, armor, sword",
-        "археолог": "archaeologist, ruins, explorer",
-        "шут": "jester, clown, medieval",
-        "лесной страж": "ranger, forest, bow",
-        "целитель": "healer, herbs, mystical"
-      };
-
-      button.addEventListener("click", () => {
-        const race = races[Math.floor(Math.random() * races.length)];
-        const name = names[race][Math.floor(Math.random() * names[race].length)];
-        const role = Object.keys(roles)[Math.floor(Math.random() * Object.keys(roles).length)];
-        const goal = roles[role];
-        const status = statuses[Math.floor(Math.random() * statuses.length)];
-        const trait = traits[Math.floor(Math.random() * traits.length)];
-        const secret = secrets[Math.floor(Math.random() * secrets.length)];
-
-        if (status === "враг") {
-          secret = ["работает на главного злодея", "знает слабость героя", "подложил проклятие", "собирает артефакты для ритуала"][Math.floor(Math.random() * 4)];
-        }
-
-        // Обновляем картинку
-        const keywords = roleImages[role] || "fantasy, character";
-        image.src = `https://source.unsplash.com/random/800x600/?${keywords},dnd,fantasy&sig=${Math.random()}`;
-
-        result.innerHTML = `
-          <strong>👤 Имя:</strong> ${name}<br>
-          <strong>🧝‍♂️ Раса:</strong> ${race}<br>
-          <strong>💼 Роль:</strong> ${role}<br>
-          <strong>🎯 Цель:</strong> ${goal}<br>
-          <strong>⚖️ Статус:</strong> <span class="status-${status}">${status}</span><br>
-          <strong>🎭 Черта:</strong> ${trait}<br>
-          <strong>🤫 Секрет:</strong> ${secret}
-        `;
-      });
+      // Обновляем текст
+      result.innerHTML = `
+        <strong>🎭 Роль:</strong> ${role}<br>
+        <em>Картинка загружается...</em>
+      `;
     });
-  </script>
-</body>
-</html>
+  });
+</script>
