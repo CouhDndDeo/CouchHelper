@@ -1,3 +1,54 @@
-... href="rules.html" ...
-<h1>🧪 SPGH v0.9</h1>
-<div class="content" data-md="content/sphg.md">
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧪 SPGH v0.9</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧪 SPGH v0.9</h1>
+    </header>
+
+    <nav>
+      <a href="../../rules.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">К выбору системы</span>
+      </a>
+    </nav>
+
+    <main>
+      <div class="content" id="md-content" data-md="../../content/sphg.md">
+        Загрузка правил SPGH v0.9...
+      </div>
+    </main>
+
+    <footer>
+      <p>Авторская гибридная система</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit({ html: true, linkify: true });
+      const block = document.getElementById("md-content");
+      const file = block.getAttribute("data-md");
+
+      fetch(file)
+        .then(r => {
+          if (!r.ok) throw new Error(`Не найден файл: ${file}`);
+          return r.text();
+        })
+        .then(text => {
+          block.innerHTML = md.render(text);
+        })
+        .catch(err => {
+          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`;
+        });
+    });
+  </script>
+</body>
+</html>
