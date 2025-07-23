@@ -314,6 +314,7 @@ footer {
   text-align: center;
 }
 /* Контейнер изображения */
+/* === КАРТИНКИ ДЛЯ НПС И ЛОКАЦИЙ === */
 .image-container {
   margin: 20px 0;
   text-align: center;
@@ -323,10 +324,12 @@ footer {
 }
 
 .npc-image {
-  max-width: 100%;
+  width: 100%;
+  max-width: 800px;
   height: 300px;
   object-fit: cover;
   border-radius: 8px;
+  background: #3a2a1a;
 }
 
 .image-caption {
