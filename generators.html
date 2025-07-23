@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>📖 Генератор НПС</title>
+  <title>🎲 Генераторы</title>
   <link rel="stylesheet" href="style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>📖 Генератор НПС</h1>
+      <h1>🎲 Генераторы</h1>
     </header>
 
     <nav>
@@ -19,7 +19,7 @@
 
     <main>
       <section>
-        <div class="content" data-md="content/generators.md">
+        <div class="content" id="md-content" data-md="content/generators.md">
           Загрузка...
         </div>
       </section>
@@ -30,6 +30,7 @@
     </footer>
   </div>
 
+  <!-- Единый скрипт -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const md = window.markdownit({
@@ -38,21 +39,54 @@
         typographer: true
       });
 
-      const block = document.querySelector(".content[data-md]");
-      const file = block.getAttribute("data-md");
+      const contentBlock = document.getElementById("md-content");
+      const mdFile = contentBlock.getAttribute("data-md");
 
-      fetch(file)
+      fetch(mdFile)
         .then(r => {
-          if (!r.ok) throw new Error(`Файл не найден: ${file}`);
+          if (!r.ok) throw new Error(`Файл не найден: ${mdFile}`);
           return r.text();
         })
         .then(text => {
-          block.innerHTML = md.render(text);
+          contentBlock.innerHTML = md.render(text);
+
+          // === ТОЛЬКО ТЕПЕРЬ добавляем функцию генератора ===
+          setupNPCGenerator();
         })
         .catch(err => {
-          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`;
+          contentBlock.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`;
         });
     });
+
+    // Функция генератора — после загрузки Markdown
+    function setupNPCGenerator() {
+      const button = document.getElementById("generate-npc");
+      const result = document.getElementById("npc-result");
+
+      if (!button || !result) return;
+
+      const names = ["Альдред", "Бриззарда", "Громвальд", "Лира", "Морган", "Талия", "Фенрис", "Зельда", "Дроган", "Элария"];
+      const races = ["человек", "эльф", "гном", "полурослик", "орк", "тифлинг", "драконорождённый", "халфлинг", "голиаф", "генази"];
+      const roles = ["торговец зельями", "бродячий бард", "старый маг", "шпион", "священник", "наёмник", "пират", "археолог", "шут", "лесной страж"];
+      const traits = ["говорит загадками", "всегда врёт", "обожает золото", "боится темноты", "постоянно чихает", "носит маску", "поёт при каждой возможности", "верит в призраков", "влюблён в героя", "искренне добр"];
+      const secrets = ["на самом деле — беглый принц", "ищет пропавшего брата", "служит тайному культисту", "украл артефакт", "помнит прошлую жизнь", "владеет запретным заклинанием", "живёт под чужим именем", "видит духов", "проклят", "работает на Мастера игры"];
+
+      button.addEventListener("click", () => {
+        const name = names[Math.floor(Math.random() * names.length)];
+        const race = races[Math.floor(Math.random() * races.length)];
+        const role = roles[Math.floor(Math.random() * roles.length)];
+        const trait = traits[Math.floor(Math.random() * traits.length)];
+        const secret = secrets[Math.floor(Math.random() * secrets.length)];
+
+        result.innerHTML = `
+          <strong>👤 Имя:</strong> ${name}<br>
+          <strong>🧝‍♂️ Раса:</strong> ${race}<br>
+          <strong>💼 Роль:</strong> ${role}<br>
+          <strong>🎭 Черта:</strong> ${trait}<br>
+          <strong>🤫 Секрет:</strong> ${secret}
+        `;
+      });
+    }
   </script>
 </body>
 </html>
