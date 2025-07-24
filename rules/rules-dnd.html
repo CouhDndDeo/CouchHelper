@@ -3,51 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>⚔️ D&D Правила</title>
-  <link rel="stylesheet" href="../style.css" />
+  <title>⚔️ Правила D&D 5e</title>
+  <link rel="stylesheet" href="../../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 <body>
   <div class="container">
     <header>
-      <h1>⚔️ Dungeons & Dragons</h1>
+      <h1>⚔️ Правила D&D 5e</h1>
+      <p>Интерактивная энциклопедия для мастеров и героев</p>
     </header>
 
     <nav>
-      <a href="../rules.html" class="btn-back">
+      <a href="../../rules.html" class="btn-back">
         <span class="arrow">←</span>
         <span class="text">К выбору системы</span>
       </a>
     </nav>
 
+    <!-- Боковая/горизонтальная навигация -->
+    <div class="rules-nav">
+      <a href="#abilities">Характеристики</a>
+      <a href="#classes">Классы</a>
+      <a href="#races">Расы</a>
+      <a href="#combat">Бой</a>
+      <a href="#spells">Заклинания</a>
+      <a href="#skills">Навыки</a>
+    </div>
+
     <main>
-      <div class="content" id="md-content" data-md="../content/dnd.md">
+      <div class="content" id="md-content" data-md="../../content/dnd.md">
         Загрузка правил D&D...
       </div>
     </main>
 
     <footer>
-      <p>Основы 5-го издания</p>
+      <p>Основы 5-го издания Dungeons & Dragons</p>
     </footer>
   </div>
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-      const md = window.markdownit({ html: true, linkify: true });
+      const md = window.markdownit({
+        html: true,
+        linkify: true,
+        typographer: true
+      });
+
       const block = document.getElementById("md-content");
       const file = block.getAttribute("data-md");
 
       fetch(file)
         .then(r => {
-          if (!r.ok) throw new Error(`Не найден файл: ${file}`);
+          if (!r.ok) throw new Error(`Файл не найден: ${file}`);
           return r.text();
         })
         .then(text => {
           block.innerHTML = md.render(text);
         })
         .catch(err => {
-          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка: ${err.message}</p>`;
+          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка загрузки: ${err.message}</p>`;
         });
+
+      // Плавная прокрутка по якорям
+      document.querySelectorAll('.rules-nav a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.getAttribute('href');
+          const targetElement = document.querySelector(targetId);
+          if (targetElement) {
+            targetElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }
+        });
+      });
     });
   </script>
 </body>
