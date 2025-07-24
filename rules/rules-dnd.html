@@ -4,36 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>⚔️ Правила D&D 5e</title>
-  <link rel="stylesheet" href="../style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+  <link rel="stylesheet" href="../../style.css" />
 </head>
 <body>
   <div class="container">
     <header>
       <h1>⚔️ Правила D&D 5e</h1>
-      <p>Интерактивная энциклопедия для мастеров и героев</p>
+      <p>Интерактивная энциклопедия</p>
     </header>
 
     <nav>
-      <a href="../rules.html" class="btn-back">
+      <a href="../../rules.html" class="btn-back">
         <span class="arrow">←</span>
         <span class="text">К выбору системы</span>
       </a>
     </nav>
 
-    <!-- Боковая/горизонтальная навигация -->
-    <div class="rules-nav">
-      <a href="#abilities">Характеристики</a>
-      <a href="#classes">Классы</a>
-      <a href="#races">Расы</a>
-      <a href="#combat">Бой</a>
-      <a href="#spells">Заклинания</a>
-      <a href="#skills">Навыки</a>
-    </div>
-
     <main>
-      <div class="content" id="md-content" data-md="../content/dnd.md">
-        Загрузка правил D&D...
+      <div class="menu-grid">
+        <a href="dnd-basics.html" class="menu-card">
+          <div class="icon">📖</div>
+          <h3>Краткие основы</h3>
+          <p>Для новичков и быстрого старта</p>
+        </a>
+
+        <a href="dnd-abilities.html" class="menu-card">
+          <div class="icon">📊</div>
+          <h3>Характеристики</h3>
+          <p>STR, DEX, CON, INT, WIS, CHA</p>
+        </a>
+
+        <a href="dnd-formulas.html" class="menu-card">
+          <div class="icon">🧮</div>
+          <h3>Формулы</h3>
+          <p>Броски, урон, сложность</p>
+        </a>
+
+        <a href="dnd-races.html" class="menu-card">
+          <div class="icon">🧝‍♂️</div>
+          <h3>Расы</h3>
+          <p>Эльфы, гномы, орки и другие</p>
+        </a>
+
+        <a href="dnd-classes.html" class="menu-card">
+          <div class="icon">🛡️</div>
+          <h3>Классы</h3>
+          <p>Воин, маг, паладин и др.</p>
+        </a>
+
+        <a href="dnd-spells.html" class="menu-card">
+          <div class="icon">🔮</div>
+          <h3>Заклинания</h3>
+          <p>Огненный шар, леченье и др.</p>
+        </a>
+
+        <a href="dnd-bestiary.html" class="menu-card">
+          <div class="icon">👹</div>
+          <h3>Бестиарий</h3>
+          <p>Гоблины, драконы, призраки</p>
+        </a>
       </div>
     </main>
 
@@ -41,45 +70,5 @@
       <p>Основы 5-го издания Dungeons & Dragons</p>
     </footer>
   </div>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const md = window.markdownit({
-        html: true,
-        linkify: true,
-        typographer: true
-      });
-
-      const block = document.getElementById("md-content");
-      const file = block.getAttribute("data-md");
-
-      fetch(file)
-        .then(r => {
-          if (!r.ok) throw new Error(`Файл не найден: ${file}`);
-          return r.text();
-        })
-        .then(text => {
-          block.innerHTML = md.render(text);
-        })
-        .catch(err => {
-          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка загрузки: ${err.message}</p>`;
-        });
-
-      // Плавная прокрутка по якорям
-      document.querySelectorAll('.rules-nav a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-          e.preventDefault();
-          const targetId = this.getAttribute('href');
-          const targetElement = document.querySelector(targetId);
-          if (targetElement) {
-            targetElement.scrollIntoView({
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        });
-      });
-    });
-  </script>
 </body>
 </html>
