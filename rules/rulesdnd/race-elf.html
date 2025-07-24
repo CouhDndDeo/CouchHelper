@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧝‍♂️ Эльф — Раса D&D</title>
+  <link rel="stylesheet" href="../style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧝‍♂️ Эльф</h1>
+    </header>
+
+    <nav>
+      <a href="dnd-races.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">К списку рас</span>
+      </a>
+    </nav>
+
+    <main>
+      <div class="content" data-md="../content/races/elf.md">
+        Загрузка...
+      </div>
+    </main>
+
+    <footer>
+      <p>Дети леса и луны</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit({ html: true });
+      const block = document.querySelector(".content[data-md]");
+      const file = block.getAttribute("data-md");
+
+      fetch(file)
+        .then(r => r.text())
+        .then(text => block.innerHTML = md.render(text))
+        .catch(() => block.innerHTML = "❌ Ошибка загрузки");
+    });
+  </script>
+</body>
+</html>
