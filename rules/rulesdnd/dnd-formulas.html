@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧮 Формулы D&D</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧮 Основные формулы D&D</h1>
+      <p>Сводка всех ключевых расчётов</p>
+    </header>
+
+    <nav>
+      <a href="../rules-dnd.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">В меню D&D</span>
+      </a>
+    </nav>
+
+    <main>
+      <div class="content" data-md="../../content/dnd-formulas.md">
+        Загрузка формул...
+      </div>
+    </main>
+
+    <footer>
+      <p>Быстрые подсказки для игроков и мастеров</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit({ 
+        html: true, 
+        linkify: true,
+        typographer: true 
+      });
+      
+      const block = document.querySelector(".content[data-md]");
+      const file = block.getAttribute("data-md");
+
+      fetch(file)
+        .then(r => {
+          if (!r.ok) throw new Error(`Файл не найден: ${file}`);
+          return r.text();
+        })
+        .then(text => {
+          block.innerHTML = md.render(text);
+        })
+        .catch(err => {
+          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка загрузки: ${err.message}</p>`;
+        });
+    });
+  </script>
+</body>
+</html>
