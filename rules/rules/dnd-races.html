@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧝‍♂️ Расы D&D</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧝‍♂️ Расы D&D</h1>
+      <p>Выберите расу или воспользуйтесь поиском</p>
+    </header>
+
+    <nav>
+      <a href="dnd.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">В меню D&D</span>
+      </a>
+    </nav>
+
+    <main>
+      <div class="search-box">
+        <input type="text" id="race-search" placeholder="Поиск расы..." />
+      </div>
+
+      <div class="race-list" id="race-list">
+        <!-- Список будет заполнен JS -->
+        <p style="text-align:center; color:#b8a594;">Загрузка списка рас...</p>
+      </div>
+    </main>
+
+    <footer>
+      <p>Каждая раса — своя история</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit();
+
+      // Список рас
+      const races = [
+        { name: "Человек", page: "race-human.html", desc: "+1 ко всем характеристикам" },
+        { name: "Эльф", page: "race-elf.html", desc: "+2 к Ловкости, ночное зрение" },
+        { name: "Гном", page: "race-dwarf.html", desc: "+2 к Интеллекту, сопротивление магии" },
+        { name: "Полурослик", page: "race-halfling.html", desc: "+2 к Ловкости, удача" },
+        { name: "Орк", page: "race-orc.html", desc: "+2 к Силе, агрессия" },
+        { name: "Тифлинг", page: "race-tiefling.html", desc: "+2 к Харизме, адское наследие" },
+        { name: "Драконорождённый", page: "race-dragonborn.html", desc: "Дыхание, сопротивление урону" },
+        { name: "Голиаф", page: "race-goliath.html", desc: "+2 к Силе, каменная кожа" }
+      ];
+
+      const list = document.getElementById("race-list");
+      const search = document.getElementById("race-search");
+
+      function renderList(filtered) {
+        list.innerHTML = '';
+        filtered.forEach(race => {
+          const item = document.createElement("div");
+          item.className = "menu-card";
+          item.innerHTML = `
+            <div class="icon">🧝</div>
+            <h3>${race.name}</h3>
+            <p>${race.desc}</p>
+          `;
+          item.onclick = () => window.location.href = race.page;
+          item.style.cursor = "pointer";
+          list.appendChild(item);
+        });
+      }
+
+      renderList(races);
+
+      search.addEventListener("input", () => {
+        const term = search.value.toLowerCase();
+        const filtered = races.filter(race => 
+          race.name.toLowerCase().includes(term) || 
+          race.desc.toLowerCase().includes(term)
+        );
+        renderList(filtered);
+      });
+    });
+  </script>
+</body>
+</html>
