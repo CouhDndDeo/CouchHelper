@@ -4,7 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🧝‍♂️ Расы D&D</title>
-  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../style.css" />
+  <!-- Добавим базовые стили для иконок рас здесь, если нужно -->
+  <style>
+    /* === ИЗОБРАЖЕНИЯ В КАРТОЧКАХ РАС === */
+    .race-icon {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #8b6f47;
+      background: #3a2a1a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .race-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  </style>
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
 </head>
 <body>
@@ -41,41 +63,41 @@
     document.addEventListener("DOMContentLoaded", () => {
       const md = window.markdownit();
 
-      // Список рас
+      // Список рас с изображениями
       const races = [
-        { name: "Ааракокра", page: "race-aarakocra.html", desc: "Летающие воины неба", img: "content/races/aarakocra.png"},
-        { name: "Аасимар", page: "race-aasimar.html", desc: "Потомки небесного света"},
-        { name: "Автогном", page: "race-autognome.html", desc: "Механический гуманоид-гений"},
-        { name: "Багбир", page: "race-bugbear.html", desc: "Грозный гоблиноид-засадник"},
-        { name: "Ведалкен", page: "race-vedalken.html", desc: "Гении логики и совершенства"},
-        { name: "Вердан", page: "race-verdan.html", desc: "Хамелеоны, созданные хаосом"},
-        { name: "Гибрид Симиков", page: "race-simic-hybrid.html", desc: "Биомагия и эволюция — путь к совершенству" },
-        { name: "Гит", page: "race-gith.html", desc: "Освобождённые рабы, ставшие воинами мультивселенной" },
-        { name: "Гифф", page: "race-giff.html", desc: "Воины с гиппопотамскими чертами — сила, честь и дисциплина" },
-        { name: "Гном", page: "race-gnome.html", desc: "Маленькие, но с огромной магией и любопытством" },
-        { name: "Гоблин", page: "race-goblin.html", desc: "Маленький, но злобный и ловкий" },
-        { name: "Голиаф", page: "race-goliath.html", desc: "Потомок великанов — сила, честь и стремление к величию" },
-        { name: "Грунг", page: "race-grung.html", desc: "Ядовитые амфибии из джунглей — ловкие, но с секретом" },
-        { name: "Человек", page: "race-human.html", desc: "+1 ко всем характеристикам" },
-        { name: "Эльф", page: "race-elf.html", desc: "+2 к Ловкости, ночное зрение" },
-        { name: "Полурослик", page: "race-halfling.html", desc: "+2 к Ловкости, удача" },
-        { name: "Орк", page: "race-orc.html", desc: "+2 к Силе, агрессия" },
-        { name: "Тифлинг", page: "race-tiefling.html", desc: "+2 к Харизме, адское наследие" },
-        { name: "Драконорождённый", page: "race-dragonborn.html", desc: "Дыхание, сопротивление урону" },
-        
+        { name: "Ааракокра", page: "race-aarakocra.html", desc: "Летающие воины неба", img: "../content/races/aarakocra.png"},
+        { name: "Аасимар", page: "race-aasimar.html", desc: "Потомки небесного света", img: "../images/races/aasimar.png" },
+        { name: "Автогном", page: "race-autognome.html", desc: "Механический гуманоид-гений", img: "../images/races/autognome.png" },
+        { name: "Багбир", page: "race-bugbear.html", desc: "Грозный гоблиноид-засадник", img: "../images/races/bugbear.png" },
+        { name: "Ведалкен", page: "race-vedalken.html", desc: "Гении логики и совершенства", img: "../images/races/vedalken.png" },
+        { name: "Вердан", page: "race-verdan.html", desc: "Хамелеоны, созданные хаосом", img: "../images/races/verdan.png" },
+        { name: "Гибрид Симиков", page: "race-simic-hybrid.html", desc: "Биомагия и эволюция — путь к совершенству", img: "../images/races/simic-hybrid.png" },
+        { name: "Гит", page: "race-gith.html", desc: "Освобождённые рабы, ставшие воинами мультивселенной", img: "../images/races/gith.png" },
+        { name: "Гифф", page: "race-giff.html", desc: "Воины с гиппопотамскими чертами — сила, честь и дисциплина", img: "../images/races/giff.png" },
+        { name: "Гном", page: "race-gnome.html", desc: "Маленькие, но с огромной магией и любопытством", img: "../images/races/gnome.png" },
+        { name: "Гоблин", page: "race-goblin.html", desc: "Маленький, но злобный и ловкий", img: "../images/races/goblin.png" },
+        { name: "Голиаф", page: "race-goliath.html", desc: "Потомок великанов — сила, честь и стремление к величию", img: "../images/races/goliath.png" },
+        { name: "Грунг", page: "race-grung.html", desc: "Ядовитые амфибии из джунглей — ловкие, но с секретом", img: "../images/races/grung.png" },
+        { name: "Человек", page: "race-human.html", desc: "+1 ко всем характеристикам", img: "../images/races/human.png" },
+        { name: "Эльф", page: "race-elf.html", desc: "+2 к Ловкости, ночное зрение", img: "../images/races/elf.png" },
+        { name: "Полурослик", page: "race-halfling.html", desc: "+2 к Ловкости, удача", img: "../images/races/halfling.png" },
+        { name: "Орк", page: "race-orc.html", desc: "+2 к Силе, агрессия", img: "../images/races/orc.png" },
+        { name: "Тифлинг", page: "race-tiefling.html", desc: "+2 к Харизме, адское наследие", img: "../images/races/tiefling.png" },
+        { name: "Драконорождённый", page: "race-dragonborn.html", desc: "Дыхание, сопротивление урону", img: "../images/races/dragonborn.png" }
       ];
 
       const list = document.getElementById("race-list");
       const search = document.getElementById("race-search");
 
-   function renderList(filtered) {
+      function renderList(filtered) {
         list.innerHTML = '';
         filtered.forEach(race => {
           const item = document.createElement("div");
           item.className = "menu-card";
+          // Формируем HTML для карточки с изображением
           item.innerHTML = `
             <div class="race-icon">
-              <img src="${race.img}" alt="${race.name}" onerror="this.src='https://placehold.co/60x60?text=?';">
+              <img src="${race.img}" alt="${race.name}" onerror="this.src='https://placehold.co/60x60/5a3b26/d4af37?text=${encodeURIComponent(race.name.charAt(0))}';">
             </div>
             <h3>${race.name}</h3>
             <p>${race.desc}</p>
@@ -90,8 +112,8 @@
 
       search.addEventListener("input", () => {
         const term = search.value.toLowerCase();
-        const filtered = races.filter(race => 
-          race.name.toLowerCase().includes(term) || 
+        const filtered = races.filter(race =>
+          race.name.toLowerCase().includes(term) ||
           race.desc.toLowerCase().includes(term)
         );
         renderList(filtered);
