@@ -684,3 +684,116 @@ footer {
   border-color: #d4af37;
   box-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
 }
+/* === ЛИСТ ПЕРСОНАЖА === */
+.sheet-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+@media (max-width: 900px) {
+  .sheet-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sheet-form h2,
+.sheet-preview h2 {
+  color: #d4af37;
+  margin-bottom: 15px;
+  border-left: 5px solid #d4af37;
+  padding-left: 10px;
+}
+
+.sheet-form label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.sheet-form input,
+.sheet-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 6px;
+  border: 1px solid #8b6f47;
+  background: #4a2f1a;
+  color: #e0ccb6;
+  font-size: 1em;
+}
+
+.sheet-form input:focus,
+.sheet-form select:focus {
+  outline: none;
+  border-color: #d4af37;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+/* === КАРТОЧКА ПЕРСОНАЖА === */
+.char-card {
+  background: linear-gradient(145deg, #5a3b26, #4a2e1a);
+  border: 2px solid #8b6f47;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 6px 0 #3a2410, 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.char-header h3 {
+  font-size: 1.6em;
+  color: #f0d98f;
+  margin-bottom: 10px;
+}
+
+.char-header p {
+  margin: 5px 0;
+  font-size: 1em;
+}
+
+.char-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.stat {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 12px 8px;
+  border-radius: 10px;
+  border: 1px solid #8b6f47;
+}
+
+.stat-value {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #f0d98f;
+}
+
+.stat-name {
+  font-size: 0.9em;
+  color: #b8a594;
+  margin: 5px 0;
+}
+
+.stat-mod {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #d4af37;
+}
