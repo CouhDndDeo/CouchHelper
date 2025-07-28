@@ -882,33 +882,78 @@
       });
 
       // --- Сохранение ---
-      saveBtn.addEventListener("click", () => {
-        const data = {
-          name: nameInput.value,
-          race: raceSelect.value,
-          class: classSelect.value,
-          level: levelInput.value,
-          background: bgInput.value,
-          alignment: alignSelect.value,
-          exp: expInput.value,
-          stats: {},
-          combat: {
-            hitDie: hitDieInput.value,
-            currentHp: currentHpInput.value,
-            maxHp: maxHpInput.value,
-            baseSpeed: baseSpeedInput.value
-          },
-          skills: {}
-        };
-        for (let key in statsInputs) {
-          data.stats[key] = statsInputs[key].value;
-        }
-        for (let key in skillCheckboxes) {
-          data.skills[key] = skillCheckboxes[key].checked;
-        }
-        localStorage.setItem("dnd-character", JSON.stringify(data));
-        alert("✅ Персонаж сохранён!");
-      });
+      // --- Сохранение ---
+saveBtn.addEventListener("click", () => {
+  const data = {
+    name: nameInput.value,
+    race: raceSelect.value,
+    class: classSelect.value,
+    level: levelInput.value,
+    background: bgInput.value,
+    alignment: alignSelect.value,
+    exp: expInput.value,
+    stats: {},
+    combat: {
+      hitDie: hitDieInput.value,
+      currentHp: currentHpInput.value,
+      maxHp: maxHpInput.value,
+      baseSpeed: baseSpeedInput.value
+    },
+    skills: {},
+    avatar: summaryAvatar.src // <-- Добавлено
+  };
+  for (let key in statsInputs) {
+    data.stats[key] = statsInputs[key].value;
+  }
+  for (let key in skillCheckboxes) {
+    data.skills[key] = skillCheckboxes[key].checked;
+  }
+  localStorage.setItem("dnd-character", JSON.stringify(data));
+  alert("✅ Персонаж сохранён!");
+});
+
+// --- Загрузка сохранённого ---
+const saved = localStorage.getItem("dnd-character");
+if (saved) {
+  try {
+    const data = JSON.parse(saved);
+    nameInput.value = data.name || "";
+    raceSelect.value = data.race || "human";
+    classSelect.value = data.class || "воин";
+    levelInput.value = data.level || "1";
+    bgInput.value = data.background || "";
+    alignSelect.value = data.alignment || "Нейтральный";
+    expInput.value = data.exp || "0";
+    for (let key in data.stats) {
+      if (statsInputs[key]) {
+        statsInputs[key].value = data.stats[key];
+      }
+    }
+    if (data.combat) {
+       hitDieInput.value = data.combat.hitDie || "";
+       currentHpInput.value = data.combat.currentHp || "";
+       maxHpInput.value = data.combat.maxHp || "";
+       baseSpeedInput.value = data.combat.baseSpeed || "30";
+    }
+    if (data.skills) {
+       for (let key in data.skills) {
+           if (skillCheckboxes[key] !== undefined) {
+               skillCheckboxes[key].checked = data.skills[key];
+           }
+       }
+    }
+    // <-- Добавлено -->
+    if (data.avatar) {
+      summaryAvatar.src = data.avatar;
+    }
+    // <-- /Добавлено -->
+
+    updateCharacterInfo();
+    updateCalculations();
+  } catch (e) {
+    console.error("Ошибка загрузки сохранённого персонажа", e);
+  }
+}
 
       // --- Экспорт ---
       exportBtn.addEventListener("click", () => {
@@ -1000,6 +1045,9 @@
              for (let key in data.skills) {
                  if (skillCheckboxes[key] !== undefined) {
                      skillCheckboxes[key].checked = data.skills[key];
+          if (data.avatar) {
+            summaryAvatar.src = data.avatar;
+                     }
                  }
              }
           }
