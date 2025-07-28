@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🧙‍♂️ Гном — Раса D&D</title>
+  <link rel="stylesheet" href="../../style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧙‍♂️ Гном</h1>
+    </header>
+
+    <nav>
+      <a href="dnd-races.html" class="btn-back">
+        <span class="arrow">←</span>
+        <span class="text">К списку рас</span>
+      </a>
+    </nav>
+
+    <main>
+      <div class="content" data-md="../../content/races/gnome.md">
+        Загрузка информации о гномах...
+      </div>
+    </main>
+
+    <footer>
+      <p>Маленькие, но с огромной магией и любопытством</p>
+    </footer>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const md = window.markdownit({ 
+        html: true, 
+        linkify: true,
+        typographer: true 
+      });
+      
+      const block = document.querySelector(".content[data-md]");
+      const file = block.getAttribute("data-md");
+
+      fetch(file)
+        .then(r => {
+          if (!r.ok) throw new Error(`Файл не найден: ${file}`);
+          return r.text();
+        })
+        .then(text => {
+          block.innerHTML = md.render(text);
+        })
+        .catch(err => {
+          block.innerHTML = `<p style="color:#c84e4e;">❌ Ошибка загрузки: ${err.message}</p>`;
+        });
+    });
+  </script>
+</body>
+</html>
