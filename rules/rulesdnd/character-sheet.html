@@ -323,11 +323,20 @@
             <label>
               Раса:
               <select id="char-race">
-                <option value="human">Человек</option>
+              <option value="human">Человек</option>
                 <option value="elf">Эльф</option>
+                <option value="high-elf">Высший эльф</option>
+                <option value="wood-elf">Лесной эльф</option>
+                <option value="dark-elf">Тёмный эльф (Дроу)</option>
                 <option value="dwarf">Дварф</option>
+                <option value="hill-dwarf">Холмовой дварф</option>
+                <option value="mountain-dwarf">Горный дварф</option>
                 <option value="halfling">Полурослик</option>
+                <option value="lightfoot-halfling">Легконогий полурослик</option>
+                <option value="stout-halfling">Крепкий полурослик</option>
                 <option value="gnome">Гном</option>
+                <option value="forest-gnome">Лесной гном</option>
+                <option value="rock-gnome">Скальный гном</option>
                 <option value="half-elf">Полуэльф</option>
                 <option value="half-orc">Полуорк</option>
                 <option value="tiefling">Тифлинг</option>
@@ -335,6 +344,8 @@
                 <option value="aasimar">Аасимар</option>
                 <option value="bugbear">Багбир</option>
                 <option value="gith">Гит</option>
+                <option value="githyanki">Гитъянки</option>
+                <option value="githzerai">Гитцераи</option>
                 <option value="giff">Гифф</option>
                 <option value="simic-hybrid">Гибрид Симиков</option>
                 <option value="verdan">Вердан</option>
@@ -555,7 +566,23 @@
             </div>
           </div>
         </div>
-
+<div class="form-row">
+  <label>
+    Аватар:
+    <input type="file" id="avatar-upload" accept="image/*">
+  </label>
+</div>
+        <div class="form-row no-print">
+  <label>
+    Персонаж:
+    <select id="char-selector">
+      <option value="">-- Новый --</option>
+    </select>
+  </label>
+  <button id="save-as-char" class="btn-secondary">💾 Сохранить как...</button>
+  <button id="load-char" class="btn-primary">📥 Загрузить</button>
+  <button id="delete-char" class="btn-clear">🗑️ Удалить</button>
+</div>
         <button class="btn-print-summary" onclick="window.open('print-character.html', '_blank')">
           🖨️ Распечатать сводку
         </button>
@@ -904,6 +931,73 @@
       updateCharacterInfo();
       updateCalculations();
     });
+    const avatarUpload = document.getElementById('avatar-upload');
+const summaryAvatar = document.getElementById('summary-avatar');
+
+avatarUpload.addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      summaryAvatar.src = evt.target.result;
+      // Сохраняем в localStorage (base64)
+      localStorage.setItem('dnd-avatar-temp', evt.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+});
+    const charSelector = document.getElementById('char-selector');
+const saveAsBtn = document.getElementById('save-as-char');
+const loadBtn = document.getElementById('load-char');
+const deleteBtn = document.getElementById('delete-char');
+
+// Загрузка списка персонажей
+function populateCharSelector() {
+  charSelector.innerHTML = '<option value="">-- Новый --</option>';
+  const chars = JSON.parse(localStorage.getItem('dnd-characters') || '{}');
+  for (let id in chars) {
+    const opt = document.createElement('option');
+    opt.value = id;
+    opt.textContent = chars[id].name || `Персонаж ${id.substring(0, 5)}`;
+    charSelector.appendChild(opt);
+  }
+}
+
+populateCharSelector();
+
+// Сохранить как...
+saveAsBtn.addEventListener('click', () => {
+  const name = prompt("Введите имя персонажа:");
+  if (!name) return;
+  const id = 'char_' + Date.now();
+  const data = collectCharacterData();
+  data.name = name;
+  let chars = JSON.parse(localStorage.getItem('dnd-characters') || '{}');
+  chars[id] = data;
+  localStorage.setItem('dnd-characters', JSON.stringify(chars));
+  populateCharSelector();
+  charSelector.value = id;
+});
+
+// Загрузить
+loadBtn.addEventListener('click', () => {
+  const id = charSelector.value;
+  if (!id) return;
+  const chars = JSON.parse(localStorage.getItem('dnd-characters') || '{}');
+  const data = chars[id];
+  if (data) loadCharacterData(data);
+});
+
+// Удалить
+deleteBtn.addEventListener('click', () => {
+  const id = charSelector.value;
+  if (!id || !confirm("Удалить персонажа?")) return;
+  let chars = JSON.parse(localStorage.getItem('dnd-characters') || '{}');
+  delete chars[id];
+  localStorage.setItem('dnd-characters', JSON.stringify(chars));
+  populateCharSelector();
+  resetForm();
+});
   </script>
 </body>
 </html>
