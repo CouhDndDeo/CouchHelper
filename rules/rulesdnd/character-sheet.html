@@ -4,10 +4,254 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🧾 Лист персонажа</title>
-  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <style>
-    /* === Стили для кнопок в едином стиле === */
+    /* === Основной макет: 2 колонки сверху, 1 колонка снизу === */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 900px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-section {
+      background-color: #4a2f1a;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #8b6f47;
+      margin-bottom: 20px;
+    }
+
+    .form-section h3 {
+      color: #d4af37;
+      margin-top: 0;
+      border-bottom: 1px solid #8b6f47;
+      padding-bottom: 5px;
+      margin-bottom: 15px;
+    }
+
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .form-row > label {
+      flex: 1;
+      min-width: 150px;
+    }
+
+    .form-row input,
+    .form-row select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #8b6f47;
+      background: #5a3b26;
+      color: #e0ccb6;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 15px 0;
+    }
+
+    .stat-box {
+      text-align: center;
+      background: #5a3b26;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #8b6f47;
+    }
+
+    .stat-box label {
+      font-size: 0.9em;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .stat-box input {
+      width: 100%;
+      text-align: center;
+      font-weight: bold;
+      font-size: 1.1em;
+      padding: 5px;
+      max-width: 70px;
+      margin: 0 auto;
+    }
+
+    .stat-mod, .passive-perception {
+      font-size: 0.9em;
+      color: #b8a594;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+    }
+
+    .skills-grid li {
+      font-size: 0.95em;
+    }
+
+    .skills-grid label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .skills-grid input[type="checkbox"] {
+      margin-right: 8px;
+      transform: scale(1.2);
+    }
+
+    /* === Сводка персонажа (итоговый блок) === */
+    .char-summary {
+      background: linear-gradient(145deg, #5a3b26, #4a2e1a);
+      border: 2px solid #8b6f47;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 
+        0 6px 0 #3a2410,
+        0 6px 15px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      margin-top: 30px;
+      position: relative;
+    }
+
+    .avatar-container {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid #d4af37;
+      overflow: hidden;
+      margin: 0 auto 15px;
+      background-color: #3a2410;
+    }
+
+    .avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .summary-name {
+      font-size: 1.8em;
+      color: #f0d98f;
+      margin-bottom: 10px;
+    }
+
+    .summary-details {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      font-size: 0.95em;
+      margin-bottom: 20px;
+    }
+
+    .summary-details > div {
+      border-right: 1px solid #8b6f47;
+      padding: 0 10px;
+    }
+
+    .summary-details > div:last-child {
+      border-right: none;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      margin: 20px 0;
+    }
+
+    .summary-stat {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 10px 5px;
+      border-radius: 6px;
+      border: 1px solid #5a3b26;
+    }
+
+    .summary-stat-name {
+      font-size: 0.8em;
+      color: #b8a594;
+    }
+
+    .summary-stat-value {
+      font-size: 1.4em;
+      font-weight: bold;
+      color: #f0d98f;
+    }
+
+    .summary-stat-mod {
+      font-size: 0.9em;
+      color: #d4af37;
+    }
+
+    .summary-combat {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      font-size: 0.95em;
+    }
+
+    .summary-quick-info {
+      text-align: left;
+      margin-top: 20px;
+      font-size: 0.9em;
+    }
+
+    .summary-quick-info h4 {
+      color: #d4af37;
+      border-bottom: 1px solid #8b6f47;
+      padding-bottom: 3px;
+      margin: 10px 0 5px;
+    }
+
+    .summary-quick-info ul {
+      list-style-type: none;
+      padding-left: 10px;
+      margin: 0;
+      columns: 2;
+      column-gap: 20px;
+    }
+
+    .summary-quick-info li {
+      margin-bottom: 3px;
+    }
+
+    .form-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+      justify-content: center;
+    }
+
+    /* === КНОПКИ В ЕДИНОМ СТИЛЕ === */
     .btn-primary, .btn-secondary, .btn-clear {
       padding: 10px 20px;
       border: none;
@@ -50,53 +294,7 @@
       transform: scale(0.98);
     }
 
-    /* === Менеджер персонажей === */
-    .char-manager {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .char-manager select {
-      flex-grow: 1;
-      max-width: 300px;
-      padding: 8px;
-      border-radius: 4px;
-      border: 1px solid #8b6f47;
-      background: #5a3b26;
-      color: #e0ccb6;
-      font-size: 1em;
-      box-sizing: border-box;
-    }
-
-    .char-manager button {
-      padding: 8px 12px;
-      border-radius: 4px;
-      border: none;
-      background: #5a3b26;
-      color: #d4af37;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    .char-manager button:hover {
-      background: #6b4426;
-      transform: scale(1.05);
-    }
-
-    /* === Пассивное восприятие === */
-    .passive-perception {
-      font-size: 0.9em;
-      color: #b8a594;
-      margin-top: 5px;
-      text-align: center;
-    }
-
-    /* === Стили для печати === */
+    /* === СТИЛИ ДЛЯ ПЕЧАТИ === */
     @media print {
       body {
         margin: 0;
@@ -196,7 +394,7 @@
     </header>
 
     <nav>
-      <a href="../rule-dnd.html" class="btn-back">
+      <a href="dnd.html" class="btn-back">
         <span class="arrow">←</span>
         <span class="text">В меню D&D</span>
       </a>
@@ -208,10 +406,9 @@
         <option value="">-- Новый персонаж --</option>
         <!-- Опции будут добавлены динамически -->
       </select>
-      <button id="new-char-btn">Новый</button>
-      <button id="delete-char-btn">Удалить</button>
-      <button id="export-txt-btn">Экспорт (.txt)</button>
-      <!-- <button id="export-pdf-btn">Экспорт (.pdf)</button> --> <!-- Заглушка -->
+      <button id="new-char-btn" class="btn-secondary">Новый</button>
+      <button id="delete-char-btn" class="btn-clear">Удалить</button>
+      <button id="export-txt-btn" class="btn-secondary">Экспорт (.txt)</button>
     </div>
 
     <main class="main-layout">
@@ -275,13 +472,11 @@
                 <option value="aasimar">Аасимар</option>
                 <option value="bugbear">Багбир</option>
                 <option value="gith">Гит</option>
-                <option value="githyanki">Гитъянки</option>
-                <option value="githzerai">Гитцераи</option>
+                <option value="giff">Гифф</option>
                 <option value="simic-hybrid">Гибрид Симиков</option>
                 <option value="verdan">Вердан</option>
                 <option value="vedalken">Ведалкен</option>
                 <option value="autognome">Автогном</option>
-                <option value="giff">Гифф</option>
                 <!-- Добавь больше рас по необходимости -->
               </select>
             </label>
@@ -413,7 +608,6 @@
 
         <div class="form-buttons no-print">
           <button id="save-char" class="btn-primary">💾 Сохранить</button>
-          <button id="export-char" class="btn-secondary">📤 Экспорт</button>
           <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
           <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
         </div>
@@ -433,13 +627,6 @@
             <div><strong>Уровень:</strong> <span id="summary-level">1</span></div>
             <div><strong>Предыстория:</strong> <span id="summary-bg">-</span></div>
             <div><strong>Мировоззрение:</strong> <span id="summary-align">Нейтральный</span></div>
-          </div>
-
-          <div class="summary-combat">
-            <div><strong>КД:</strong> <span id="summary-ac">10</span></div>
-            <div><strong>ХП:</strong> <span id="summary-hp">0</span>/<span id="summary-max-hp">0</span></div>
-            <div><strong>Скорость:</strong> <span id="summary-speed">30</span> футов</div>
-            <div><strong>Инициатива:</strong> <span id="summary-init">+0</span></div>
           </div>
 
           <div class="summary-stats">
@@ -476,8 +663,15 @@
             </div>
           </div>
 
+          <div class="summary-combat">
+            <div><strong>КД:</strong> <span id="summary-ac">10</span></div>
+            <div><strong>ХП:</strong> <span id="summary-hp">0</span>/<span id="summary-max-hp">0</span></div>
+            <div><strong>Скорость:</strong> <span id="summary-speed">30</span> футов</div>
+            <div><strong>Инициатива:</strong> <span id="summary-init">+0</span></div>
+          </div>
+
           <div class="summary-quick-info">
-            <div style="display: flex; gap: 30px; flex-wrap: wrap;">
+            <div style="display: flex; gap: 30px;">
               <div>
                 <h4>Спасброски</h4>
                 <ul id="summary-saves">
@@ -515,7 +709,6 @@
       const newCharBtn = document.getElementById("new-char-btn");
       const deleteCharBtn = document.getElementById("delete-char-btn");
       const exportTxtBtn = document.getElementById("export-txt-btn");
-      // const exportPdfBtn = document.getElementById("export-pdf-btn"); // Заглушка
 
       const nameInput = document.getElementById("char-name");
       const raceSelect = document.getElementById("char-race");
@@ -546,7 +739,6 @@
       });
 
       const saveBtn = document.getElementById("save-char");
-      const exportBtn = document.getElementById("export-char");
       const resetBtn = document.getElementById("reset-char");
       const printBtn = document.getElementById("print-char");
 
@@ -595,8 +787,6 @@
       let currentCharId = null;
 
       // --- Функции ---
-
-      // Функция подсчёта модификатора
       function getMod(value) {
         return Math.floor((value - 10) / 2);
       }
@@ -614,7 +804,6 @@
           option.textContent = characters[id].name || `Персонаж ${id.substring(0, 5)}`;
           charSelector.appendChild(option);
         }
-        // Если был текущий персонаж, выберем его
         if (currentCharId && characters[currentCharId]) {
           charSelector.value = currentCharId;
         }
@@ -622,7 +811,7 @@
 
       function saveCurrentCharacter() {
         if (!currentCharId) {
-          currentCharId = 'char_' + Date.now(); // Простой ID
+          currentCharId = 'char_' + Date.now();
         }
         const data = {
           id: currentCharId,
@@ -641,7 +830,7 @@
             baseSpeed: baseSpeedInput.value
           },
           skills: {},
-          avatar: summaryAvatar.src // Сохраняем аватар
+          avatar: summaryAvatar.src
         };
         for (let key in statsInputs) {
           data.stats[key] = statsInputs[key].value;
@@ -652,7 +841,7 @@
         characters[currentCharId] = data;
         localStorage.setItem("dnd-characters", JSON.stringify(characters));
         populateCharSelector();
-        charSelector.value = currentCharId; // Убедиться, что выбран текущий
+        charSelector.value = currentCharId;
         alert("✅ Персонаж сохранён!");
       }
 
@@ -688,7 +877,7 @@
         if (char.avatar) {
           summaryAvatar.src = char.avatar;
         }
-        updateAll(); // Обновляем всё после загрузки
+        updateAll();
       }
 
       function newCharacter() {
@@ -712,7 +901,7 @@
         }
         summaryAvatar.src = "https://via.placeholder.com/100x100/3a2a1a/d4af37?text=👤";
         updateAll();
-        charSelector.value = ""; // Выберет "Новый персонаж"
+        charSelector.value = "";
       }
 
       function deleteCharacter() {
@@ -744,7 +933,7 @@
         calculatedAc.textContent = ac;
         preview.ac.textContent = ac;
 
-        // 3. Скорость (пока базовая)
+        // 3. Скорость
         const speed = parseInt(baseSpeedInput.value) || 30;
         calculatedSpeed.textContent = speed;
         preview.speed.textContent = speed;
@@ -759,7 +948,7 @@
         passivePerception.textContent = passWis;
         preview.passWis.textContent = passWis;
 
-        // 6. Спасброски (пока без владения)
+        // 6. Спасброски (без владения)
         const savesHtml = `
           <li>Сил: ${formatMod(mods.str)}</li>
           <li>Лов: ${formatMod(mods.dex)}</li>
@@ -770,7 +959,7 @@
         `;
         preview.savesList.innerHTML = savesHtml;
 
-        // 7. Навыки (пока без бонуса мастерства)
+        // 7. Навыки (без бонуса мастерства)
         const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
         const skillsData = [
           { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
@@ -816,7 +1005,6 @@
         preview.wisMod.textContent = formatMod(mods.wis);
         preview.chaMod.textContent = formatMod(mods.cha);
 
-        // --- Обновление основной информации ---
         preview.name.textContent = nameInput.value || "Имя персонажа";
         preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
         preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
@@ -825,6 +1013,10 @@
         preview.align.textContent = alignSelect.value;
         preview.hp.textContent = currentHpInput.value || "0";
         preview.maxHp.textContent = maxHpInput.value || "0";
+        preview.ac.textContent = ac;
+        preview.speed.textContent = speed;
+        preview.init.textContent = formatMod(init);
+        preview.passWis.textContent = passWis;
       }
 
       // --- Слушатели ---
@@ -866,45 +1058,6 @@
       });
 
       saveBtn.addEventListener("click", saveCurrentCharacter);
-      exportBtn.addEventListener("click", () => {
-        // Для простоты, экспортим только основные данные
-        const data = {
-          name: nameInput.value || "Имя персонажа",
-          race: raceSelect.options[raceSelect.selectedIndex].text,
-          class: classSelect.options[classSelect.selectedIndex].text,
-          level: levelInput.value,
-          stats: {}
-        };
-        for (let key in statsInputs) {
-          const value = parseInt(statsInputs[key].value);
-          data.stats[key] = `${value} (${formatMod(getMod(value))})`;
-        }
-
-        let text = `=== Лист персонажа ===\n`;
-        text += `Имя: ${data.name}\n`;
-        text += `Раса: ${data.race}\n`;
-        text += `Класс: ${data.class}\n`;
-        text += `Уровень: ${data.level}\n\n`;
-        text += `Характеристики:\n`;
-        for (let key in data.stats) {
-          const name = {
-            str: "Сила", dex: "Ловкость", con: "Телосложение",
-            int: "Интеллект", wis: "Мудрость", cha: "Харизма"
-          }[key];
-          text += `- ${name}: ${data.stats[key]}\n`;
-        }
-
-        const blob = new Blob([text], { type: "text/plain" });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = `${data.name.replace(/\s+/g, '_') || "персонаж"}.txt`;
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      });
-
       resetBtn.addEventListener("click", () => {
         if (confirm("🗑️ Очистить форму?")) {
           newCharacter();
@@ -950,6 +1103,23 @@
         skillCheckboxes[key].addEventListener("change", updateAll);
       }
 
+      avatarUpload.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            summaryAvatar.src = evt.target.result;
+            // Сохраняем в localStorage (base64)
+            const saved = JSON.parse(localStorage.getItem("dnd-characters")) || {};
+            if (currentCharId && saved[currentCharId]) {
+              saved[currentCharId].avatar = evt.target.result;
+              localStorage.setItem("dnd-characters", JSON.stringify(saved));
+            }
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
       // --- Загрузка сохранённого ---
       populateCharSelector();
       const saved = localStorage.getItem("dnd-character");
@@ -969,17 +1139,17 @@
             }
           }
           if (data.combat) {
-             hitDieInput.value = data.combat.hitDie || "";
-             currentHpInput.value = data.combat.currentHp || "";
-             maxHpInput.value = data.combat.maxHp || "";
-             baseSpeedInput.value = data.combat.baseSpeed || "30";
+            hitDieInput.value = data.combat.hitDie || "";
+            currentHpInput.value = data.combat.currentHp || "";
+            maxHpInput.value = data.combat.maxHp || "";
+            baseSpeedInput.value = data.combat.baseSpeed || "30";
           }
           if (data.skills) {
-             for (let key in data.skills) {
-                 if (skillCheckboxes[key] !== undefined) {
-                     skillCheckboxes[key].checked = data.skills[key];
-                 }
-             }
+            for (let key in data.skills) {
+              if (skillCheckboxes[key] !== undefined) {
+                skillCheckboxes[key].checked = data.skills[key];
+              }
+            }
           }
           if (data.avatar) {
             summaryAvatar.src = data.avatar;
