@@ -531,6 +531,7 @@
               <label for="wis">МДР</label>
               <input type="number" id="wis" min="3" max="20" value="10" />
               <div class="stat-mod">(<span id="wis-mod">+0</span>)</div>
+              <div class="passive-perception">Пассивное Восприятие: <span id="passive-perception">10</span></div>
             </div>
             <div class="stat-box">
               <label for="cha">ХАР</label>
@@ -606,9 +607,9 @@
         </div>
 
         <div class="form-buttons">
-          <button id="save-char" class="btn-primary">💾 Сохранить</button>
-          <button id="export-char" class="btn-secondary">📤 Экспорт</button>
+         <button id="save-char" class="btn-primary">💾 Сохранить</button>
           <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
+          <button id="export-char" class="btn-secondary">📤 Экспорт</button>
           <a href="print-character.html" target="_blank" class="btn-print-summary">🖨️ Печать</a>
         </div>
       </div>
@@ -1106,7 +1107,16 @@
         updateRaceInfo(); // Это вызовет updateAll
         // Загрузка навыков, если сохраняли - можно добавить
       }
+// --- Пассивное восприятие ---
+function updatePassivePerception() {
+  const wisMod = getMod(parseInt(wisInput.value) || 10);
+  const passive = 10 + wisMod;
+  document.getElementById("passive-perception").textContent = passive;
+  // Обновляем в сводке
+  document.getElementById("summary-pass-wis").textContent = passive;
+}
 
+// Вызывай updatePassivePerception() в updateCalculations()
       function newCharacter() {
         currentCharId = null;
         nameInput.value = "";
@@ -1250,6 +1260,7 @@
       updateLevelInfo();
       updateStatInputs();
     });
+    
   </script>
 </body>
 </html>
