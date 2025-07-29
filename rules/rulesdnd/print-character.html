@@ -71,210 +71,114 @@
     }
 
     /* === СТИЛИ ДЛЯ ЭКРАНА === */
+   <style>
+  body {
+    font-family: 'Georgia', serif;
+    background: #fff;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+  header, nav, footer, .no-print {
+    display: none;
+  }
+
+  .char-summary {
+    border: 1px solid #000;
+    padding: 15px;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .summary-details > div {
+    border-right: 1px solid #000;
+  }
+
+  .summary-stats {
+    page-break-inside: avoid;
+  }
+
+  .summary-stat {
+    border: 1px solid #000;
+  }
+
+  .summary-combat {
+    border: 1px solid #000;
+    background: #eee;
+  }
+
+  .summary-quick-info h4 {
+    border-bottom: 1px solid #000;
+  }
+
+  .summary-quick-info ul {
+    columns: 2;
+    column-gap: 20px;
+  }
+
+  @media print {
     body {
-      font-family: 'Georgia', serif;
-      background: #1a110a url('https://images.unsplash.com/photo-1601924650058-5d5e72c808e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80') no-repeat center;
-      background-size: cover;
-      color: #e0ccb6;
-      line-height: 1.7;
+      font-size: 0.85em;
       margin: 0;
       padding: 0;
     }
 
     .container {
-      max-width: 960px;
-      margin: 20px auto;
-      padding: 20px;
-      background: rgba(30, 20, 10, 0.85);
-      border: 2px solid #5a3b26;
-      border-radius: 12px;
-      box-shadow: 
-        0 0 20px rgba(0, 0, 0, 0.6),
-        0 0 30px rgba(139, 111, 71, 0.3) inset;
+      max-width: 100%;
+      margin: 0;
+      padding: 10px;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-      border-bottom: 1px dashed #8b6f47;
-      padding-bottom: 10px;
-    }
-
-    header h1 {
-      font-size: 2.5em;
-      color: #d4af37;
-      text-shadow: 0 0 5px #000;
+    header, nav, footer, .no-print {
+      display: none;
     }
 
     .char-summary {
-      background: linear-gradient(145deg, #5a3b26, #4a2e1a);
-      border: 2px solid #8b6f47;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 
-        0 6px 0 #3a2410,
-        0 6px 15px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      position: relative;
+      border: 1px solid #000;
+      padding: 15px;
+      border-radius: 0;
+      box-shadow: none;
     }
 
-    .avatar-container {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 2px solid #d4af37;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      background-color: #3a2410;
-    }
-
-    .avatar-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .summary-name {
-      font-size: 1.8em;
-      color: #f0d98f;
-      margin: 10px 0;
-    }
-
-    .summary-details {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      font-size: 0.95em;
-      margin-bottom: 20px;
-    }
-
-    .summary-details > div { 
-      border-right: 1px solid #8b6f47; 
-      padding: 0 10px; 
-    }
-    .summary-details > div:last-child { 
-      border-right: none; 
+    .summary-details > div {
+      border-right: 1px solid #000;
     }
 
     .summary-stats {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 20px 0;
+      page-break-inside: avoid;
     }
 
     .summary-stat {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px 5px;
-      border-radius: 6px;
-      border: 1px solid #5a3b26;
-    }
-
-    .summary-stat-name { 
-      font-size: 0.8em; 
-      color: #b8a594; 
-    }
-    .summary-stat-value { 
-      font-size: 1.4em; 
-      font-weight: bold; 
-      color: #f0d98f; 
-    }
-    .summary-stat-mod { 
-      font-size: 0.9em; 
-      color: #d4af37; 
+      border: 1px solid #000;
     }
 
     .summary-combat {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 6px;
-      font-size: 0.95em;
-    }
-
-    .summary-quick-info {
-      text-align: left;
-      margin-top: 20px;
-      font-size: 0.9em;
+      border: 1px solid #000;
+      background: #eee;
     }
 
     .summary-quick-info h4 {
-      color: #d4af37;
-      border-bottom: 1px solid #8b6f47;
-      padding-bottom: 3px;
-      margin: 10px 0 5px;
+      border-bottom: 1px solid #000;
     }
 
     .summary-quick-info ul {
-      list-style-type: none;
-      padding-left: 10px;
-      margin: 0;
       columns: 2;
       column-gap: 20px;
     }
 
-    .summary-quick-info li { 
-      margin-bottom: 3px; 
+    @page {
+      size: A4;
+      margin: 0.5cm;
     }
-
-    .highlight {
-      font-weight: bold;
-      color: #d4af37;
-    }
-
-    .proficient {
-      font-weight: bold;
-    }
-
-    .btn-print {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background: #d4af37;
-      color: #1a110a;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      font-size: 1em;
-      transition: all 0.3s;
-    }
-
-    .btn-print:hover {
-      background: #e6c86e;
-      transform: scale(1.05);
-    }
-
-    footer {
-      text-align: center;
-      margin-top: 40px;
-      color: #a89b8c;
-      font-style: italic;
-      padding-top: 20px;
-      border-top: 1px dashed #5a3b26;
-    }
-
-    @media (max-width: 768px) {
-      .summary-stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .summary-details {
-        flex-direction: column;
-        align-items: center;
-      }
-      .summary-details > div {
-        border-right: none;
-        padding: 5px 0;
-      }
-      .summary-quick-info ul {
-        columns: 1;
-      }
-    }
+  }
   </style>
 </head>
 <body>
@@ -344,24 +248,31 @@
           </div>
         </div>
 
-        <div class="summary-quick-info">
-          <h4>Ключевые спасброски</h4>
-          <ul id="summary-saves">
-            <li>Сил: +0</li>
-            <li>Лов: +0</li>
-            <li>Тел: +0</li>
-            <li>Инт: +0</li>
-            <li>Мдр: +0</li>
-            <li>Хар: +0</li>
-          </ul>
-          <h4>Ключевые навыки</h4>
-          <ul id="summary-skills">
-            <li>Восприятие: +0</li>
-            <li>Атлетика: +0</li>
-            <li>... (выберите в форме)</li>
-          </ul>
-        </div>
-      </div>
+<div class="summary-quick-info">
+  <div style="display: flex; gap: 30px;">
+    <div>
+      <h4>Спасброски</h4>
+      <ul id="summary-saves">
+        <li>Сил: +0</li>
+        <li>Лов: +0</li>
+        <li>Тел: +0</li>
+        <li>Инт: +0</li>
+        <li>Мдр: +0</li>
+        <li>Хар: +0</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Навыки</h4>
+      <ul id="summary-skills">
+        <li>Восприятие: +0</li>
+        <li>Атлетика: +0</li>
+        <li>... (выберите в форме)</li>
+      </ul>
+      <h4>Пассивное Восприятие</h4>
+      <p id="summary-pass-wis">10</p>
+    </div>
+  </div>
+</div>
 
       <button class="btn-print no-print" onclick="window.print()">
         🖨️ Распечатать сводку
