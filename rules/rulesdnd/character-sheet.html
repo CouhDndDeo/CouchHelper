@@ -7,251 +7,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <style>
-    /* === Основной макет: 2 колонки сверху, 1 колонка снизу === */
-    .main-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin: 20px 0;
-    }
-
-    @media (max-width: 900px) {
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .form-section {
-      background-color: #4a2f1a;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #8b6f47;
-      margin-bottom: 20px;
-    }
-
-    .form-section h3 {
-      color: #d4af37;
-      margin-top: 0;
-      border-bottom: 1px solid #8b6f47;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
-    }
-
-    .form-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 15px;
-    }
-
-    .form-row > label {
-      flex: 1;
-      min-width: 150px;
-    }
-
-    .form-row input,
-    .form-row select {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 4px;
-      border: 1px solid #8b6f47;
-      background: #5a3b26;
-      color: #e0ccb6;
-      font-size: 1em;
-      box-sizing: border-box;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .stat-box {
-      text-align: center;
-      background: #5a3b26;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #8b6f47;
-    }
-
-    .stat-box label {
-      font-size: 0.9em;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .stat-box input {
-      width: 100%;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.1em;
-      padding: 5px;
-      max-width: 70px;
-      margin: 0 auto;
-    }
-
-    .stat-mod, .passive-perception {
-      font-size: 0.9em;
-      color: #b8a594;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      list-style: none;
-      padding: 0;
-      margin-top: 10px;
-    }
-
-    .skills-grid li {
-      font-size: 0.95em;
-    }
-
-    .skills-grid label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .skills-grid input[type="checkbox"] {
-      margin-right: 8px;
-      transform: scale(1.2);
-    }
-
-    /* === Сводка персонажа (итоговый блок) === */
-    .char-summary {
-      background: linear-gradient(145deg, #5a3b26, #4a2e1a);
-      border: 2px solid #8b6f47;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 
-        0 6px 0 #3a2410,
-        0 6px 15px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      margin-top: 30px;
-      position: relative;
-    }
-
-    .avatar-container {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 2px solid #d4af37;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      background-color: #3a2410;
-    }
-
-    .avatar-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .summary-name {
-      font-size: 1.8em;
-      color: #f0d98f;
-      margin: 10px 0;
-    }
-
-    .summary-details {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      font-size: 0.95em;
-      margin-bottom: 20px;
-    }
-
-    .summary-details > div {
-      border-right: 1px solid #8b6f47;
-      padding: 0 10px;
-    }
-
-    .summary-details > div:last-child {
-      border-right: none;
-    }
-
-    .summary-stats {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .summary-stat {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px 5px;
-      border-radius: 6px;
-      border: 1px solid #5a3b26;
-    }
-
-    .summary-stat-name {
-      font-size: 0.8em;
-      color: #b8a594;
-    }
-
-    .summary-stat-value {
-      font-size: 1.4em;
-      font-weight: bold;
-      color: #f0d98f;
-    }
-
-    .summary-stat-mod {
-      font-size: 0.9em;
-      color: #d4af37;
-    }
-
-    .summary-combat {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 6px;
-      font-size: 0.95em;
-    }
-
-    .summary-quick-info {
-      text-align: left;
-      margin-top: 20px;
-      font-size: 0.9em;
-    }
-
-    .summary-quick-info h4 {
-      color: #d4af37;
-      border-bottom: 1px solid #8b6f47;
-      padding-bottom: 3px;
-      margin: 10px 0 5px;
-    }
-
-    .summary-quick-info ul {
-      list-style-type: none;
-      padding-left: 10px;
-      margin: 0;
-      columns: 2;
-      column-gap: 20px;
-    }
-
-    .summary-quick-info li {
-      margin-bottom: 3px;
-    }
-
-    .form-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      justify-content: center;
-    }
-
-    /* === КНОПКИ В ЕДИНОМ СТИЛЕ === */
+    /* === Стили для кнопок в едином стиле === */
     .btn-primary, .btn-secondary, .btn-clear {
       padding: 10px 20px;
       border: none;
@@ -294,7 +50,53 @@
       transform: scale(0.98);
     }
 
-    /* === СТИЛИ ДЛЯ ПЕЧАТИ === */
+    /* === Менеджер персонажей === */
+    .char-manager {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .char-manager select {
+      flex-grow: 1;
+      max-width: 300px;
+      padding: 8px;
+      border-radius: 4px;
+      border: 1px solid #8b6f47;
+      background: #5a3b26;
+      color: #e0ccb6;
+      font-size: 1em;
+      box-sizing: border-box;
+    }
+
+    .char-manager button {
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: none;
+      background: #5a3b26;
+      color: #d4af37;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .char-manager button:hover {
+      background: #6b4426;
+      transform: scale(1.05);
+    }
+
+    /* === Пассивное восприятие === */
+    .passive-perception {
+      font-size: 0.9em;
+      color: #b8a594;
+      margin-top: 5px;
+      text-align: center;
+    }
+
+    /* === Стили для печати === */
     @media print {
       body {
         margin: 0;
@@ -394,11 +196,23 @@
     </header>
 
     <nav>
-      <a href="../rules-dnd.html" class="btn-back">
+      <a href="../rule-dnd.html" class="btn-back">
         <span class="arrow">←</span>
         <span class="text">В меню D&D</span>
       </a>
     </nav>
+
+    <!-- Менеджер персонажей -->
+    <div class="char-manager no-print">
+      <select id="char-selector">
+        <option value="">-- Новый персонаж --</option>
+        <!-- Опции будут добавлены динамически -->
+      </select>
+      <button id="new-char-btn">Новый</button>
+      <button id="delete-char-btn">Удалить</button>
+      <button id="export-txt-btn">Экспорт (.txt)</button>
+      <!-- <button id="export-pdf-btn">Экспорт (.pdf)</button> --> <!-- Заглушка -->
+    </div>
 
     <main class="main-layout">
       <!-- Левая колонка: Основные данные и характеристики -->
@@ -460,7 +274,6 @@
                 <option value="aarakocra">Ааракокра</option>
                 <option value="aasimar">Аасимар</option>
                 <option value="bugbear">Багбир</option>
-                <option value="giff">Гифф</option>
                 <option value="gith">Гит</option>
                 <option value="githyanki">Гитъянки</option>
                 <option value="githzerai">Гитцераи</option>
@@ -468,6 +281,7 @@
                 <option value="verdan">Вердан</option>
                 <option value="vedalken">Ведалкен</option>
                 <option value="autognome">Автогном</option>
+                <option value="giff">Гифф</option>
                 <!-- Добавь больше рас по необходимости -->
               </select>
             </label>
@@ -599,6 +413,7 @@
 
         <div class="form-buttons no-print">
           <button id="save-char" class="btn-primary">💾 Сохранить</button>
+          <button id="export-char" class="btn-secondary">📤 Экспорт</button>
           <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
           <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
         </div>
@@ -662,7 +477,7 @@
           </div>
 
           <div class="summary-quick-info">
-            <div style="display: flex; gap: 30px;">
+            <div style="display: flex; gap: 30px; flex-wrap: wrap;">
               <div>
                 <h4>Спасброски</h4>
                 <ul id="summary-saves">
@@ -696,6 +511,12 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       // --- Элементы формы ---
+      const charSelector = document.getElementById("char-selector");
+      const newCharBtn = document.getElementById("new-char-btn");
+      const deleteCharBtn = document.getElementById("delete-char-btn");
+      const exportTxtBtn = document.getElementById("export-txt-btn");
+      // const exportPdfBtn = document.getElementById("export-pdf-btn"); // Заглушка
+
       const nameInput = document.getElementById("char-name");
       const raceSelect = document.getElementById("char-race");
       const classSelect = document.getElementById("char-class");
@@ -725,6 +546,7 @@
       });
 
       const saveBtn = document.getElementById("save-char");
+      const exportBtn = document.getElementById("export-char");
       const resetBtn = document.getElementById("reset-char");
       const printBtn = document.getElementById("print-char");
 
@@ -768,13 +590,137 @@
       const calculatedInit = document.getElementById("calculated-init");
       const passivePerception = document.getElementById("passive-perception");
 
+      // --- State ---
+      let characters = JSON.parse(localStorage.getItem("dnd-characters")) || {};
+      let currentCharId = null;
+
       // --- Функции ---
+
+      // Функция подсчёта модификатора
       function getMod(value) {
         return Math.floor((value - 10) / 2);
       }
 
       function formatMod(mod) {
         return mod >= 0 ? `+${mod}` : `${mod}`;
+      }
+
+      // --- Менеджер персонажей ---
+      function populateCharSelector() {
+        charSelector.innerHTML = '<option value="">-- Новый персонаж --</option>';
+        for (let id in characters) {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = characters[id].name || `Персонаж ${id.substring(0, 5)}`;
+          charSelector.appendChild(option);
+        }
+        // Если был текущий персонаж, выберем его
+        if (currentCharId && characters[currentCharId]) {
+          charSelector.value = currentCharId;
+        }
+      }
+
+      function saveCurrentCharacter() {
+        if (!currentCharId) {
+          currentCharId = 'char_' + Date.now(); // Простой ID
+        }
+        const data = {
+          id: currentCharId,
+          name: nameInput.value,
+          race: raceSelect.value,
+          class: classSelect.value,
+          level: levelInput.value,
+          background: bgInput.value,
+          alignment: alignSelect.value,
+          exp: expInput.value,
+          stats: {},
+          combat: {
+            hitDie: hitDieInput.value,
+            currentHp: currentHpInput.value,
+            maxHp: maxHpInput.value,
+            baseSpeed: baseSpeedInput.value
+          },
+          skills: {},
+          avatar: summaryAvatar.src // Сохраняем аватар
+        };
+        for (let key in statsInputs) {
+          data.stats[key] = statsInputs[key].value;
+        }
+        for (let key in skillCheckboxes) {
+          data.skills[key] = skillCheckboxes[key].checked;
+        }
+        characters[currentCharId] = data;
+        localStorage.setItem("dnd-characters", JSON.stringify(characters));
+        populateCharSelector();
+        charSelector.value = currentCharId; // Убедиться, что выбран текущий
+        alert("✅ Персонаж сохранён!");
+      }
+
+      function loadCharacter(id) {
+        const char = characters[id];
+        if (!char) return;
+        currentCharId = id;
+        nameInput.value = char.name || "";
+        raceSelect.value = char.race || "human";
+        classSelect.value = char.class || "воин";
+        levelInput.value = char.level || "1";
+        bgInput.value = char.background || "";
+        alignSelect.value = char.alignment || "Нейтральный";
+        expInput.value = char.exp || "0";
+        for (let key in char.stats) {
+          if (statsInputs[key]) {
+            statsInputs[key].value = char.stats[key];
+          }
+        }
+        if (char.combat) {
+          hitDieInput.value = char.combat.hitDie || "";
+          currentHpInput.value = char.combat.currentHp || "";
+          maxHpInput.value = char.combat.maxHp || "";
+          baseSpeedInput.value = char.combat.baseSpeed || "30";
+        }
+        if (char.skills) {
+          for (let key in char.skills) {
+            if (skillCheckboxes[key] !== undefined) {
+              skillCheckboxes[key].checked = char.skills[key];
+            }
+          }
+        }
+        if (char.avatar) {
+          summaryAvatar.src = char.avatar;
+        }
+        updateAll(); // Обновляем всё после загрузки
+      }
+
+      function newCharacter() {
+        currentCharId = null;
+        nameInput.value = "";
+        raceSelect.value = "human";
+        classSelect.value = "воин";
+        levelInput.value = "1";
+        bgInput.value = "";
+        alignSelect.value = "Нейтральный";
+        expInput.value = "0";
+        for (let key in statsInputs) {
+          statsInputs[key].value = "10";
+        }
+        hitDieInput.value = "";
+        currentHpInput.value = "";
+        maxHpInput.value = "";
+        baseSpeedInput.value = "30";
+        for (let key in skillCheckboxes) {
+          skillCheckboxes[key].checked = false;
+        }
+        summaryAvatar.src = "https://via.placeholder.com/100x100/3a2a1a/d4af37?text=👤";
+        updateAll();
+        charSelector.value = ""; // Выберет "Новый персонаж"
+      }
+
+      function deleteCharacter() {
+        if (!currentCharId || !confirm("Вы уверены, что хотите удалить этого персонажа?")) return;
+        delete characters[currentCharId];
+        localStorage.setItem("dnd-characters", JSON.stringify(characters));
+        newCharacter();
+        populateCharSelector();
       }
 
       // --- Обновление всех значений ---
@@ -793,54 +739,27 @@
           mods[key] = getMod(stats[key]);
         }
 
-        // 2. Пассивное восприятие
-        const passWis = 10 + mods.wis;
-        passivePerception.textContent = passWis;
-        preview.passWis.textContent = passWis;
-
-        // 3. КД (без доспеха)
+        // 2. КД (без доспеха)
         const ac = 10 + mods.dex;
         calculatedAc.textContent = ac;
         preview.ac.textContent = ac;
 
-        // 4. Скорость
+        // 3. Скорость (пока базовая)
         const speed = parseInt(baseSpeedInput.value) || 30;
         calculatedSpeed.textContent = speed;
         preview.speed.textContent = speed;
 
-        // 5. Инициатива
+        // 4. Инициатива
         const init = mods.dex;
         calculatedInit.textContent = formatMod(init);
         preview.init.textContent = formatMod(init);
 
-        // 6. Предпросмотр характеристик
-        preview.strVal.textContent = stats.str;
-        preview.dexVal.textContent = stats.dex;
-        preview.conVal.textContent = stats.con;
-        preview.intVal.textContent = stats.int;
-        preview.wisVal.textContent = stats.wis;
-        preview.chaVal.textContent = stats.cha;
+        // 5. Пассивное восприятие
+        const passWis = 10 + mods.wis;
+        passivePerception.textContent = passWis;
+        preview.passWis.textContent = passWis;
 
-        preview.strMod.textContent = formatMod(mods.str);
-        preview.dexMod.textContent = formatMod(mods.dex);
-        preview.conMod.textContent = formatMod(mods.con);
-        preview.intMod.textContent = formatMod(mods.int);
-        preview.wisMod.textContent = formatMod(mods.wis);
-        preview.chaMod.textContent = formatMod(mods.cha);
-
-        // 7. Хиты
-        preview.hp.textContent = currentHpInput.value || "0";
-        preview.maxHp.textContent = maxHpInput.value || "0";
-
-        // 8. Основная информация
-        preview.name.textContent = nameInput.value || "Имя персонажа";
-        preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
-        preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
-        preview.level.textContent = levelInput.value;
-        preview.bg.textContent = bgInput.value || "-";
-        preview.align.textContent = alignSelect.value;
-
-        // 9. Спасброски (без владения)
+        // 6. Спасброски (пока без владения)
         const savesHtml = `
           <li>Сил: ${formatMod(mods.str)}</li>
           <li>Лов: ${formatMod(mods.dex)}</li>
@@ -851,7 +770,7 @@
         `;
         preview.savesList.innerHTML = savesHtml;
 
-        // 10. Навыки (без бонуса мастерства)
+        // 7. Навыки (пока без бонуса мастерства)
         const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
         const skillsData = [
           { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
@@ -881,26 +800,133 @@
              skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
         });
         preview.skillsList.innerHTML = skillsHtml;
+
+        // --- Обновление предпросмотра характеристик ---
+        preview.strVal.textContent = stats.str;
+        preview.dexVal.textContent = stats.dex;
+        preview.conVal.textContent = stats.con;
+        preview.intVal.textContent = stats.int;
+        preview.wisVal.textContent = stats.wis;
+        preview.chaVal.textContent = stats.cha;
+
+        preview.strMod.textContent = formatMod(mods.str);
+        preview.dexMod.textContent = formatMod(mods.dex);
+        preview.conMod.textContent = formatMod(mods.con);
+        preview.intMod.textContent = formatMod(mods.int);
+        preview.wisMod.textContent = formatMod(mods.wis);
+        preview.chaMod.textContent = formatMod(mods.cha);
+
+        // --- Обновление основной информации ---
+        preview.name.textContent = nameInput.value || "Имя персонажа";
+        preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
+        preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
+        preview.level.textContent = levelInput.value;
+        preview.bg.textContent = bgInput.value || "-";
+        preview.align.textContent = alignSelect.value;
+        preview.hp.textContent = currentHpInput.value || "0";
+        preview.maxHp.textContent = maxHpInput.value || "0";
       }
 
       // --- Слушатели ---
+      charSelector.addEventListener("change", (e) => {
+        const selectedId = e.target.value;
+        if (selectedId) {
+          loadCharacter(selectedId);
+        } else {
+          newCharacter();
+        }
+      });
+
+      newCharBtn.addEventListener("click", newCharacter);
+      deleteCharBtn.addEventListener("click", deleteCharacter);
+      exportTxtBtn.addEventListener("click", () => {
+        // Простой экспорт
+        let txt = `=== Лист персонажа ===\n`;
+        txt += `Имя: ${nameInput.value || "Имя персонажа"}\n`;
+        txt += `Раса: ${raceSelect.options[raceSelect.selectedIndex].text}\n`;
+        txt += `Класс: ${classSelect.options[classSelect.selectedIndex].text}\n`;
+        txt += `Уровень: ${levelInput.value}\n`;
+        txt += `ХП: ${currentHpInput.value || "0"}/${maxHpInput.value || "0"}\n`;
+        txt += `Скорость: ${baseSpeedInput.value || "30"} футов\n`;
+        txt += `\nХарактеристики:\n`;
+        for (let key in statsInputs) {
+          const value = parseInt(statsInputs[key].value);
+          txt += `- ${key.toUpperCase()}: ${value} (${formatMod(getMod(value))})\n`;
+        }
+
+        const blob = new Blob([txt], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${(nameInput.value || "персонаж").replace(/\s+/g, '_')}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      saveBtn.addEventListener("click", saveCurrentCharacter);
+      exportBtn.addEventListener("click", () => {
+        // Для простоты, экспортим только основные данные
+        const data = {
+          name: nameInput.value || "Имя персонажа",
+          race: raceSelect.options[raceSelect.selectedIndex].text,
+          class: classSelect.options[classSelect.selectedIndex].text,
+          level: levelInput.value,
+          stats: {}
+        };
+        for (let key in statsInputs) {
+          const value = parseInt(statsInputs[key].value);
+          data.stats[key] = `${value} (${formatMod(getMod(value))})`;
+        }
+
+        let text = `=== Лист персонажа ===\n`;
+        text += `Имя: ${data.name}\n`;
+        text += `Раса: ${data.race}\n`;
+        text += `Класс: ${data.class}\n`;
+        text += `Уровень: ${data.level}\n\n`;
+        text += `Характеристики:\n`;
+        for (let key in data.stats) {
+          const name = {
+            str: "Сила", dex: "Ловкость", con: "Телосложение",
+            int: "Интеллект", wis: "Мудрость", cha: "Харизма"
+          }[key];
+          text += `- ${name}: ${data.stats[key]}\n`;
+        }
+
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${data.name.replace(/\s+/g, '_') || "персонаж"}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      resetBtn.addEventListener("click", () => {
+        if (confirm("🗑️ Очистить форму?")) {
+          newCharacter();
+        }
+      });
+
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+
       nameInput.addEventListener("input", updateAll);
       raceSelect.addEventListener("change", updateAll);
       classSelect.addEventListener("change", updateAll);
-      levelInput.addEventListener("input", () => { updateAll(); });
+      levelInput.addEventListener("input", () => {
+        let val = parseInt(levelInput.value) || 1;
+        val = Math.max(1, Math.min(20, val));
+        levelInput.value = val;
+        updateAll();
+      });
       bgInput.addEventListener("input", updateAll);
       alignSelect.addEventListener("change", updateAll);
       expInput.addEventListener("input", updateAll);
-      avatarUpload.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = (evt) => {
-            summaryAvatar.src = evt.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      });
 
       currentHpInput.addEventListener("input", updateAll);
       maxHpInput.addEventListener("input", updateAll);
@@ -924,61 +950,8 @@
         skillCheckboxes[key].addEventListener("change", updateAll);
       }
 
-      // --- Сохранение ---
-      saveBtn.addEventListener("click", () => {
-        const data = {
-          name: nameInput.value,
-          race: raceSelect.value,
-          class: classSelect.value,
-          level: levelInput.value,
-          background: bgInput.value,
-          alignment: alignSelect.value,
-          exp: expInput.value,
-          stats: {},
-          combat: {
-            hitDie: hitDieInput.value,
-            currentHp: currentHpInput.value,
-            maxHp: maxHpInput.value,
-            baseSpeed: baseSpeedInput.value
-          },
-          skills: {}
-        };
-        for (let key in statsInputs) {
-          data.stats[key] = statsInputs[key].value;
-        }
-        for (let key in skillCheckboxes) {
-          data.skills[key] = skillCheckboxes[key].checked;
-        }
-        localStorage.setItem("dnd-character", JSON.stringify(data));
-        alert("✅ Персонаж сохранён!");
-      });
-
-      // --- Сброс ---
-      resetBtn.addEventListener("click", () => {
-        if (confirm("🗑️ Очистить форму?")) {
-          nameInput.value = "";
-          raceSelect.value = "human";
-          classSelect.value = "воин";
-          levelInput.value = "1";
-          bgInput.value = "";
-          alignSelect.value = "Нейтральный";
-          expInput.value = "0";
-          for (let key in statsInputs) {
-            statsInputs[key].value = "10";
-          }
-          hitDieInput.value = "";
-          currentHpInput.value = "";
-          maxHpInput.value = "";
-          baseSpeedInput.value = "30";
-          for (let key in skillCheckboxes) {
-            skillCheckboxes[key].checked = false;
-          }
-          summaryAvatar.src = "https://via.placeholder.com/100x100/3a2a1a/d4af37?text=👤";
-          updateAll();
-        }
-      });
-
       // --- Загрузка сохранённого ---
+      populateCharSelector();
       const saved = localStorage.getItem("dnd-character");
       if (saved) {
         try {
@@ -1007,6 +980,9 @@
                      skillCheckboxes[key].checked = data.skills[key];
                  }
              }
+          }
+          if (data.avatar) {
+            summaryAvatar.src = data.avatar;
           }
           updateAll();
         } catch (e) {
