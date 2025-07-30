@@ -820,7 +820,7 @@
       const alignSelect = document.getElementById("char-alignment");
       const expInput = document.getElementById("char-exp");
       const avatarUpload = document.getElementById("avatar-upload");
-      const wisInput = document.getElementById("wis");
+      const wisInput = statsInputs.wis; // ✅ Теперь wisInput определён
 
         const statsInputs = {
         str: document.getElementById("str"),
@@ -830,7 +830,7 @@
         wis: document.getElementById("wis"),
         cha: document.getElementById("cha")
       };
-      const wisInput = statsInputs.wis; // ✅ Теперь wisInput определён
+      
       const hitDieInput = document.getElementById("hit-die");
       const currentHpInput = document.getElementById("current-hp");
       const maxHpInput = document.getElementById("max-hp");
