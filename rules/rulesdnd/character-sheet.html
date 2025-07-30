@@ -401,16 +401,18 @@
     </nav>
 
     <!-- Менеджер персонажей -->
-    <div class="char-manager no-print">
-      <select id="char-selector">
-        <option value="">-- Новый персонаж --</option>
-        <!-- Опции будут добавлены динамически -->
-      </select>
-      <button id="new-char-btn" class="btn-secondary">Новый</button>
-      <button id="delete-char-btn" class="btn-clear">Удалить</button>
-      <button id="export-txt-btn" class="btn-secondary">Экспорт (.txt)</button>
-    </div>
-
+ <div class="char-manager no-print">
+  <select id="char-selector">
+    <option value="">-- Новый персонаж --</option>
+    <!-- Опции будут добавлены динамически -->
+  </select>
+  <button id="new-char-btn" class="btn-secondary">Новый</button>
+  <button id="delete-char-btn" class="btn-clear">Удалить</button>
+  <button id="export-txt-btn" class="btn-secondary">Экспорт (.txt)</button>
+  <button id="save-char" class="btn-primary">💾 Сохранить</button>
+  <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
+  <a href="print-character.html" target="_blank" class="btn-secondary">🖨️ Печать</a>
+</div>
     <main class="main-layout">
       <!-- Левая колонка: Основные данные и характеристики -->
       <div class="left-column">
@@ -606,14 +608,7 @@
           </ul>
         </div>
 
-        <div class="form-buttons no-print">
-          <button id="save-char" class="btn-primary">💾 Сохранить</button>
-          <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
-          <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
-        </div>
-      </div>
-
-      <!-- Нижний блок: Сводка персонажа -->
+         <!-- Нижний блок: Сводка персонажа -->
       <div class="summary-section" style="grid-column: 1 / -1;">
         <h2>🎭 Ваш персонаж</h2>
         <div class="char-summary">
