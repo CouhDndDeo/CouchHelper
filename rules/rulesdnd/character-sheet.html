@@ -822,13 +822,7 @@
       const avatarUpload = document.getElementById("avatar-upload");
       const wisInput = document.getElementById("wis");
 
-      wisInput.addEventListener("input", () => {
-  let val = parseInt(wisInput.value) || 10;
-  val = Math.max(3, Math.min(20, val)); // Ограничиваем 3-20
-  wisInput.value = val;
-  updatePassivePerception(); // <-- Обновляем пассивное восприятие
-});
-      const statsInputs = {
+        const statsInputs = {
         str: document.getElementById("str"),
         dex: document.getElementById("dex"),
         con: document.getElementById("con"),
