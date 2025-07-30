@@ -865,7 +865,7 @@
     let raceClassData = {}; // Глобальная переменная для данных
 
     // --- Загрузка базы данных ---
-    fetch('../../data/races-classes.json')
+    fetch('../data/races-classes.json')
       .then(r => {
         if (!r.ok) throw new Error(`Ошибка загрузки: ${r.status}`);
         return r.json();
