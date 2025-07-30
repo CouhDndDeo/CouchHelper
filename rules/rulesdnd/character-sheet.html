@@ -889,7 +889,7 @@
 
       // --- Обновление пассивного восприятия ---
    // --- Пассивное восприятие ---
-  const wisMod = getMod(parseInt(wisInput.value) || 10);
+  const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
   const passiveWis = 10 + wisMod;
   passivePerception.textContent = passiveWis;
   preview.passWis.textContent = passiveWis;
@@ -928,7 +928,12 @@
         preview.init.textContent = formatMod(init);
 
         // 5. Пассивное восприятие
-        updatePassivePerception();
+        function updatePassivePerception() {
+  const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
+  const passive = 10 + wisMod;
+  passivePerception.textContent = passive;
+  preview.passWis.textContent = passive;
+}
 
         // 6. Спасброски (без владения)
         const savesHtml = `
