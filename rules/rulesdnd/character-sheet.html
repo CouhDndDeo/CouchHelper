@@ -788,6 +788,42 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", () => {
+        // --- Загрузка базы данных рас и классов ---
+      let raceClassData = {};
+      fetch('data/races-classes.json')
+        .then(r => r.json())
+        .then(data => {
+          raceClassData = data;
+          populateRaceSelect(data.races);
+          populateClassSelect(data.classes);
+        })
+        .catch(err => {
+          console.error("❌ Ошибка загрузки базы данных рас и классов:", err);
+        });
+      function populateRaceSelect(races) {
+        const select = document.getElementById("char-race");
+        select.innerHTML = '<option value="">-- Выберите расу --</option>';
+        for (let key in races) {
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = races[key].name;
+          select.appendChild(opt);
+        }
+      }
+      function populateClassSelect(classes) {
+        const select = document.getElementById("char-class");
+        select.innerHTML = '<option value="">-- Выберите класс --</option>';
+        for (let key in classes) {
+          const opt = document.createElement("option");
+          opt.value = key;
+          opt.textContent = classes[key].name;
+          select.appendChild(opt);
+        }
+      }
+  // --- Элементы формы ---
+  const nameInput = document.getElementById("char-name");
+  const raceSelect = document.getElementById("char-race");
+  const classSelect = document.getElementById("char-class");
       // --- Элементы формы ---
       const charSelector = document.getElementById("char-selector");
       const newCharBtn = document.getElementById("new-char-btn");
@@ -1153,7 +1189,33 @@
       });
 
       nameInput.addEventListener("input", updateAll);
-      raceSelect.addEventListener("change", updateAll);
+      raceSelect.addEventListener("change", () => {
+  const raceKey = raceSelect.value;
+  const race = raceClassData.races[raceKey];
+  if (race) {
+    // Обновляем скорость
+    baseSpeedInput.value = race.speed || 30;
+    // Обновляем бонусы
+    applyRaceBonuses(race.bonuses);
+    // Обновляем особенности
+    updateRaceFeatures(race.features);
+  }
+  updateAll();
+});
+
+classSelect.addEventListener("change", () => {
+  const classKey = classSelect.value;
+  const cls = raceClassData.classes[classKey];
+  if (cls) {
+    // Обновляем Кость Хитов
+    hitDieInput.value = cls.hitDie || "-";
+    // Обновляем навыки
+    updateClassSkills(cls.skills);
+    // Обновляем доспехи
+    updateArmorInfo(cls.armor);
+  }
+  updateAll();
+});
       classSelect.addEventListener("change", updateAll);
       levelInput.addEventListener("input", () => {
         let val = parseInt(levelInput.value) || 1;
