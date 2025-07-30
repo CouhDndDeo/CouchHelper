@@ -891,9 +891,10 @@
       function updatePassivePerception() {
         const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
         const passive = 10 + wisMod;
-        passivePerception.textContent = passive;
-        preview.passWis.textContent = passive;
-      }
+        passivePerception.textContent = passiveWis;
+        preview.passWis.textContent = passiveWis;
+// Обновление в сводке
+        document.getElementById("summary-pass-wis").textContent = passiveWis;
 
       // --- Обновление всех значений ---
       function updateAll() {
@@ -971,20 +972,35 @@
         });
         preview.skillsList.innerHTML = skillsHtml;
 
-        // --- Обновление предпросмотра характеристик ---
-        preview.strVal.textContent = stats.str;
-        preview.dexVal.textContent = stats.dex;
-        preview.conVal.textContent = stats.con;
-        preview.intVal.textContent = stats.int;
-        preview.wisVal.textContent = stats.wis;
-        preview.chaVal.textContent = stats.cha;
+       // --- Обновление предпросмотра характеристик ---
+preview.strVal.textContent = stats.str;
+preview.dexVal.textContent = stats.dex;
+preview.conVal.textContent = stats.con;
+preview.intVal.textContent = stats.int;
+preview.wisVal.textContent = stats.wis;
+preview.chaVal.textContent = stats.cha;
 
-        preview.strMod.textContent = formatMod(mods.str);
-        preview.dexMod.textContent = formatMod(mods.dex);
-        preview.conMod.textContent = formatMod(mods.con);
-        preview.intMod.textContent = formatMod(mods.int);
-        preview.wisMod.textContent = formatMod(mods.wis);
-        preview.chaMod.textContent = formatMod(mods.cha);
+preview.strMod.textContent = formatMod(mods.str);
+preview.dexMod.textContent = formatMod(mods.dex);
+preview.conMod.textContent = formatMod(mods.con);
+preview.intMod.textContent = formatMod(mods.int);
+preview.wisMod.textContent = formatMod(mods.wis);
+preview.chaMod.textContent = formatMod(mods.cha);
+
+// --- Обновление характеристик в сводке ---
+document.getElementById("summary-str-val").textContent = stats.str;
+document.getElementById("summary-dex-val").textContent = stats.dex;
+document.getElementById("summary-con-val").textContent = stats.con;
+document.getElementById("summary-int-val").textContent = stats.int;
+document.getElementById("summary-wis-val").textContent = stats.wis;
+document.getElementById("summary-cha-val").textContent = stats.cha;
+
+document.getElementById("summary-str-mod").textContent = formatMod(mods.str);
+document.getElementById("summary-dex-mod").textContent = formatMod(mods.dex);
+document.getElementById("summary-con-mod").textContent = formatMod(mods.con);
+document.getElementById("summary-int-mod").textContent = formatMod(mods.int);
+document.getElementById("summary-wis-mod").textContent = formatMod(mods.wis);
+document.getElementById("summary-cha-mod").textContent = formatMod(mods.cha);
 
         // --- Обновление основной информации ---
         preview.name.textContent = nameInput.value || "Имя персонажа";
