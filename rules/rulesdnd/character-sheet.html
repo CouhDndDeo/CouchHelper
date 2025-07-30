@@ -121,6 +121,42 @@
       margin-right: 8px;
       transform: scale(1.2);
     }
+    /* === БОНУСЫ ХАРАКТЕРИСТИК === */
+.stat-bonus {
+  font-size: 0.85em;
+  color: #d4af37;
+  margin-top: 5px;
+  text-align: center;
+  cursor: help;
+  position: relative;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(212, 175, 55, 0.1);
+  border: 1px dashed #d4af37;
+}
+
+.stat-bonus:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a110a;
+  color: #d4af37;
+  padding: 5px 10px;
+  border-radius: 6px;
+  border: 1px solid #d4af37;
+  white-space: nowrap;
+  z-index: 100;
+  font-size: 0.9em;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.stat-bonus:hover {
+  background: rgba(212, 175, 55, 0.2);
+  border: 1px solid #d4af37;
+}
 /* === КНОПКИ В ЕДИНОМ СТИЛЕ === */
 .btn-primary, .btn-secondary, .btn-clear {
   padding: 10px 20px;
@@ -596,42 +632,49 @@
         </div>
 
         <div class="form-section">
-          <h3>📊 Характеристики</h3>
-          <div class="stats-grid">
-            <div class="stat-box">
-              <label for="str">СИЛ</label>
-              <input type="number" id="str" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="str-mod">+0</span>)</div>
-            </div>
-            <div class="stat-box">
-              <label for="dex">ЛОВ</label>
-              <input type="number" id="dex" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="dex-mod">+0</span>)</div>
-            </div>
-            <div class="stat-box">
-              <label for="con">ТЕЛ</label>
-              <input type="number" id="con" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="con-mod">+0</span>)</div>
-            </div>
-            <div class="stat-box">
-              <label for="int">ИНТ</label>
-              <input type="number" id="int" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="int-mod">+0</span>)</div>
-            </div>
-            <div class="stat-box">
-              <label for="wis">МДР</label>
-              <input type="number" id="wis" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="wis-mod">+0</span>)</div>
-              <div class="passive-perception">Пассивное Восприятие: <span id="passive-perception">10</span></div>
-            </div>
-            <div class="stat-box">
-              <label for="cha">ХАР</label>
-              <input type="number" id="cha" min="3" max="20" value="10" />
-              <div class="stat-mod">(<span id="cha-mod">+0</span>)</div>
-            </div>
-          </div>
-        </div>
-      </div>
+         <!-- === ХАРАКТЕРИСТИКИ === -->
+<div class="form-section">
+  <h3>📊 Характеристики</h3>
+  <div class="stats-grid">
+    <div class="stat-box">
+      <label for="str">СИЛ</label>
+      <input type="number" id="str" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="str-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="str-bonus">+0</span></div>
+    </div>
+    <div class="stat-box">
+      <label for="dex">ЛОВ</label>
+      <input type="number" id="dex" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="dex-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="dex-bonus">+0</span></div>
+    </div>
+    <div class="stat-box">
+      <label for="con">ТЕЛ</label>
+      <input type="number" id="con" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="con-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="con-bonus">+0</span></div>
+    </div>
+    <div class="stat-box">
+      <label for="int">ИНТ</label>
+      <input type="number" id="int" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="int-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="int-bonus">+0</span></div>
+    </div>
+    <div class="stat-box">
+      <label for="wis">МДР</label>
+      <input type="number" id="wis" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="wis-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="wis-bonus">+0</span></div>
+      <div class="passive-perception">Пассивное Восприятие: <span id="passive-perception">10</span></div>
+    </div>
+    <div class="stat-box">
+      <label for="cha">ХАР</label>
+      <input type="number" id="cha" min="3" max="20" value="10" />
+      <div class="stat-mod">(<span id="cha-mod">+0</span>)</div>
+      <div class="stat-bonus" title="Бонус от расы или класса"><span id="cha-bonus">+0</span></div>
+    </div>
+  </div>
+</div>
 
       <!-- Правая колонка: Боевые показатели и навыки -->
       <div class="right-column">
@@ -1209,7 +1252,32 @@
         console.error("Ошибка загрузки сохранённого персонажа", e);
       }
     }
+// --- Обновление бонусов от расы ---
+function updateRaceBonuses() {
+  const raceKey = raceSelect.value;
+  const race = raceClassData.races && raceClassData.races[raceKey];
+  if (!race || !race.bonuses) return;
 
+  const bonuses = race.bonuses;
+  const statKeys = ["str", "dex", "con", "int", "wis", "cha"];
+  const statNames = {
+    str: "Сила", dex: "Ловкость", con: "Телосложение",
+    int: "Интеллект", wis: "Мудрость", cha: "Харизма"
+  };
+
+  statKeys.forEach(key => {
+    const bonusSpan = document.getElementById(`${key}-bonus`);
+    if (bonusSpan) {
+      const bonus = bonuses[key] || 0;
+      bonusSpan.textContent = formatMod(bonus);
+      if (bonus > 0) {
+        bonusSpan.parentElement.title = `+${bonus} от расы "${race.name}"`;
+      } else {
+        bonusSpan.parentElement.title = "Бонус от расы или класса";
+      }
+    }
+  });
+}
     // --- Первичное обновление ---
     updateAll();
   });
