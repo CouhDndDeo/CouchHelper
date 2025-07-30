@@ -4,390 +4,91 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🧾 Лист персонажа</title>
-  <link rel="stylesheet" href="../../style.css" />
+  <link rel="stylesheet" href="../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <style>
-    /* === Основной макет: 2 колонки сверху, 1 колонка снизу === */
+    /* === ОСНОВНОЙ МАКЕТ: ВЕРТИКАЛЬНЫЙ ПОТОК === */
     .main-layout {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      display: flex;
+      flex-direction: column;
       gap: 30px;
       margin: 20px 0;
     }
 
-    @media (max-width: 900px) {
-      .main-layout {
-        grid-template-columns: 1fr;
-      }
-    }
-
     .form-section {
       background-color: #4a2f1a;
-      padding: 15px;
-      border-radius: 8px;
-      border: 1px solid #8b6f47;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid #8b6f47;
       margin-bottom: 20px;
+      box-shadow: 
+        0 6px 0 #3a2410,
+        0 6px 15px rgba(0, 0, 0, 0.5);
     }
 
     .form-section h3 {
       color: #d4af37;
       margin-top: 0;
-      border-bottom: 1px solid #8b6f47;
-      padding-bottom: 5px;
-      margin-bottom: 15px;
+      border-left: 5px solid #d4af37;
+      padding-left: 15px;
+      margin-bottom: 20px;
+      font-size: 1.6em;
     }
 
     .form-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
-      margin-bottom: 15px;
+      gap: 20px;
+      margin-bottom: 20px;
     }
 
     .form-row > label {
       flex: 1;
-      min-width: 150px;
+      min-width: 200px;
     }
 
     .form-row input,
     .form-row select {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border-radius: 4px;
-      border: 1px solid #8b6f47;
+      padding: 12px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 2px solid #8b6f47;
       background: #5a3b26;
       color: #e0ccb6;
       font-size: 1em;
       box-sizing: border-box;
     }
 
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 15px 0;
-    }
-
-    .stat-box {
-      text-align: center;
-      background: #5a3b26;
-      padding: 8px;
-      border-radius: 6px;
-      border: 1px solid #8b6f47;
-    }
-
-    .stat-box label {
-      font-size: 0.9em;
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .stat-box input {
-      width: 100%;
-      text-align: center;
-      font-weight: bold;
-      font-size: 1.1em;
-      padding: 5px;
-      max-width: 70px;
-      margin: 0 auto;
-    }
-
-    .stat-mod, .passive-perception {
-      font-size: 0.9em;
-      color: #b8a594;
-    }
-
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      list-style: none;
-      padding: 0;
-      margin-top: 10px;
-    }
-
-    .skills-grid li {
-      font-size: 0.95em;
-    }
-
-    .skills-grid label {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .skills-grid input[type="checkbox"] {
-      margin-right: 8px;
-      transform: scale(1.2);
-    }
-    /* === БОНУСЫ ХАРАКТЕРИСТИК === */
-.stat-bonus {
-  font-size: 0.85em;
-  color: #d4af37;
-  margin-top: 5px;
-  text-align: center;
-  cursor: help;
-  position: relative;
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(212, 175, 55, 0.1);
-  border: 1px dashed #d4af37;
-}
-
-.stat-bonus:hover::after {
-  content: attr(title);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1a110a;
-  color: #d4af37;
-  padding: 5px 10px;
-  border-radius: 6px;
-  border: 1px solid #d4af37;
-  white-space: nowrap;
-  z-index: 100;
-  font-size: 0.9em;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-}
-
-.stat-bonus:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-}
-/* === КНОПКИ В ЕДИНОМ СТИЛЕ === */
-.btn-primary, .btn-secondary, .btn-clear {
-  padding: 10px 20px;
-  border: none;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-  font-size: 1em;
-  transition: all 0.3s;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.btn-primary {
-  background: #d4af37;
-  color: #1a110a;
-}
-
-.btn-secondary {
-  background: #5a3b26;
-  color: #d4af37;
-  border: 1px solid #8b6f47;
-}
-
-.btn-clear {
-  background: #8b4513;
-  color: #fff;
-}
-
-.btn-primary:hover,
-.btn-secondary:hover,
-.btn-clear:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
-}
-
-.btn-primary:active,
-.btn-secondary:active,
-.btn-clear:active {
-  transform: scale(0.98);
-}
-
-/* === МЕНЕДЖЕР ПЕРСОНАЖЕЙ === */
-.char-manager {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-  align-items: center;
-  justify-content: center;
-}
-
-.char-manager select {
-  flex-grow: 1;
-  max-width: 300px;
-  padding: 8px;
-  border-radius: 4px;
-  border: 1px solid #8b6f47;
-  background: #5a3b26;
-  color: #e0ccb6;
-  font-size: 1em;
-  box-sizing: border-box;
-}
-
-.char-manager button,
-.char-manager a {
-  padding: 8px 12px;
-  border-radius: 4px;
-  border: none;
-  background: #5a3b26;
-  color: #d4af37;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-  text-decoration: none;
-  display: inline-block;
-  text-align: center;
-}
-
-.char-manager button:hover,
-.char-manager a:hover {
-  background: #6b4426;
-  transform: scale(1.05);
-}
-
-.char-manager button:active,
-.char-manager a:active {
-  transform: scale(0.98);
-}
-    /* === Сводка персонажа (итоговый блок) === */
-    .char-summary {
-      background: linear-gradient(145deg, #5a3b26, #4a2e1a);
-      border: 2px solid #8b6f47;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 
-        0 6px 0 #3a2410,
-        0 6px 15px rgba(0, 0, 0, 0.5);
-      text-align: center;
-      margin-top: 30px;
-      position: relative;
-    }
-
-    .avatar-container {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      border: 2px solid #d4af37;
-      overflow: hidden;
-      margin: 0 auto 15px;
-      background-color: #3a2410;
-    }
-
-    .avatar-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .summary-name {
-      font-size: 1.8em;
-      color: #f0d98f;
-      margin-bottom: 10px;
-    }
-
-    .summary-details {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      font-size: 0.95em;
-      margin-bottom: 20px;
-    }
-
-    .summary-details > div {
-      border-right: 1px solid #8b6f47;
-      padding: 0 10px;
-    }
-
-    .summary-details > div:last-child {
-      border-right: none;
-    }
-
-    .summary-stats {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-      margin: 20px 0;
-    }
-
-    .summary-stat {
-      background: rgba(0, 0, 0, 0.2);
-      padding: 10px 5px;
-      border-radius: 6px;
-      border: 1px solid #5a3b26;
-    }
-
-    .summary-stat-name {
-      font-size: 0.8em;
-      color: #b8a594;
-    }
-
-    .summary-stat-value {
-      font-size: 1.4em;
-      font-weight: bold;
-      color: #f0d98f;
-    }
-
-    .summary-stat-mod {
-      font-size: 0.9em;
-      color: #d4af37;
-    }
-
-    .summary-combat {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin: 15px 0;
-      padding: 10px;
-      background: rgba(0, 0, 0, 0.2);
-      border-radius: 6px;
-      font-size: 0.95em;
-    }
-
-    .summary-quick-info {
-      text-align: left;
-      margin-top: 20px;
-      font-size: 0.9em;
-    }
-
-    .summary-quick-info h4 {
-      color: #d4af37;
-      border-bottom: 1px solid #8b6f47;
-      padding-bottom: 3px;
-      margin: 10px 0 5px;
-    }
-
-    .summary-quick-info ul {
-      list-style-type: none;
-      padding-left: 10px;
-      margin: 0;
-      columns: 2;
-      column-gap: 20px;
-    }
-
-    .summary-quick-info li {
-      margin-bottom: 3px;
-    }
-
-    .form-buttons {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      justify-content: center;
+    .form-row input:focus,
+    .form-row select:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
     }
 
     /* === КНОПКИ В ЕДИНОМ СТИЛЕ === */
+    .form-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
     .btn-primary, .btn-secondary, .btn-clear {
-      padding: 10px 20px;
+      padding: 12px 25px;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      font-size: 1em;
-      transition: all 0.3s;
+      font-size: 1.1em;
+      transition: all 0.3s ease;
       text-decoration: none;
-      display: inline-block;
-      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .btn-primary {
@@ -398,7 +99,7 @@
     .btn-secondary {
       background: #5a3b26;
       color: #d4af37;
-      border: 1px solid #8b6f47;
+      border: 2px solid #8b6f47;
     }
 
     .btn-clear {
@@ -409,104 +110,301 @@
     .btn-primary:hover,
     .btn-secondary:hover,
     .btn-clear:hover {
-      transform: scale(1.05);
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     }
 
     .btn-primary:active,
     .btn-secondary:active,
     .btn-clear:active {
-      transform: scale(0.98);
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
 
-    /* === СТИЛИ ДЛЯ ПЕЧАТИ === */
-    @media print {
-      body {
-        margin: 0;
-        padding: 0;
-        font-size: 0.85em;
-        background: #fff;
-        color: #000;
+    /* === ХАРАКТЕРИСТИКИ === */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 20px;
+      margin: 25px 0;
+    }
+
+    .stat-box {
+      text-align: center;
+      background: #5a3b26;
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid #8b6f47;
+      position: relative;
+    }
+
+    .stat-box label {
+      font-size: 1.1em;
+      color: #d4af37;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .stat-box input {
+      width: 100%;
+      text-align: center;
+      font-size: 1.5em;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 8px;
+      border: 2px solid #8b6f47;
+      background: #4a2e1a;
+      color: #e0ccb6;
+      box-sizing: border-box;
+    }
+
+    .stat-mod {
+      font-size: 1.2em;
+      color: #b8a594;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    /* === ПАССИВНОЕ ВОСПРИЯТИЕ === */
+    .passive-perception {
+      font-size: 1em;
+      color: #d4af37;
+      margin-top: 10px;
+      font-style: italic;
+    }
+
+    /* === БОНУС ОТ РАСЫ === */
+    .stat-bonus {
+      font-size: 0.9em;
+      color: #d4af37;
+      margin-top: 8px;
+      cursor: help;
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px dashed #d4af37;
+    }
+
+    .stat-bonus:hover::after {
+      content: attr(title);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1a110a;
+      color: #d4af37;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #d4af37;
+      white-space: nowrap;
+      z-index: 100;
+      font-size: 0.9em;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    /* === НАВЫКИ === */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      list-style: none;
+      padding: 0;
+      margin-top: 15px;
+    }
+
+    .skills-grid li {
+      font-size: 1em;
+    }
+
+    .skills-grid label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 6px;
+      background: rgba(90, 59, 38, 0.3);
+      border: 1px solid #8b6f47;
+      transition: background 0.3s;
+    }
+
+    .skills-grid label:hover {
+      background: rgba(139, 111, 71, 0.3);
+    }
+
+    .skills-grid input[type="checkbox"] {
+      margin-right: 10px;
+      transform: scale(1.3);
+    }
+
+    /* === СВОДКА ПЕРСОНАЖА === */
+    .summary-section {
+      background: linear-gradient(145deg, #5a3b26, #4a2e1a);
+      border: 2px solid #8b6f47;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 
+        0 6px 0 #3a2410,
+        0 6px 15px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .summary-section h2 {
+      color: #d4af37;
+      margin-bottom: 20px;
+      border-left: 5px solid #d4af37;
+      padding-left: 15px;
+    }
+
+    .avatar-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 3px solid #d4af37;
+      overflow: hidden;
+      margin: 0 auto 20px;
+      background-color: #3a2410;
+    }
+
+    .avatar-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .summary-name {
+      font-size: 2em;
+      color: #f0d98f;
+      margin-bottom: 15px;
+    }
+
+    .summary-details {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 25px;
+      font-size: 1.1em;
+    }
+
+    .summary-details > div {
+      border-right: 2px solid #8b6f47;
+      padding: 0 15px;
+    }
+
+    .summary-details > div:last-child {
+      border-right: none;
+    }
+
+    .summary-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+      margin: 25px 0;
+    }
+
+    .summary-stat {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px 10px;
+      border-radius: 10px;
+      border: 1px solid #8b6f47;
+    }
+
+    .summary-stat-name {
+      font-size: 0.9em;
+      color: #b8a594;
+      margin-bottom: 5px;
+    }
+
+    .summary-stat-value {
+      font-size: 1.8em;
+      font-weight: bold;
+      color: #f0d98f;
+    }
+
+    .summary-stat-mod {
+      font-size: 1.1em;
+      color: #d4af37;
+    }
+
+    .summary-combat {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      font-size: 1.1em;
+    }
+
+    .summary-quick-info {
+      text-align: left;
+      margin-top: 30px;
+    }
+
+    .summary-quick-info h4 {
+      color: #d4af37;
+      border-bottom: 1px solid #8b6f47;
+      padding-bottom: 5px;
+      margin: 20px 0 10px;
+    }
+
+    .summary-quick-info ul {
+      list-style-type: none;
+      padding-left: 15px;
+      margin: 0;
+      columns: 2;
+      column-gap: 30px;
+    }
+
+    .summary-quick-info li {
+      margin-bottom: 5px;
+      padding: 3px 0;
+      border-bottom: 1px dotted #5a3b26;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 50px;
+      color: #a89b8c;
+      font-style: italic;
+      padding-top: 25px;
+      border-top: 1px dashed #5a3b26;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        flex-direction: column;
+        gap: 15px;
       }
 
-      .container {
-        max-width: 100%;
-        margin: 0;
-        padding: 10px;
-        border: none;
-        box-shadow: none;
-      }
-
-      header, nav, footer, .no-print {
-        display: none;
-      }
-
-      .main-layout {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .form-section {
-        padding: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #000;
-        box-shadow: none;
+      .form-row > label {
+        min-width: 100%;
       }
 
       .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 5px;
-      }
-
-      .stat-box {
-        padding: 5px;
+        grid-template-columns: repeat(2, 1fr);
       }
 
       .skills-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 5px;
+        grid-template-columns: 1fr;
       }
 
-      .skills-grid li {
-        font-size: 0.9em;
+      .summary-details {
+        flex-direction: column;
+        align-items: center;
       }
 
-      .form-buttons {
-        display: none;
-      }
-
-      .summary-section {
-        page-break-inside: avoid;
-        border: 1px solid #000;
-        padding: 10px;
-        box-shadow: none;
-      }
-
-      .summary-stats {
-        grid-template-columns: repeat(6, 1fr);
-        gap: 5px;
-      }
-
-      .summary-stat {
-        padding: 5px;
-      }
-
-      .summary-combat {
-        flex-wrap: wrap;
-      }
-
-      .summary-combat > div {
-        flex: 1 1 45%;
-        margin-bottom: 5px;
+      .summary-details > div {
+        border-right: none;
+        padding: 8px 0;
       }
 
       .summary-quick-info ul {
         columns: 1;
-      }
-
-      @page {
-        size: A4;
-        margin: 0.5cm;
       }
     }
   </style>
@@ -519,768 +417,775 @@
     </header>
 
     <nav>
-      <a href="../rules-dnd.html" class="btn-back">
+      <a href="dnd.html" class="btn-back">
         <span class="arrow">←</span>
         <span class="text">В меню D&D</span>
       </a>
     </nav>
 
-    <!-- Менеджер персонажей -->
- <div class="char-manager no-print">
-  <select id="char-selector">
-    <option value="">-- Новый персонаж --</option>
-    <!-- Опции будут добавлены динамически -->
-  </select>
-  <button id="new-char-btn" class="btn-secondary">Новый</button>
-  <button id="delete-char-btn" class="btn-clear">Удалить</button>
-  <button id="export-txt-btn" class="btn-secondary">Экспорт (.txt)</button>
-  <button id="save-char" class="btn-primary">💾 Сохранить</button>
-  <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
-  <a href="print-character.html" target="_blank" class="btn-secondary">🖨️ Печать</a>
-</div>
     <main class="main-layout">
-      <!-- Левая колонка: Основные данные и характеристики -->
-      <div class="left-column">
-        <div class="form-section">
-          <h3>📝 Основные данные</h3>
-          <div class="form-row">
-            <label>
-              Имя:
-              <input type="text" id="char-name" placeholder="Имя персонажа" />
-            </label>
-            <label>
-              Предыстория:
-              <input type="text" id="char-background" placeholder="Например: Простолюдин" />
-            </label>
+      <!-- 📝 Основные данные -->
+      <section class="form-section">
+        <h3>📝 Основные данные</h3>
+        <div class="form-row">
+          <label>
+            Имя:
+            <input type="text" id="char-name" placeholder="Имя персонажа" />
+          </label>
+          <label>
+            Предыстория:
+            <input type="text" id="char-background" placeholder="Например: Простолюдин" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Мировоззрение:
+            <select id="char-alignment">
+              <option value="Законно-добрый">Законно-добрый</option>
+              <option value="Нейтрально-добрый">Нейтрально-добрый</option>
+              <option value="Хаотично-добрый">Хаотично-добрый</option>
+              <option value="Законно-нейтральный">Законно-нейтральный</option>
+              <option value="Нейтральный">Нейтральный</option>
+              <option value="Хаотично-нейтральный">Хаотично-нейтральный</option>
+              <option value="Законно-злой">Законно-злой</option>
+              <option value="Нейтрально-злой">Нейтрально-злой</option>
+              <option value="Хаотично-злой">Хаотично-злой</option>
+            </select>
+          </label>
+          <label>
+            Опыт:
+            <input type="number" id="char-exp" value="0" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label>
+            Аватар:
+            <input type="file" id="avatar-upload" accept="image/*">
+          </label>
+        </div>
+      </section>
+
+      <!-- 🧬 Раса и Класс -->
+      <section class="form-section">
+        <h3>🧬 Раса и Класс</h3>
+        <div class="form-row">
+          <label>
+            Раса:
+            <select id="char-race">
+              <option value="human">Человек</option>
+              <option value="elf">Эльф</option>
+              <option value="dwarf">Дварф</option>
+              <option value="halfling">Полурослик</option>
+              <option value="gnome">Гном</option>
+              <option value="half-elf">Полуэльф</option>
+              <option value="half-orc">Полуорк</option>
+              <option value="tiefling">Тифлинг</option>
+              <option value="aarakocra">Ааракокра</option>
+              <option value="aasimar">Аасимар</option>
+              <option value="bugbear">Багбир</option>
+              <option value="gith">Гит</option>
+              <option value="giff">Гифф</option>
+              <option value="simic-hybrid">Гибрид Симиков</option>
+              <option value="verdan">Вердан</option>
+              <option value="vedalken">Ведалкен</option>
+              <option value="autognome">Автогном</option>
+              <!-- Добавь больше рас по необходимости -->
+            </select>
+          </label>
+          <label>
+            Класс:
+            <select id="char-class">
+              <option value="воин">Воин</option>
+              <option value="маг">Маг</option>
+              <option value="жрец">Жрец</option>
+              <option value="разбойник">Разбойник</option>
+              <option value="паладин">Паладин</option>
+              <option value="следопыт">Следопыт</option>
+              <option value="варвар">Варвар</option>
+              <option value="друид">Друид</option>
+              <option value="бард">Бард</option>
+              <option value="чародей">Чародей</option>
+              <option value="колдун">Колдун</option>
+              <option value="монах">Монах</option>
+            </select>
+          </label>
+          <label>
+            Уровень:
+            <input type="number" id="char-level" min="1" max="20" value="1" />
+          </label>
+        </div>
+      </section>
+
+      <!-- 📊 Характеристики -->
+      <section class="form-section">
+        <h3>📊 Характеристики</h3>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <label for="str">СИЛ</label>
+            <input type="number" id="str" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="str-mod">+0</span>)</div>
+            <div class="stat-bonus" id="str-bonus" title="Бонус от расы или класса">+0</div>
           </div>
-          <div class="form-row">
-            <label>
-              Мировоззрение:
-              <select id="char-alignment">
-                <option value="Законно-добрый">Законно-добрый</option>
-                <option value="Нейтрально-добрый">Нейтрально-добрый</option>
-                <option value="Хаотично-добрый">Хаотично-добрый</option>
-                <option value="Законно-нейтральный">Законно-нейтральный</option>
-                <option value="Нейтральный">Нейтральный</option>
-                <option value="Хаотично-нейтральный">Хаотично-нейтральный</option>
-                <option value="Законно-злой">Законно-злой</option>
-                <option value="Нейтрально-злой">Нейтрально-злой</option>
-                <option value="Хаотично-злой">Хаотично-злой</option>
-              </select>
-            </label>
-            <label>
-              Опыт:
-              <input type="number" id="char-exp" value="0" />
-            </label>
+          <div class="stat-box">
+            <label for="dex">ЛОВ</label>
+            <input type="number" id="dex" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="dex-mod">+0</span>)</div>
+            <div class="stat-bonus" id="dex-bonus" title="Бонус от расы или класса">+0</div>
           </div>
-          <div class="form-row">
-            <label>
-              Аватар:
-              <input type="file" id="avatar-upload" accept="image/*">
-            </label>
+          <div class="stat-box">
+            <label for="con">ТЕЛ</label>
+            <input type="number" id="con" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="con-mod">+0</span>)</div>
+            <div class="stat-bonus" id="con-bonus" title="Бонус от расы или класса">+0</div>
+          </div>
+          <div class="stat-box">
+            <label for="int">ИНТ</label>
+            <input type="number" id="int" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="int-mod">+0</span>)</div>
+            <div class="stat-bonus" id="int-bonus" title="Бонус от расы или класса">+0</div>
+          </div>
+          <div class="stat-box">
+            <label for="wis">МДР</label>
+            <input type="number" id="wis" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="wis-mod">+0</span>)</div>
+            <div class="stat-bonus" id="wis-bonus" title="Бонус от расы или класса">+0</div>
+            <div class="passive-perception">Пассивное Восприятие: <span id="passive-perception">10</span></div>
+          </div>
+          <div class="stat-box">
+            <label for="cha">ХАР</label>
+            <input type="number" id="cha" min="3" max="20" value="10" />
+            <div class="stat-mod">(<span id="cha-mod">+0</span>)</div>
+            <div class="stat-bonus" id="cha-bonus" title="Бонус от расы или класса">+0</div>
           </div>
         </div>
+      </section>
 
-        <div class="form-section">
-          <h3>🧬 Раса и Класс</h3>
-          <div class="form-row">
-            <label>
-              Раса:
-              <select id="char-race">
-                <option value="human">Человек</option>
-                <option value="elf">Эльф</option>
-                <option value="dwarf">Дварф</option>
-                <option value="halfling">Полурослик</option>
-                <option value="gnome">Гном</option>
-                <option value="half-elf">Полуэльф</option>
-                <option value="half-orc">Полуорк</option>
-                <option value="tiefling">Тифлинг</option>
-                <option value="aarakocra">Ааракокра</option>
-                <option value="aasimar">Аасимар</option>
-                <option value="bugbear">Багбир</option>
-                <option value="gith">Гит</option>
-                <option value="giff">Гифф</option>
-                <option value="simic-hybrid">Гибрид Симиков</option>
-                <option value="verdan">Вердан</option>
-                <option value="vedalken">Ведалкен</option>
-                <option value="autognome">Автогном</option>
-                <!-- Добавь больше рас по необходимости -->
-              </select>
-            </label>
-            <label>
-              Класс:
-              <select id="char-class">
-                <option value="воин">Воин</option>
-                <option value="маг">Маг</option>
-                <option value="жрец">Жрец</option>
-                <option value="разбойник">Разбойник</option>
-                <option value="паладин">Паладин</option>
-                <option value="следопыт">Следопыт</option>
-                <option value="варвар">Варвар</option>
-                <option value="друид">Друид</option>
-                <option value="бард">Бард</option>
-                <option value="чародей">Чародей</option>
-                <option value="колдун">Колдун</option>
-                <option value="монах">Монах</option>
-              </select>
-            </label>
-            <label>
-              Уровень:
-              <input type="number" id="char-level" min="1" max="20" value="1" />
-            </label>
-          </div>
+      <!-- 🛡️ Боевые показатели -->
+      <section class="form-section">
+        <h3>🛡️ Боевые показатели</h3>
+        <div class="form-row">
+          <label>
+            Кость Хитов (HD):
+            <input type="text" id="hit-die" placeholder="1к10" readonly />
+          </label>
+          <label>
+            Текущие ХП:
+            <input type="number" id="current-hp" placeholder="Текущие" />
+          </label>
+          <label>
+            Макс. ХП:
+            <input type="number" id="max-hp" placeholder="Максимум" />
+          </label>
         </div>
-
-        <div class="form-section">
-         <!-- === ХАРАКТЕРИСТИКИ === -->
-<div class="form-section">
-  <h3>📊 Характеристики</h3>
-  <div class="stats-grid">
-    <div class="stat-box">
-      <label for="str">СИЛ</label>
-      <input type="number" id="str" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="str-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="str-bonus">+0</span></div>
-    </div>
-    <div class="stat-box">
-      <label for="dex">ЛОВ</label>
-      <input type="number" id="dex" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="dex-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="dex-bonus">+0</span></div>
-    </div>
-    <div class="stat-box">
-      <label for="con">ТЕЛ</label>
-      <input type="number" id="con" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="con-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="con-bonus">+0</span></div>
-    </div>
-    <div class="stat-box">
-      <label for="int">ИНТ</label>
-      <input type="number" id="int" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="int-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="int-bonus">+0</span></div>
-    </div>
-    <div class="stat-box">
-      <label for="wis">МДР</label>
-      <input type="number" id="wis" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="wis-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="wis-bonus">+0</span></div>
-      <div class="passive-perception">Пассивное Восприятие: <span id="passive-perception">10</span></div>
-    </div>
-    <div class="stat-box">
-      <label for="cha">ХАР</label>
-      <input type="number" id="cha" min="3" max="20" value="10" />
-      <div class="stat-mod">(<span id="cha-mod">+0</span>)</div>
-      <div class="stat-bonus" title="Бонус от расы или класса"><span id="cha-bonus">+0</span></div>
-    </div>
-  </div>
-</div>
-
-      <!-- Правая колонка: Боевые показатели и навыки -->
-      <div class="right-column">
-        <div class="form-section">
-          <h3>🛡️ Боевые показатели</h3>
-          <div class="form-row">
-            <label>
-              Кость Хитов (HD):
-              <input type="text" id="hit-die" placeholder="1к10" readonly />
-            </label>
-            <label>
-              Текущие ХП:
-              <input type="number" id="current-hp" placeholder="Текущие" />
-            </label>
-            <label>
-              Макс. ХП:
-              <input type="number" id="max-hp" placeholder="Максимум" />
-            </label>
-          </div>
-          <div class="form-row">
-            <label>
-              КД (без доспаха):
-              <span id="calculated-ac">10</span>
-            </label>
-            <label>
-              Базовая скорость (футы):
-              <input type="number" id="base-speed" value="30" />
-            </label>
-            <label>
-              Скорость (футы):
-              <span id="calculated-speed">30</span>
-            </label>
-          </div>
-          <div class="form-row">
-            <label>
-              Инициатива:
-              <span id="calculated-init">+0</span>
-            </label>
-          </div>
+        <div class="form-row">
+          <label>
+            КД (без доспаха):
+            <span id="calculated-ac">10</span>
+          </label>
+          <label>
+            Базовая скорость (футы):
+            <input type="number" id="base-speed" value="30" />
+          </label>
+          <label>
+            Скорость (футы):
+            <span id="calculated-speed">30</span>
+          </label>
         </div>
-
-        <div class="form-section">
-          <h3>🎯 Навыки</h3>
-          <ul class="skills-grid">
-            <li><label><input type="checkbox" id="skill-acrobatics"> Акробатика (DEX)</label></li>
-            <li><label><input type="checkbox" id="skill-animal-handling"> Уход за животными (WIS)</label></li>
-            <li><label><input type="checkbox" id="skill-arcana"> Магия (INT)</label></li>
-            <li><label><input type="checkbox" id="skill-athletics"> Атлетика (STR)</label></li>
-            <li><label><input type="checkbox" id="skill-deception"> Обман (CHA)</label></li>
-            <li><label><input type="checkbox" id="skill-history"> История (INT)</label></li>
-            <li><label><input type="checkbox" id="skill-insight"> Проницательность (WIS)</label></li>
-            <li><label><input type="checkbox" id="skill-intimidation"> Запугивание (CHA)</label></li>
-            <li><label><input type="checkbox" id="skill-investigation"> Расследование (INT)</label></li>
-            <li><label><input type="checkbox" id="skill-medicine"> Медицина (WIS)</label></li>
-            <li><label><input type="checkbox" id="skill-nature"> Природа (INT)</label></li>
-            <li><label><input type="checkbox" id="skill-perception"> Восприятие (WIS)</label></li>
-            <li><label><input type="checkbox" id="skill-performance"> Выступление (CHA)</label></li>
-            <li><label><input type="checkbox" id="skill-persuasion"> Убеждение (CHA)</label></li>
-            <li><label><input type="checkbox" id="skill-religion"> Религия (INT)</label></li>
-            <li><label><input type="checkbox" id="skill-sleight-of-hand"> Ловкость рук (DEX)</label></li>
-            <li><label><input type="checkbox" id="skill-stealth"> Скрытность (DEX)</label></li>
-            <li><label><input type="checkbox" id="skill-survival"> Выживание (WIS)</label></li>
-          </ul>
+        <div class="form-row">
+          <label>
+            Инициатива:
+            <span id="calculated-init">+0</span>
+          </label>
         </div>
-  </main>
+      </section>
 
-         <!-- Нижний блок: Сводка персонажа -->
-      <div class="summary-section" >
-        <h2>🎭 Ваш персонаж</h2>
-        <div class="char-summary">
-          <div class="avatar-container">
-            <img id="summary-avatar" src="https://via.placeholder.com/100x100/3a2a1a/d4af37?text=👤" alt="Аватар">
-          </div>
-          <div class="summary-name" id="summary-name">Имя персонажа</div>
-          <div class="summary-details">
-            <div><strong>Раса:</strong> <span id="summary-race">человек</span></div>
-            <div><strong>Класс:</strong> <span id="summary-class">воин</span></div>
-            <div><strong>Уровень:</strong> <span id="summary-level">1</span></div>
-            <div><strong>Предыстория:</strong> <span id="summary-bg">-</span></div>
-            <div><strong>Мировоззрение:</strong> <span id="summary-align">Нейтральный</span></div>
-          </div>
+      <!-- 🎯 Навыки -->
+      <section class="form-section">
+        <h3>🎯 Навыки</h3>
+        <ul class="skills-grid">
+          <li><label><input type="checkbox" id="skill-acrobatics"> Акробатика (DEX)</label></li>
+          <li><label><input type="checkbox" id="skill-animal-handling"> Уход за животными (WIS)</label></li>
+          <li><label><input type="checkbox" id="skill-arcana"> Магия (INT)</label></li>
+          <li><label><input type="checkbox" id="skill-athletics"> Атлетика (STR)</label></li>
+          <li><label><input type="checkbox" id="skill-deception"> Обман (CHA)</label></li>
+          <li><label><input type="checkbox" id="skill-history"> История (INT)</label></li>
+          <li><label><input type="checkbox" id="skill-insight"> Проницательность (WIS)</label></li>
+          <li><label><input type="checkbox" id="skill-intimidation"> Запугивание (CHA)</label></li>
+          <li><label><input type="checkbox" id="skill-investigation"> Расследование (INT)</label></li>
+          <li><label><input type="checkbox" id="skill-medicine"> Медицина (WIS)</label></li>
+          <li><label><input type="checkbox" id="skill-nature"> Природа (INT)</label></li>
+          <li><label><input type="checkbox" id="skill-perception"> Восприятие (WIS)</label></li>
+          <li><label><input type="checkbox" id="skill-performance"> Выступление (CHA)</label></li>
+          <li><label><input type="checkbox" id="skill-persuasion"> Убеждение (CHA)</label></li>
+          <li><label><input type="checkbox" id="skill-religion"> Религия (INT)</label></li>
+          <li><label><input type="checkbox" id="skill-sleight-of-hand"> Ловкость рук (DEX)</label></li>
+          <li><label><input type="checkbox" id="skill-stealth"> Скрытность (DEX)</label></li>
+          <li><label><input type="checkbox" id="skill-survival"> Выживание (WIS)</label></li>
+        </ul>
+      </section>
 
-          <div class="summary-stats">
-            <div class="summary-stat">
-              <div class="summary-stat-name">СИЛ</div>
-              <div class="summary-stat-value" id="summary-str-val">10</div>
-              <div class="summary-stat-mod" id="summary-str-mod">+0</div>
-            </div>
-            <div class="summary-stat">
-              <div class="summary-stat-name">ЛОВ</div>
-              <div class="summary-stat-value" id="summary-dex-val">10</div>
-              <div class="summary-stat-mod" id="summary-dex-mod">+0</div>
-            </div>
-            <div class="summary-stat">
-              <div class="summary-stat-name">ТЕЛ</div>
-              <div class="summary-stat-value" id="summary-con-val">10</div>
-              <div class="summary-stat-mod" id="summary-con-mod">+0</div>
-            </div>
-            <div class="summary-stat">
-              <div class="summary-stat-name">ИНТ</div>
-              <div class="summary-stat-value" id="summary-int-val">10</div>
-              <div class="summary-stat-mod" id="summary-int-mod">+0</div>
-            </div>
-            <div class="summary-stat">
-              <div class="summary-stat-name">МДР</div>
-              <div class="summary-stat-value" id="summary-wis-val">10</div>
-              <div class="summary-stat-mod" id="summary-wis-mod">+0</div>
-              <div class="passive-perception">Пассивное Восприятие: <span id="summary-pass-wis">10</span></div>
-            </div>
-            <div class="summary-stat">
-              <div class="summary-stat-name">ХАР</div>
-              <div class="summary-stat-value" id="summary-cha-val">10</div>
-              <div class="summary-stat-mod" id="summary-cha-mod">+0</div>
-            </div>
-          </div>
-
-          <div class="summary-combat">
-            <div><strong>КД:</strong> <span id="summary-ac">10</span></div>
-            <div><strong>ХП:</strong> <span id="summary-hp">0</span>/<span id="summary-max-hp">0</span></div>
-            <div><strong>Скорость:</strong> <span id="summary-speed">30</span> футов</div>
-            <div><strong>Инициатива:</strong> <span id="summary-init">+0</span></div>
-          </div>
-
-          <div class="summary-quick-info">
-            <div style="display: flex; gap: 30px;">
-              <div>
-                <h4>Спасброски</h4>
-                <ul id="summary-saves">
-                  <li>Сил: +0</li>
-                  <li>Лов: +0</li>
-                  <li>Тел: +0</li>
-                  <li>Инт: +0</li>
-                  <li>Мдр: +0</li>
-                  <li>Хар: +0</li>
-                </ul>
-              </div>
-              <div>
-                <h4>Навыки</h4>
-                <ul id="summary-skills">
-                  <li>Восприятие: +0</li>
-                  <li>Атлетика: +0</li>
-                  <li>... (выберите в форме)</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
+      <!-- Кнопки управления -->
+      <div class="form-buttons">
+        <button id="save-char" class="btn-primary">💾 Сохранить</button>
+        <button id="export-char" class="btn-secondary">📤 Экспорт</button>
+        <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
+        <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
       </div>
-  
+
+      <!-- 🎭 Сводка персонажа -->
+      <section class="summary-section">
+        <h2>🎭 Ваш персонаж</h2>
+        <div class="avatar-container">
+          <img id="summary-avatar" src="https://via.placeholder.com/120x120/3a2a1a/d4af37?text=👤" alt="Аватар">
+        </div>
+        <div class="summary-name" id="summary-name">Имя персонажа</div>
+        <div class="summary-details">
+          <div><strong>Раса:</strong> <span id="summary-race">человек</span></div>
+          <div><strong>Класс:</strong> <span id="summary-class">воин</span></div>
+          <div><strong>Уровень:</strong> <span id="summary-level">1</span></div>
+          <div><strong>Предыстория:</strong> <span id="summary-bg">-</span></div>
+          <div><strong>Мировоззрение:</strong> <span id="summary-align">Нейтральный</span></div>
+        </div>
+
+        <div class="summary-stats">
+          <div class="summary-stat">
+            <div class="summary-stat-name">СИЛ</div>
+            <div class="summary-stat-value" id="summary-str-val">10</div>
+            <div class="summary-stat-mod" id="summary-str-mod">+0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-name">ЛОВ</div>
+            <div class="summary-stat-value" id="summary-dex-val">10</div>
+            <div class="summary-stat-mod" id="summary-dex-mod">+0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-name">ТЕЛ</div>
+            <div class="summary-stat-value" id="summary-con-val">10</div>
+            <div class="summary-stat-mod" id="summary-con-mod">+0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-name">ИНТ</div>
+            <div class="summary-stat-value" id="summary-int-val">10</div>
+            <div class="summary-stat-mod" id="summary-int-mod">+0</div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-name">МДР</div>
+            <div class="summary-stat-value" id="summary-wis-val">10</div>
+            <div class="summary-stat-mod" id="summary-wis-mod">+0</div>
+            <div class="passive-perception">Пассивное Восприятие: <span id="summary-pass-wis">10</span></div>
+          </div>
+          <div class="summary-stat">
+            <div class="summary-stat-name">ХАР</div>
+            <div class="summary-stat-value" id="summary-cha-val">10</div>
+            <div class="summary-stat-mod" id="summary-cha-mod">+0</div>
+          </div>
+        </div>
+
+        <div class="summary-combat">
+          <div><strong>КД:</strong> <span id="summary-ac">10</span></div>
+          <div><strong>ХП:</strong> <span id="summary-hp">0</span>/<span id="summary-max-hp">0</span></div>
+          <div><strong>Скорость:</strong> <span id="summary-speed">30</span> футов</div>
+          <div><strong>Инициатива:</strong> <span id="summary-init">+0</span></div>
+        </div>
+
+        <div class="summary-quick-info">
+          <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+            <div>
+              <h4>Спасброски</h4>
+              <ul id="summary-saves">
+                <li>Сил: +0</li>
+                <li>Лов: +0</li>
+                <li>Тел: +0</li>
+                <li>Инт: +0</li>
+                <li>Мдр: +0</li>
+                <li>Хар: +0</li>
+              </ul>
+            </div>
+            <div>
+              <h4>Навыки</h4>
+              <ul id="summary-skills">
+                <li>Восприятие: +0</li>
+                <li>Атлетика: +0</li>
+                <li>... (выберите в форме)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
     <footer>
       <p>Лист персонажа для D&D 5e</p>
     </footer>
   </div>
 
- <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // --- Элементы формы ---
-    const nameInput = document.getElementById("char-name");
-    const raceSelect = document.getElementById("char-race");
-    const classSelect = document.getElementById("char-class");
-    const levelInput = document.getElementById("char-level");
-    const bgInput = document.getElementById("char-background");
-    const alignSelect = document.getElementById("char-alignment");
-    const expInput = document.getElementById("char-exp");
-    const avatarUpload = document.getElementById("avatar-upload");
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // --- Элементы формы ---
+      const nameInput = document.getElementById("char-name");
+      const raceSelect = document.getElementById("char-race");
+      const classSelect = document.getElementById("char-class");
+      const levelInput = document.getElementById("char-level");
+      const bgInput = document.getElementById("char-background");
+      const alignSelect = document.getElementById("char-alignment");
+      const expInput = document.getElementById("char-exp");
+      const avatarUpload = document.getElementById("avatar-upload");
 
-    const statsInputs = {
-      str: document.getElementById("str"),
-      dex: document.getElementById("dex"),
-      con: document.getElementById("con"),
-      int: document.getElementById("int"),
-      wis: document.getElementById("wis"),
-      cha: document.getElementById("cha")
-    };
+      const statsInputs = {
+        str: document.getElementById("str"),
+        dex: document.getElementById("dex"),
+        con: document.getElementById("con"),
+        int: document.getElementById("int"),
+        wis: document.getElementById("wis"),
+        cha: document.getElementById("cha")
+      };
 
-    const hitDieInput = document.getElementById("hit-die");
-    const currentHpInput = document.getElementById("current-hp");
-    const maxHpInput = document.getElementById("max-hp");
-    const baseSpeedInput = document.getElementById("base-speed");
+      const hitDieInput = document.getElementById("hit-die");
+      const currentHpInput = document.getElementById("current-hp");
+      const maxHpInput = document.getElementById("max-hp");
+      const baseSpeedInput = document.getElementById("base-speed");
 
-    const skillCheckboxes = {};
-    document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {
-      skillCheckboxes[cb.id.replace('skill-', '')] = cb;
-    });
-
-    const saveBtn = document.getElementById("save-char");
-    const exportBtn = document.getElementById("export-char");
-    const resetBtn = document.getElementById("reset-char");
-
-    // --- Элементы предпросмотра ---
-    const summaryAvatar = document.getElementById("summary-avatar");
-    const preview = {
-      name: document.getElementById("summary-name"),
-      race: document.getElementById("summary-race"),
-      class: document.getElementById("summary-class"),
-      level: document.getElementById("summary-level"),
-      bg: document.getElementById("summary-bg"),
-      align: document.getElementById("summary-align"),
-      // Характеристики
-      strVal: document.getElementById("summary-str-val"),
-      dexVal: document.getElementById("summary-dex-val"),
-      conVal: document.getElementById("summary-con-val"),
-      intVal: document.getElementById("summary-int-val"),
-      wisVal: document.getElementById("summary-wis-val"),
-      chaVal: document.getElementById("summary-cha-val"),
-      strMod: document.getElementById("summary-str-mod"),
-      dexMod: document.getElementById("summary-dex-mod"),
-      conMod: document.getElementById("summary-con-mod"),
-      intMod: document.getElementById("summary-int-mod"),
-      wisMod: document.getElementById("summary-wis-mod"),
-      chaMod: document.getElementById("summary-cha-mod"),
-      passWis: document.getElementById("summary-pass-wis"),
-      // Боевые
-      ac: document.getElementById("summary-ac"),
-      speed: document.getElementById("summary-speed"),
-      init: document.getElementById("summary-init"),
-      hp: document.getElementById("summary-hp"),
-      maxHp: document.getElementById("summary-max-hp"),
-      // Спасброски и навыки
-      savesList: document.getElementById("summary-saves"),
-      skillsList: document.getElementById("summary-skills")
-    };
-
-    // --- Вычисляемые поля ---
-    const calculatedAc = document.getElementById("calculated-ac");
-    const calculatedSpeed = document.getElementById("calculated-speed");
-    const calculatedInit = document.getElementById("calculated-init");
-    const passivePerception = document.getElementById("passive-perception");
-
-    // --- State ---
-    let raceClassData = {}; // Глобальная переменная для данных
-
-    // --- Загрузка базы данных ---
-    fetch('data/races-classes.json')
-      .then(r => {
-        if (!r.ok) throw new Error(`Ошибка загрузки: ${r.status}`);
-        return r.json();
-      })
-      .then(data => {
-        raceClassData = data;
-        populateRaceSelect(data.races);
-        populateClassSelect(data.classes);
-        updateAll(); // Обновляем после загрузки
-      })
-      .catch(err => {
-        console.error("❌ Ошибка загрузки базы данных:", err);
-        alert("❌ Ошибка загрузки базы данных рас и классов. Проверьте консоль.");
+      const skillCheckboxes = {};
+      document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {
+        skillCheckboxes[cb.id.replace('skill-', '')] = cb;
       });
 
-    // --- Функции ---
+      const saveBtn = document.getElementById("save-char");
+      const exportBtn = document.getElementById("export-char");
+      const resetBtn = document.getElementById("reset-char");
+      const printBtn = document.getElementById("print-char");
 
-    // Функция подсчёта модификатора
-    function getMod(value) {
-      return Math.floor((value - 10) / 2);
-    }
+      // --- Элементы предпросмотра ---
+      const summaryAvatar = document.getElementById("summary-avatar");
+      const preview = {
+        name: document.getElementById("summary-name"),
+        race: document.getElementById("summary-race"),
+        class: document.getElementById("summary-class"),
+        level: document.getElementById("summary-level"),
+        bg: document.getElementById("summary-bg"),
+        align: document.getElementById("summary-align"),
+        // Характеристики
+        strVal: document.getElementById("summary-str-val"),
+        dexVal: document.getElementById("summary-dex-val"),
+        conVal: document.getElementById("summary-con-val"),
+        intVal: document.getElementById("summary-int-val"),
+        wisVal: document.getElementById("summary-wis-val"),
+        chaVal: document.getElementById("summary-cha-val"),
+        strMod: document.getElementById("summary-str-mod"),
+        dexMod: document.getElementById("summary-dex-mod"),
+        conMod: document.getElementById("summary-con-mod"),
+        intMod: document.getElementById("summary-int-mod"),
+        wisMod: document.getElementById("summary-wis-mod"),
+        chaMod: document.getElementById("summary-cha-mod"),
+        passWis: document.getElementById("summary-pass-wis"),
+        // Боевые
+        ac: document.getElementById("summary-ac"),
+        speed: document.getElementById("summary-speed"),
+        init: document.getElementById("summary-init"),
+        hp: document.getElementById("summary-hp"),
+        maxHp: document.getElementById("summary-max-hp"),
+        // Спасброски и навыки
+        savesList: document.getElementById("summary-saves"),
+        skillsList: document.getElementById("summary-skills")
+      };
 
-    function formatMod(mod) {
-      return mod >= 0 ? `+${mod}` : `${mod}`;
-    }
+      // --- Вычисляемые поля ---
+      const calculatedAc = document.getElementById("calculated-ac");
+      const calculatedSpeed = document.getElementById("calculated-speed");
+      const calculatedInit = document.getElementById("calculated-init");
+      const passivePerception = document.getElementById("passive-perception");
 
-    // --- Логика рас ---
-    function populateRaceSelect(races) {
-      const select = document.getElementById("char-race");
-      select.innerHTML = '<option value="">-- Выберите расу --</option>';
-      for (let key in races) {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = races[key].name;
-        select.appendChild(opt);
+      // --- Бонусы от расы ---
+      const statBonuses = {
+        str: document.getElementById("str-bonus"),
+        dex: document.getElementById("dex-bonus"),
+        con: document.getElementById("con-bonus"),
+        int: document.getElementById("int-bonus"),
+        wis: document.getElementById("wis-bonus"),
+        cha: document.getElementById("cha-bonus")
+      };
+
+      // --- Race Data ---
+      const raceBonuses = {
+        "human": { str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1, speed: 30 },
+        "elf": { dex: 2, speed: 30 },
+        "dwarf": { con: 2, speed: 25 },
+        "halfling": { dex: 2, speed: 25 },
+        "gnome": { int: 2, speed: 25 },
+        "half-elf": { cha: 2, "choose-2-stats": 1, speed: 30 },
+        "half-orc": { str: 2, con: 1, speed: 30 },
+        "tiefling": { cha: 2, int: 1, speed: 30 },
+        "aarakocra": { dex: 2, wis: 1, speed: 25, fly: 50 },
+        "aasimar": { cha: 2, speed: 30 },
+        "bugbear": { str: 2, dex: 1, speed: 30 },
+        "gith": { "choose-2-stats": 1, speed: 30 },
+        "giff": { str: 2, con: 1, speed: 30 },
+        "simic-hybrid": { con: 2, "choose-1-stat": 1, speed: 30 },
+        "verdan": { cha: 2, con: 1, speed: 30 },
+        "vedalken": { int: 2, wis: 1, speed: 30 },
+        "autognome": { con: 1, int: 1, "choose-1-stat": 1, speed: 30 }
+        // Добавь больше рас по необходимости
+      };
+
+      // --- Class Hit Dice ---
+      const classHitDice = {
+        "воин": "1к10",
+        "маг": "1к6",
+        "жрец": "1к8",
+        "разбойник": "1к8",
+        "паладин": "1к10",
+        "следопыт": "1к10",
+        "варвар": "1к12",
+        "друид": "1к8",
+        "бард": "1к8",
+        "чародей": "1к6",
+        "колдун": "1к8",
+        "монах": "1к8"
+      };
+
+      // --- Функции ---
+
+      // Функция подсчёта модификатора
+      function getMod(value) {
+        return Math.floor((value - 10) / 2);
       }
-    }
 
-    function populateClassSelect(classes) {
-      const select = document.getElementById("char-class");
-      select.innerHTML = '<option value="">-- Выберите класс --</option>';
-      for (let key in classes) {
-        const opt = document.createElement("option");
-        opt.value = key;
-        opt.textContent = classes[key].name;
-        select.appendChild(opt);
-      }
-    }
-
-    // --- Обновление всех значений ---
-    function updateAll() {
-      const stats = {};
-      for (let key in statsInputs) {
-        let val = parseInt(statsInputs[key].value) || 10;
-        val = Math.max(3, Math.min(20, val));
-        statsInputs[key].value = val;
-        stats[key] = val;
+      function formatMod(mod) {
+        return mod >= 0 ? `+${mod}` : `${mod}`;
       }
 
-      // 1. Модификаторы характеристик
-      const mods = {};
-      for (let key in stats) {
-        mods[key] = getMod(stats[key]);
-      }
+      // --- Обновление бонусов от расы ---
+      function updateRaceBonuses() {
+        const raceKey = raceSelect.value;
+        const bonuses = raceBonuses[raceKey] || {};
 
-      // 2. Бонусы от расы
-      const raceKey = raceSelect.value;
-      const race = raceClassData.races && raceClassData.races[raceKey];
-      if (race && race.bonuses) {
-        for (let key in race.bonuses) {
+        // Сброс
+        for (let key in statBonuses) {
+          statBonuses[key].textContent = "+0";
+          statBonuses[key].title = "Бонус от расы или класса";
+        }
+
+        // Применение бонусов
+        for (let key in bonuses) {
           if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
-            stats[key] = Math.max(3, Math.min(20, stats[key] + race.bonuses[key]));
-            mods[key] = getMod(stats[key]);
+            const bonus = bonuses[key];
+            statBonuses[key].textContent = formatMod(bonus);
+            statBonuses[key].title = `+${bonus} от расы "${raceSelect.options[raceSelect.selectedIndex].text}"`;
           }
+        }
+
+        // Скорость
+        if (bonuses.speed !== undefined) {
+          baseSpeedInput.value = bonuses.speed;
         }
       }
 
-      // 3. КД (без доспеха)
-      const ac = 10 + mods.dex;
-      calculatedAc.textContent = ac;
-      preview.ac.textContent = ac;
-
-      // 4. Скорость (берём из расы, если есть)
-      let speed = parseInt(baseSpeedInput.value) || 30;
-      if (race && race.speed !== undefined) {
-        speed = race.speed;
-      }
-      baseSpeedInput.value = speed;
-      calculatedSpeed.textContent = speed;
-      preview.speed.textContent = speed;
-
-      // 5. Инициатива
-      const init = mods.dex;
-      calculatedInit.textContent = formatMod(init);
-      preview.init.textContent = formatMod(init);
-
-      // 6. Пассивное восприятие
-      const passWis = 10 + mods.wis;
-      passivePerception.textContent = passWis;
-      preview.passWis.textContent = passWis;
-
-      // 7. Спасброски (пока без владения)
-      const savesHtml = `
-        <li>Сила: ${formatMod(mods.str)}</li>
-        <li>Ловкость: ${formatMod(mods.dex)}</li>
-        <li>Телосложение: ${formatMod(mods.con)}</li>
-        <li>Интеллект: ${formatMod(mods.int)}</li>
-        <li>Мудрость: ${formatMod(mods.wis)}</li>
-        <li>Харизма: ${formatMod(mods.cha)}</li>
-      `;
-      preview.savesList.innerHTML = savesHtml;
-
-      // 8. Навыки (пока без бонуса мастерства)
-      const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
-      const skillsData = [
-        { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
-        { id: 'animal-handling', stat: 'wis', name: 'Уход за животными' },
-        { id: 'arcana', stat: 'int', name: 'Магия' },
-        { id: 'athletics', stat: 'str', name: 'Атлетика' },
-        { id: 'deception', stat: 'cha', name: 'Обман' },
-        { id: 'history', stat: 'int', name: 'История' },
-        { id: 'insight', stat: 'wis', name: 'Проницательность' },
-        { id: 'intimidation', stat: 'cha', name: 'Запугивание' },
-        { id: 'investigation', stat: 'int', name: 'Расследование' },
-        { id: 'medicine', stat: 'wis', name: 'Медицина' },
-        { id: 'nature', stat: 'int', name: 'Природа' },
-        { id: 'perception', stat: 'wis', name: 'Восприятие' },
-        { id: 'performance', stat: 'cha', name: 'Выступление' },
-        { id: 'persuasion', stat: 'cha', name: 'Убеждение' },
-        { id: 'religion', stat: 'int', name: 'Религия' },
-        { id: 'sleight-of-hand', stat: 'dex', name: 'Ловкость рук' },
-        { id: 'stealth', stat: 'dex', name: 'Скрытность' },
-        { id: 'survival', stat: 'wis', name: 'Выживание' }
-      ];
-
-      let skillsHtml = '';
-      skillsData.forEach(skill => {
-           const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
-           const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
-           skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
-      });
-      preview.skillsList.innerHTML = skillsHtml;
-
-      // --- Обновление предпросмотра характеристик ---
-      preview.strVal.textContent = stats.str;
-      preview.dexVal.textContent = stats.dex;
-      preview.conVal.textContent = stats.con;
-      preview.intVal.textContent = stats.int;
-      preview.wisVal.textContent = stats.wis;
-      preview.chaVal.textContent = stats.cha;
-
-      preview.strMod.textContent = formatMod(mods.str);
-      preview.dexMod.textContent = formatMod(mods.dex);
-      preview.conMod.textContent = formatMod(mods.con);
-      preview.intMod.textContent = formatMod(mods.int);
-      preview.wisMod.textContent = formatMod(mods.wis);
-      preview.chaMod.textContent = formatMod(mods.cha);
-
-      // --- Обновление основной информации персонажа ---
-      preview.name.textContent = nameInput.value || "Имя персонажа";
-      preview.race.textContent = race ? race.name : "—";
-      preview.class.textContent = classSelect.options[classSelect.selectedIndex]?.text || "—";
-      preview.level.textContent = levelInput.value;
-      preview.bg.textContent = bgInput.value || "—";
-      preview.align.textContent = alignSelect.value;
-      preview.hp.textContent = currentHpInput.value || "0";
-      preview.maxHp.textContent = maxHpInput.value || "0";
-
-      // --- Обновление боевых показателей ---
-      preview.ac.textContent = ac;
-      preview.speed.textContent = speed;
-      preview.init.textContent = formatMod(init);
-      preview.passWis.textContent = passWis;
-    }
-
-    // --- Слушатели ---
-    nameInput.addEventListener("input", updateAll);
-    raceSelect.addEventListener("change", updateAll);
-    classSelect.addEventListener("change", () => {
-      const cls = raceClassData.classes && raceClassData.classes[classSelect.value];
-      if (cls && cls.hitDie) {
-        hitDieInput.value = cls.hitDie;
-      }
-      updateAll();
-    });
-    levelInput.addEventListener("input", () => {
-      let val = parseInt(levelInput.value) || 1;
-      val = Math.max(1, Math.min(20, val));
-      levelInput.value = val;
-      updateAll();
-    });
-    bgInput.addEventListener("input", updateAll);
-    alignSelect.addEventListener("change", updateAll);
-    expInput.addEventListener("input", updateAll);
-
-    currentHpInput.addEventListener("input", updateAll);
-    maxHpInput.addEventListener("input", updateAll);
-    baseSpeedInput.addEventListener("input", () => {
-      let val = parseInt(baseSpeedInput.value) || 0;
-      val = Math.max(0, Math.min(200, val));
-      baseSpeedInput.value = val;
-      updateAll();
-    });
-
-    for (let key in statsInputs) {
-      statsInputs[key].addEventListener("input", () => {
-        let val = parseInt(statsInputs[key].value) || 10;
-        val = Math.max(3, Math.min(20, val));
-        statsInputs[key].value = val;
-        updateAll();
-      });
-    }
-
-    for (let key in skillCheckboxes) {
-      skillCheckboxes[key].addEventListener("change", updateAll);
-    }
-
-    // --- Сохранение ---
-    saveBtn.addEventListener("click", () => {
-      const data = {
-        name: nameInput.value,
-        race: raceSelect.value,
-        class: classSelect.value,
-        level: levelInput.value,
-        background: bgInput.value,
-        alignment: alignSelect.value,
-        exp: expInput.value,
-        stats: {},
-        combat: {
-          hitDie: hitDieInput.value,
-          currentHp: currentHpInput.value,
-          maxHp: maxHpInput.value,
-          baseSpeed: baseSpeedInput.value
-        },
-        skills: {}
-      };
-      for (let key in statsInputs) {
-        data.stats[key] = statsInputs[key].value;
-      }
-      for (let key in skillCheckboxes) {
-        data.skills[key] = skillCheckboxes[key].checked;
-      }
-      localStorage.setItem("dnd-character", JSON.stringify(data));
-      alert("✅ Персонаж сохранён!");
-    });
-
-    // --- Экспорт ---
-    exportBtn.addEventListener("click", () => {
-       // Для простоты, экспортим только основные данные
-      const data = {
-        name: nameInput.value || "Имя персонажа",
-        race: raceSelect.options[raceSelect.selectedIndex]?.text || "—",
-        class: classSelect.options[classSelect.selectedIndex]?.text || "—",
-        level: levelInput.value,
-        stats: {}
-      };
-      for (let key in statsInputs) {
-        const value = parseInt(statsInputs[key].value);
-        data.stats[key] = `${value} (${formatMod(getMod(value))})`;
+      // --- Обновление Кости Хитов ---
+      function updateHitDie() {
+        const classKey = classSelect.value;
+        const hd = classHitDice[classKey] || "1к8";
+        hitDieInput.value = hd;
       }
 
-      let text = `=== Лист персонажа ===\n`;
-      text += `Имя: ${data.name}\n`;
-      text += `Раса: ${data.race}\n`;
-      text += `Класс: ${data.class}\n`;
-      text += `Уровень: ${data.level}\n\n`;
-      text += `Характеристики:\n`;
-      for (let key in data.stats) {
-        const name = {
-          str: "Сила", dex: "Ловкость", con: "Телосложение",
-          int: "Интеллект", wis: "Мудрость", cha: "Харизма"
-        }[key];
-        text += `- ${name}: ${data.stats[key]}\n`;
+      // --- Обновление пассивного восприятия ---
+      function updatePassivePerception() {
+        const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
+        const passive = 10 + wisMod;
+        passivePerception.textContent = passive;
+        preview.passWis.textContent = passive;
       }
 
-      const blob = new Blob([text], { type: "text/plain" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${data.name.replace(/\s+/g, '_') || "персонаж"}.txt`;
-      a.click();
-      URL.revokeObjectURL(url);
-    });
-
-    // --- Сброс ---
-    resetBtn.addEventListener("click", () => {
-      if (confirm("🗑️ Очистить форму?")) {
-        nameInput.value = "";
-        raceSelect.value = "";
-        classSelect.value = "";
-        levelInput.value = "1";
-        bgInput.value = "";
-        alignSelect.value = "Нейтральный";
-        expInput.value = "0";
+      // --- Обновление всех значений ---
+      function updateAll() {
+        const stats = {};
         for (let key in statsInputs) {
-          statsInputs[key].value = "10";
+          let val = parseInt(statsInputs[key].value) || 10;
+          val = Math.max(3, Math.min(20, val));
+          statsInputs[key].value = val;
+          stats[key] = val;
         }
-        hitDieInput.value = "";
-        currentHpInput.value = "";
-        maxHpInput.value = "";
-        baseSpeedInput.value = "30";
+
+        // 1. Модификаторы характеристик
+        const mods = {};
+        for (let key in stats) {
+          mods[key] = getMod(stats[key]);
+        }
+
+        // 2. КД (без доспаха)
+        const ac = 10 + mods.dex;
+        calculatedAc.textContent = ac;
+        preview.ac.textContent = ac;
+
+        // 3. Скорость
+        const speed = parseInt(baseSpeedInput.value) || 30;
+        calculatedSpeed.textContent = speed;
+        preview.speed.textContent = speed;
+
+        // 4. Инициатива
+        const init = mods.dex;
+        calculatedInit.textContent = formatMod(init);
+        preview.init.textContent = formatMod(init);
+
+        // 5. Пассивное восприятие
+        updatePassivePerception();
+
+        // 6. Спасброски (без владения)
+        const savesHtml = `
+          <li>Сил: ${formatMod(mods.str)}</li>
+          <li>Лов: ${formatMod(mods.dex)}</li>
+          <li>Тел: ${formatMod(mods.con)}</li>
+          <li>Инт: ${formatMod(mods.int)}</li>
+          <li>Мдр: ${formatMod(mods.wis)}</li>
+          <li>Хар: ${formatMod(mods.cha)}</li>
+        `;
+        preview.savesList.innerHTML = savesHtml;
+
+        // 7. Навыки (без бонуса мастерства)
+        const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
+        const skillsData = [
+          { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
+          { id: 'animal-handling', stat: 'wis', name: 'Уход за животными' },
+          { id: 'arcana', stat: 'int', name: 'Магия' },
+          { id: 'athletics', stat: 'str', name: 'Атлетика' },
+          { id: 'deception', stat: 'cha', name: 'Обман' },
+          { id: 'history', stat: 'int', name: 'История' },
+          { id: 'insight', stat: 'wis', name: 'Проницательность' },
+          { id: 'intimidation', stat: 'cha', name: 'Запугивание' },
+          { id: 'investigation', stat: 'int', name: 'Расследование' },
+          { id: 'medicine', stat: 'wis', name: 'Медицина' },
+          { id: 'nature', stat: 'int', name: 'Природа' },
+          { id: 'perception', stat: 'wis', name: 'Восприятие' },
+          { id: 'performance', stat: 'cha', name: 'Выступление' },
+          { id: 'persuasion', stat: 'cha', name: 'Убеждение' },
+          { id: 'religion', stat: 'int', name: 'Религия' },
+          { id: 'sleight-of-hand', stat: 'dex', name: 'Ловкость рук' },
+          { id: 'stealth', stat: 'dex', name: 'Скрытность' },
+          { id: 'survival', stat: 'wis', name: 'Выживание' }
+        ];
+
+        let skillsHtml = '';
+        skillsData.forEach(skill => {
+             const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
+             const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
+             skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
+        });
+        preview.skillsList.innerHTML = skillsHtml;
+
+        // --- Обновление предпросмотра характеристик ---
+        preview.strVal.textContent = stats.str;
+        preview.dexVal.textContent = stats.dex;
+        preview.conVal.textContent = stats.con;
+        preview.intVal.textContent = stats.int;
+        preview.wisVal.textContent = stats.wis;
+        preview.chaVal.textContent = stats.cha;
+
+        preview.strMod.textContent = formatMod(mods.str);
+        preview.dexMod.textContent = formatMod(mods.dex);
+        preview.conMod.textContent = formatMod(mods.con);
+        preview.intMod.textContent = formatMod(mods.int);
+        preview.wisMod.textContent = formatMod(mods.wis);
+        preview.chaMod.textContent = formatMod(mods.cha);
+
+        // --- Обновление основной информации ---
+        preview.name.textContent = nameInput.value || "Имя персонажа";
+        preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
+        preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
+        preview.level.textContent = levelInput.value;
+        preview.bg.textContent = bgInput.value || "-";
+        preview.align.textContent = alignSelect.value;
+        preview.hp.textContent = currentHpInput.value || "0";
+        preview.maxHp.textContent = maxHpInput.value || "0";
+        preview.ac.textContent = ac;
+        preview.speed.textContent = speed;
+        preview.init.textContent = formatMod(init);
+        preview.passWis.textContent = 10 + mods.wis;
+
+        // --- Модификаторы в полях ---
+        document.getElementById("str-mod").textContent = formatMod(mods.str);
+        document.getElementById("dex-mod").textContent = formatMod(mods.dex);
+        document.getElementById("con-mod").textContent = formatMod(mods.con);
+        document.getElementById("int-mod").textContent = formatMod(mods.int);
+        document.getElementById("wis-mod").textContent = formatMod(mods.wis);
+        document.getElementById("cha-mod").textContent = formatMod(mods.cha);
+      }
+
+      // --- Слушатели ---
+      nameInput.addEventListener("input", updateAll);
+      raceSelect.addEventListener("change", () => { updateRaceBonuses(); updateAll(); });
+      classSelect.addEventListener("change", () => { updateHitDie(); updateAll(); });
+      levelInput.addEventListener("input", () => { updateAll(); });
+      bgInput.addEventListener("input", updateAll);
+      alignSelect.addEventListener("change", updateAll);
+      expInput.addEventListener("input", updateAll);
+
+      currentHpInput.addEventListener("input", updateAll);
+      maxHpInput.addEventListener("input", updateAll);
+      baseSpeedInput.addEventListener("input", () => { updateAll(); });
+
+      for (let key in statsInputs) {
+        statsInputs[key].addEventListener("input", () => { updateAll(); });
+      }
+
+      for (let key in skillCheckboxes) {
+        skillCheckboxes[key].addEventListener("change", updateAll);
+      }
+
+      avatarUpload.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            summaryAvatar.src = evt.target.result;
+            // Сохраняем в localStorage (base64)
+            localStorage.setItem('dnd-avatar-temp', evt.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // --- Сохранение ---
+      saveBtn.addEventListener("click", () => {
+        const data = {
+          name: nameInput.value,
+          race: raceSelect.value,
+          class: classSelect.value,
+          level: levelInput.value,
+          background: bgInput.value,
+          alignment: alignSelect.value,
+          exp: expInput.value,
+          stats: {},
+          combat: {
+            hitDie: hitDieInput.value,
+            currentHp: currentHpInput.value,
+            maxHp: maxHpInput.value,
+            baseSpeed: baseSpeedInput.value
+          },
+          skills: {},
+          avatar: summaryAvatar.src
+        };
+        for (let key in statsInputs) {
+          data.stats[key] = statsInputs[key].value;
+        }
         for (let key in skillCheckboxes) {
-          skillCheckboxes[key].checked = false;
+          data.skills[key] = skillCheckboxes[key].checked;
         }
-        updateAll();
-      }
-    });
+        localStorage.setItem("dnd-character", JSON.stringify(data));
+        alert("✅ Персонаж сохранён!");
+      });
 
-    // --- Загрузка сохранённого ---
-    const saved = localStorage.getItem("dnd-character");
-    if (saved) {
-      try {
-        const data = JSON.parse(saved);
-        nameInput.value = data.name || "";
-        raceSelect.value = data.race || "";
-        classSelect.value = data.class || "";
-        levelInput.value = data.level || "1";
-        bgInput.value = data.background || "";
-        alignSelect.value = data.alignment || "Нейтральный";
-        expInput.value = data.exp || "0";
+      // --- Экспорт ---
+      exportBtn.addEventListener("click", () => {
+         // Для простоты, экспортим только основные данные
+        const data = {
+          name: nameInput.value || "Имя персонажа",
+          race: raceSelect.options[raceSelect.selectedIndex].text,
+          class: classSelect.options[classSelect.selectedIndex].text,
+          level: levelInput.value,
+          stats: {}
+        };
+        for (let key in statsInputs) {
+          const value = parseInt(statsInputs[key].value);
+          data.stats[key] = `${value} (${formatMod(getMod(value))})`;
+        }
+
+        let text = `=== Лист персонажа ===\n`;
+        text += `Имя: ${data.name}\n`;
+        text += `Раса: ${data.race}\n`;
+        text += `Класс: ${data.class}\n`;
+        text += `Уровень: ${data.level}\n\n`;
+        text += `Характеристики:\n`;
         for (let key in data.stats) {
-          if (statsInputs[key]) {
-            statsInputs[key].value = data.stats[key];
+          const name = {
+            str: "Сила", dex: "Ловкость", con: "Телосложение",
+            int: "Интеллект", wis: "Мудрость", cha: "Харизма"
+          }[key];
+          text += `- ${name}: ${data.stats[key]}\n`;
+        }
+
+        const blob = new Blob([text], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${data.name.replace(/\s+/g, '_') || "персонаж"}.txt`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      // --- Сброс ---
+      resetBtn.addEventListener("click", () => {
+        if (confirm("🗑️ Очистить форму?")) {
+          nameInput.value = "";
+          raceSelect.value = "human";
+          classSelect.value = "воин";
+          levelInput.value = "1";
+          bgInput.value = "";
+          alignSelect.value = "Нейтральный";
+          expInput.value = "0";
+          for (let key in statsInputs) {
+            statsInputs[key].value = "10";
           }
+          hitDieInput.value = "";
+          currentHpInput.value = "";
+          maxHpInput.value = "";
+          baseSpeedInput.value = "30";
+          for (let key in skillCheckboxes) {
+            skillCheckboxes[key].checked = false;
+          }
+          summaryAvatar.src = "https://via.placeholder.com/120x120/3a2a1a/d4af37?text=👤";
+          updateAll();
+          updateRaceBonuses();
+          updateHitDie();
         }
-        if (data.combat) {
-           hitDieInput.value = data.combat.hitDie || "";
-           currentHpInput.value = data.combat.currentHp || "";
-           maxHpInput.value = data.combat.maxHp || "";
-           baseSpeedInput.value = data.combat.baseSpeed || "30";
-        }
-        if (data.skills) {
-           for (let key in data.skills) {
-               if (skillCheckboxes[key] !== undefined) {
-                   skillCheckboxes[key].checked = data.skills[key];
-               }
-           }
-        }
-        updateAll();
-      } catch (e) {
-        console.error("Ошибка загрузки сохранённого персонажа", e);
-      }
-    }
-// --- Обновление бонусов от расы ---
-function updateRaceBonuses() {
-  const raceKey = raceSelect.value;
-  const race = raceClassData.races && raceClassData.races[raceKey];
-  if (!race || !race.bonuses) return;
+      });
 
-  const bonuses = race.bonuses;
-  const statKeys = ["str", "dex", "con", "int", "wis", "cha"];
-  const statNames = {
-    str: "Сила", dex: "Ловкость", con: "Телосложение",
-    int: "Интеллект", wis: "Мудрость", cha: "Харизма"
-  };
-
-  statKeys.forEach(key => {
-    const bonusSpan = document.getElementById(`${key}-bonus`);
-    if (bonusSpan) {
-      const bonus = bonuses[key] || 0;
-      bonusSpan.textContent = formatMod(bonus);
-      if (bonus > 0) {
-        bonusSpan.parentElement.title = `+${bonus} от расы "${race.name}"`;
-      } else {
-        bonusSpan.parentElement.title = "Бонус от расы или класса";
+      // --- Загрузка сохранённого ---
+      const saved = localStorage.getItem("dnd-character");
+      if (saved) {
+        try {
+          const data = JSON.parse(saved);
+          nameInput.value = data.name || "";
+          raceSelect.value = data.race || "human";
+          classSelect.value = data.class || "воин";
+          levelInput.value = data.level || "1";
+          bgInput.value = data.background || "";
+          alignSelect.value = data.alignment || "Нейтральный";
+          expInput.value = data.exp || "0";
+          for (let key in data.stats) {
+            if (statsInputs[key]) {
+              statsInputs[key].value = data.stats[key];
+            }
+          }
+          if (data.combat) {
+             hitDieInput.value = data.combat.hitDie || "";
+             currentHpInput.value = data.combat.currentHp || "";
+             maxHpInput.value = data.combat.maxHp || "";
+             baseSpeedInput.value = data.combat.baseSpeed || "30";
+          }
+          if (data.skills) {
+             for (let key in data.skills) {
+                 if (skillCheckboxes[key] !== undefined) {
+                     skillCheckboxes[key].checked = data.skills[key];
+                 }
+             }
+          }
+          if (data.avatar) {
+            summaryAvatar.src = data.avatar;
+          }
+          updateAll();
+          updateRaceBonuses();
+          updateHitDie();
+        } catch (e) {
+          console.error("Ошибка загрузки сохранённого персонажа", e);
+        }
       }
-    }
-  });
-}
-    // --- Первичное обновление ---
-    updateAll();
-  });
-</script>
+
+      // --- Первичное обновление ---
+      updateAll();
+      updateRaceBonuses();
+      updateHitDie();
+    });
+  </script>
 </body>
 </html>
