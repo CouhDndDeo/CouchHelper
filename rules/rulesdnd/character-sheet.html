@@ -888,13 +888,13 @@
       }
 
       // --- Обновление пассивного восприятия ---
-      function updatePassivePerception() {
-        const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
-        const passive = 10 + wisMod;
-        passivePerception.textContent = passiveWis;
-        preview.passWis.textContent = passiveWis;
+   // --- Пассивное восприятие ---
+  const wisMod = getMod(parseInt(wisInput.value) || 10);
+  const passiveWis = 10 + wisMod;
+  passivePerception.textContent = passiveWis;
+  preview.passWis.textContent = passiveWis;
 // Обновление в сводке
-        document.getElementById("summary-pass-wis").textContent = passiveWis;
+  document.getElementById("summary-pass-wis").textContent = passiveWis;
 
       // --- Обновление всех значений ---
       function updateAll() {
