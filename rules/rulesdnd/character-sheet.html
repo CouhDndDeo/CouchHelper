@@ -636,7 +636,7 @@
       <section class="summary-section">
         <h2>🎭 Ваш персонаж</h2>
         <div class="avatar-container">
-          <img id="summary-avatar" src="https://via.placeholder.com/120x120/3a2a1a/d4af37?text=👤" alt="Аватар">
+          <img id="summary-avatar" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E" alt="Аватар">
         </div>
         <div class="summary-name" id="summary-name">Имя персонажа</div>
         <div class="summary-details">
@@ -1154,7 +1154,7 @@ document.getElementById("summary-cha-mod").textContent = formatMod(mods.cha);
           for (let key in skillCheckboxes) {
             skillCheckboxes[key].checked = false;
           }
-          summaryAvatar.src = "https://via.placeholder.com/120x120/3a2a1a/d4af37?text=👤";
+          summaryAvatar.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
           updateAll();
           updateRaceBonuses();
           updateHitDie();
