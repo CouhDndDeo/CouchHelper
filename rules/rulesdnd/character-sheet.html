@@ -870,7 +870,7 @@
           if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
             const bonus = bonuses[key];
             statBonuses[key].textContent = formatMod(bonus);
-            statBonuses[key].title = `+${bonus} от расы "${raceSelect.options[raceSelect.selectedIndex].text}"`;
+            statBonuses[key].title = `добавь +${bonus} от расы "${raceSelect.options[raceSelect.selectedIndex].text}"`;
           }
         }
 
