@@ -687,6 +687,12 @@
             <span id="calculated-init">+0</span>
           </label>
         </div>
+        <div class="form-row">
+          <label>
+            Бонус мастерства:
+            <span id="proficiency-bonus">+2</span>
+          </label>
+</div>
       </section>
 
       <!-- 🎯 Навыки -->
@@ -773,12 +779,12 @@
             <div class="summary-stat-mod" id="summary-cha-mod">+0</div>
           </div>
         </div>
-
         <div class="summary-combat">
           <div><strong>КД:</strong> <span id="summary-ac">10</span></div>
           <div><strong>ХП:</strong> <span id="summary-hp">0</span>/<span id="summary-max-hp">0</span></div>
           <div><strong>Скорость:</strong> <span id="summary-speed">30</span> футов</div>
           <div><strong>Инициатива:</strong> <span id="summary-init">+0</span></div>
+          <div><strong>Бонус мастерства:</strong> <span id="summary-prof-bonus">+2</span></div>
         </div>
 
         <div class="summary-quick-info">
@@ -1167,6 +1173,9 @@ function updateCalculations() {
     { id: 'stealth', stat: 'dex', name: 'Скрытность' },
     { id: 'survival', stat: 'wis', name: 'Выживание' }
   ];
+  // --- Бонус мастерства ---
+  const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
+  document.getElementById("proficiency-bonus").textContent = formatMod(proficiencyBonus);
 
   let skillsHtml = '';
   skillsData.forEach(skill => {
@@ -1216,6 +1225,7 @@ preview.conMod.textContent = formatMod(mods.con);
 preview.intMod.textContent = formatMod(mods.int);
 preview.wisMod.textContent = formatMod(mods.wis);
 preview.chaMod.textContent = formatMod(mods.cha);
+preview.profBonus.textContent = formatMod(proficiencyBonus);        
 
 // --- Обновление характеристик в сводке ---
 document.getElementById("summary-str-val").textContent = stats.str;
