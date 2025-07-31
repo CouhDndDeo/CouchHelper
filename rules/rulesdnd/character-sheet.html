@@ -1174,7 +1174,6 @@ function updateCalculations() {
     { id: 'survival', stat: 'wis', name: 'Выживание' }
   ];
   // --- Бонус мастерства ---
-  const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
   document.getElementById("proficiency-bonus").textContent = formatMod(proficiencyBonus);
 
   let skillsHtml = '';
