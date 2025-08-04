@@ -1165,7 +1165,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Загрузка данных из JSON ---
-  fetch('../../rulesdnd/data/races-classes.json') // Исправлен путь
+  fetch('../rulesdnd/data/races-classes.json') // Исправлен путь
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
