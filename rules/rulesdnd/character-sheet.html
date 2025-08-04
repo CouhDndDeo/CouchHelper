@@ -745,7 +745,7 @@
       <p>Лист персонажа для D&D 5e</p>
     </footer>
   </div>
-  <script>
+    <script>
 document.addEventListener("DOMContentLoaded", () => {
   // --- Элементы формы ---
   const nameInput = document.getElementById("char-name");
@@ -885,31 +885,67 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("wis-mod").textContent = formatMod(mods.wis);
     document.getElementById("cha-mod").textContent = formatMod(mods.cha);
 
-    // 3. Обновление бонусов от расы (подсказки)
+    // 3. Обновление бонусов от расы и класса (подсказки)
     const raceKey = raceSelect.value;
+    const classKey = classSelect.value;
     const raceData = raceClassData.races?.[raceKey];
-    // Сброс
+    const classData = raceClassData.classes?.[classKey];
+
+    // Сброс бонусов
     for (let key in statBonuses) {
       statBonuses[key].textContent = "+0";
       statBonuses[key].title = "Бонус от расы или класса";
     }
+
+    // Применение бонусов от расы
     if (raceData?.stats) {
         for (let key in raceData.stats) {
             if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
                 const bonus = raceData.stats[key];
-                statBonuses[key].textContent = formatMod(bonus);
-                statBonuses[key].title = `добавь ${formatMod(bonus)} от расы "${raceSelect.options[raceSelect.selectedIndex].text}"`;
+                // Проверяем, если бонус уже есть (например, от класса), суммируем
+                const currentBonusText = statBonuses[key].textContent;
+                const currentBonusValue = parseInt(currentBonusText) || 0;
+                const newBonusValue = currentBonusValue + bonus;
+                statBonuses[key].textContent = formatMod(newBonusValue);
+                statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                // Если уже есть бонус от класса, обновляем тултип
+                if (statBonuses[key].title.includes("Бонус от класса")) {
+                    statBonuses[key].title += `, Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                } else {
+                    statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                }
             }
         }
     }
+
+    // Применение бонусов от класса (если есть в данных, хотя обычно их нет для характеристик)
+    // Примечание: В стандартных правилах D&D 5e бонусы от класса к характеристикам обычно не применяются.
+    // Эта часть кода оставлена на случай, если в вашем файле races-classes.json они будут указаны.
+    if (classData?.stats) {
+        for (let key in classData.stats) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+                const bonus = classData.stats[key];
+                // Проверяем, если бонус уже есть (например, от расы), суммируем
+                const currentBonusText = statBonuses[key].textContent;
+                const currentBonusValue = parseInt(currentBonusText) || 0;
+                const newBonusValue = currentBonusValue + bonus;
+                statBonuses[key].textContent = formatMod(newBonusValue);
+                // Если уже есть бонус от расы, обновляем тултип
+                if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
+                    statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                } else {
+                    statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                }
+            }
+        }
+    }
+
     // Скорость
     if (raceData?.speed !== undefined) {
         baseSpeedInput.value = raceData.speed;
     }
 
     // 4. Обновление Кости Хитов
-    const classKey = classSelect.value;
-    const classData = raceClassData.classes?.[classKey];
     const hd = classData?.hitDie || "1к8"; // Значение по умолчанию
     hitDieInput.value = hd;
 
@@ -1132,7 +1168,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // --- Загрузка данных из JSON ---
-  fetch('../rulesdnd/data/races-classes.json') // Исправлен путь к файлу
+  fetch('../../rulesdnd/data/races-classes.json') // Исправлен путь к файлу
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -1226,6 +1262,6 @@ document.addEventListener("DOMContentLoaded", () => {
       updateAll();
     });
 });
-  </script>
+    </script>
 </body>
 </html>
