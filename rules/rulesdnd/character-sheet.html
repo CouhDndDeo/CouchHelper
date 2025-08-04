@@ -148,6 +148,11 @@
       color: #e0ccb6;
       box-sizing: border-box;
     }
+    .stat-box input:focus {
+      outline: none;
+      border-color: #d4af37;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+    }
     .stat-mod {
       font-size: 1.2em;
       color: #b8a594;
@@ -188,6 +193,10 @@
       z-index: 100;
       font-size: 0.9em;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .stat-bonus:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid #d4af37;
     }
     /* === НАВЫКИ === */
     .skills-grid {
@@ -433,10 +442,6 @@
       z-index: 100;
       font-size: 0.9em;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-    }
-    .stat-bonus:hover {
-      background: rgba(212, 175, 55, 0.2);
-      border: 1px solid #d4af37;
     }
     .passive-perception {
       font-size: 0.9em;
@@ -790,6 +795,7 @@
     const resetBtn = document.getElementById("reset-char");
     const manageBtn = document.getElementById("manage-char"); // Новая кнопка
     const printBtn = document.getElementById("print-char");
+
     // --- Элементы предпросмотра ---
     const summaryAvatar = document.getElementById("summary-avatar");
     const preview = {
@@ -819,16 +825,20 @@
       init: document.getElementById("summary-init"),
       hp: document.getElementById("summary-hp"),
       maxHp: document.getElementById("summary-max-hp"),
+      profBonus: document.getElementById("summary-prof-bonus"), // Исправлен ID
       // Спасброски и навыки
       savesList: document.getElementById("summary-saves"),
       skillsList: document.getElementById("summary-skills")
     };
+
     // --- Вычисляемые поля ---
     const calculatedAc = document.getElementById("calculated-ac");
     const calculatedSpeed = document.getElementById("calculated-speed");
     const calculatedInit = document.getElementById("calculated-init");
     const passivePerception = document.getElementById("passive-perception");
-    // --- Бонусы от расы ---
+    const proficiencyBonusElement = document.getElementById("proficiency-bonus");
+
+    // --- Бонусы от расы и класса ---
     const statBonuses = {
       str: document.getElementById("str-bonus"),
       dex: document.getElementById("dex-bonus"),
@@ -837,44 +847,12 @@
       wis: document.getElementById("wis-bonus"),
       cha: document.getElementById("cha-bonus")
     };
-    // --- Race Data ---
-    const raceBonuses = {
-      "human": {str: 1, dex: 1, con: 1, int: 1, wis: 1, cha: 1, speed: 30},
-      "elf": {dex: 2, speed: 30},
-      "dwarf": {con: 2, speed: 25},
-      "halfling": {dex: 2, speed: 25},
-      "gnome": {int: 2, speed: 25},
-      "half-elf": {cha: 2, "choose-2-stats": 1, speed: 30},
-      "half-orc": {str: 2, con: 1, speed: 30},
-      "tiefling": {cha: 2, int: 1, speed: 30},
-      "aarakocra": {dex: 2, wis: 1, speed: 25, fly: 50},
-      "aasimar": {cha: 2, speed: 30},
-      "bugbear": {str: 2, dex: 1, speed: 30},
-      "gith": {"choose-2-stats": 1, speed: 30},
-      "giff": {str: 2, con: 1, speed: 30},
-      "simic-hybrid": {con: 2, "choose-1-stat": 1, speed: 30},
-      "verdan": {cha: 2, con: 1, speed: 30},
-      "vedalken": {int: 2, wis: 1, speed: 30},
-      "autognome": {con: 1, int: 1, "choose-1-stat": 1, speed: 30}
-      // Добавь больше рас по необходимости
-    };
-    // --- Class Hit Dice ---
-    const classHitDice = {
-      "воин": "1к10",
-      "маг": "1к6",
-      "жрец": "1к8",
-      "разбойник": "1к8",
-      "паладин": "1к10",
-      "следопыт": "1к10",
-      "варвар": "1к12",
-      "друид": "1к8",
-      "бард": "1к8",
-      "чародей": "1к6",
-      "колдун": "1к8",
-      "монах": "1к8"
-    };
+
+    // --- Данные из JSON ---
+    let raceClassData = {};
+    let dataLoaded = false; // Флаг для отслеживания загрузки данных
+
     // --- Функции ---
-    // Функция подсчёта модификатора
     function getMod(value) {
       return Math.floor((value - 10) / 2);
     }
@@ -883,47 +861,29 @@
       return mod >= 0 ? `+${mod}` : `${mod}`;
     }
 
-    // --- Обновление бонусов от расы ---
-    function updateRaceBonuses() {
+    function updateSkillOwnership() {
+      if (!dataLoaded) return; // Не обновлять, если данные не загружены
       const raceKey = raceSelect.value;
-      const bonuses = raceBonuses[raceKey] || {};
-      // Сброс
-      for (let key in statBonuses) {
-        statBonuses[key].textContent = "+0";
-        statBonuses[key].title = "Бонус от расы или класса";
-      }
-      // Применение бонусов
-      for (let key in bonuses) {
-        if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
-          const bonus = bonuses[key];
-          statBonuses[key].textContent = formatMod(bonus);
-          statBonuses[key].title = `добавь +${bonus} от расы "${raceSelect.options[raceSelect.selectedIndex].text}"`;
-        }
-      }
-      // Скорость
-      if (bonuses.speed !== undefined) {
-        baseSpeedInput.value = bonuses.speed;
-      }
-    }
-
-    // --- Обновление Кости Хитов ---
-    function updateHitDie() {
       const classKey = classSelect.value;
-      const hd = classHitDice[classKey] || "1к8";
-      hitDieInput.value = hd;
+      const race = raceClassData.races?.[raceKey];
+      const cls = raceClassData.classes?.[classKey];
+      const ownedSkills = new Set();
+      if (race?.skills) {
+        race.skills.forEach(skill => ownedSkills.add(skill));
+      }
+      if (cls?.skills) {
+        cls.skills.forEach(skill => ownedSkills.add(skill));
+      }
+      const skillList = Array.from(ownedSkills).join(", ") || "—";
+      const skillNotice = document.querySelector(".skill-ownership-notice");
+      if (skillNotice) {
+        skillNotice.innerHTML = `Вы владеете навыками: <strong>${skillList}</strong>. Проставьте галочки ниже.`;
+      }
     }
 
-    // --- Обновление пассивного восприятия ---
-    // --- Пассивное восприятие ---
-    const wisMod = getMod(parseInt(statsInputs.wis.value) || 10);
-    const passiveWis = 10 + wisMod;
-    passivePerception.textContent = passiveWis;
-    preview.passWis.textContent = passiveWis;
-    // Обновление в сводке
-    document.getElementById("summary-pass-wis").textContent = passiveWis;
-
-    // --- Обновление всех значений ---
+    // --- Основная функция обновления ---
     function updateAll() {
+      // 1. Обновление характеристик и их модификаторов
       const stats = {};
       for (let key in statsInputs) {
         let val = parseInt(statsInputs[key].value) || 10;
@@ -931,291 +891,212 @@
         statsInputs[key].value = val;
         stats[key] = val;
       }
-      // 1. Модификаторы характеристик
       const mods = {};
       for (let key in stats) {
         mods[key] = getMod(stats[key]);
       }
-      // 2. КД (без доспаха)
+
+      // 2. Обновление модификаторов в полях характеристик
+      document.getElementById("str-mod").textContent = formatMod(mods.str);
+      document.getElementById("dex-mod").textContent = formatMod(mods.dex);
+      document.getElementById("con-mod").textContent = formatMod(mods.con);
+      document.getElementById("int-mod").textContent = formatMod(mods.int);
+      document.getElementById("wis-mod").textContent = formatMod(mods.wis);
+      document.getElementById("cha-mod").textContent = formatMod(mods.cha);
+
+      // 3. Обновление бонусов от расы и класса (подсказки)
+      // Сброс бонусов
+      for (let key in statBonuses) {
+        statBonuses[key].textContent = "+0";
+        statBonuses[key].title = "Бонус от расы или класса";
+        statBonuses[key].style.display = "inline-block"; // Убедиться, что элемент виден
+      }
+
+      if (dataLoaded) { // Применять бонусы только после загрузки данных
+        const raceKey = raceSelect.value;
+        const classKey = classSelect.value;
+        const raceData = raceClassData.races?.[raceKey];
+        const classData = raceClassData.classes?.[classKey];
+
+        // Применение бонусов от расы
+        if (raceData?.stats) {
+          for (let key in raceData.stats) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+              const bonus = raceData.stats[key];
+              const currentBonusText = statBonuses[key].textContent;
+              const currentBonusValue = parseInt(currentBonusText) || 0;
+              const newBonusValue = currentBonusValue + bonus;
+              statBonuses[key].textContent = formatMod(newBonusValue);
+              statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+            }
+          }
+        }
+
+        // Применение бонусов от класса (если есть)
+        if (classData?.stats) {
+          for (let key in classData.stats) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+              const bonus = classData.stats[key];
+              const currentBonusText = statBonuses[key].textContent;
+              const currentBonusValue = parseInt(currentBonusText) || 0;
+              const newBonusValue = currentBonusValue + bonus;
+              statBonuses[key].textContent = formatMod(newBonusValue);
+              // Обновление тултипа
+              if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
+                statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+              } else {
+                statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+              }
+            }
+          }
+        }
+
+        // Скорость из расы
+        if (raceData?.speed !== undefined) {
+          baseSpeedInput.value = raceData.speed;
+        }
+      }
+
+      // 4. Обновление Кости Хитов из данных класса
+      if (dataLoaded) {
+        const classKey = classSelect.value;
+        const classData = raceClassData.classes?.[classKey];
+        const hd = classData?.hitDie || "1к8";
+        hitDieInput.value = hd;
+      }
+
+      // 5. КД (без доспаха)
       const ac = 10 + mods.dex;
       calculatedAc.textContent = ac;
       preview.ac.textContent = ac;
-      // 3. Скорость
+
+      // 6. Скорость
       const speed = parseInt(baseSpeedInput.value) || 30;
       calculatedSpeed.textContent = speed;
       preview.speed.textContent = speed;
-      // 4. Инициатива
+
+      // 7. Инициатива
       const init = mods.dex;
       calculatedInit.textContent = formatMod(init);
       preview.init.textContent = formatMod(init);
-      // 5. Пассивное восприятие
-      // --- Пассивное восприятие ---
-      function updatePassivePerception() {
-        const wisMod = getMod(parseInt(wisInput.value) || 10);
-        const profBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
-        const isProficient = skillCheckboxes['perception'] && skillCheckboxes['perception'].checked;
-        const passive = 10 + wisMod + (isProficient ? profBonus : 0);
-        passivePerception.textContent = passive;
-        preview.passWis.textContent = passive;
-      }
 
-      // 6. Спасброски (без владения)
+      // 8. Бонус мастерства
+      const level = parseInt(levelInput.value) || 1;
+      const proficiencyBonus = Math.ceil(1 + level / 4);
+      proficiencyBonusElement.textContent = formatMod(proficiencyBonus);
+      preview.profBonus.textContent = formatMod(proficiencyBonus); // Обновление в сводке
+
+      // 9. Пассивное восприятие (с учетом владения)
+      const isPerceptionProficient = skillCheckboxes['perception'] && skillCheckboxes['perception'].checked;
+      const passiveWis = 10 + mods.wis + (isPerceptionProficient ? proficiencyBonus : 0);
+      passivePerception.textContent = passiveWis;
+      preview.passWis.textContent = passiveWis;
+
+      // 10. Спасброски (без владения)
       const savesHtml = `
-          <li>Сил: ${formatMod(mods.str)}</li>
-          <li>Лов: ${formatMod(mods.dex)}</li>
-          <li>Тел: ${formatMod(mods.con)}</li>
-          <li>Инт: ${formatMod(mods.int)}</li>
-          <li>Мдр: ${formatMod(mods.wis)}</li>
-          <li>Хар: ${formatMod(mods.cha)}</li>
-        `;
+      <li>Сила: ${formatMod(mods.str)}</li>
+      <li>Ловкость: ${formatMod(mods.dex)}</li>
+      <li>Телосложение: ${formatMod(mods.con)}</li>
+      <li>Интеллект: ${formatMod(mods.int)}</li>
+      <li>Мудрость: ${formatMod(mods.wis)}</li>
+      <li>Харизма: ${formatMod(mods.cha)}</li>
+    `;
       preview.savesList.innerHTML = savesHtml;
-      // 7. Навыки (без бонуса мастерства)
-      const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
+
+      // 11. Навыки (с учетом бонуса мастерства)
       const skillsData = [
-        {id: 'acrobatics', stat: 'dex', name: 'Акробатика'},
-        {id: 'animal-handling', stat: 'wis', name: 'Уход за животными'},
-        {id: 'arcana', stat: 'int', name: 'Магия'},
-        {id: 'athletics', stat: 'str', name: 'Атлетика'},
-        {id: 'deception', stat: 'cha', name: 'Обман'},
-        {id: 'history', stat: 'int', name: 'История'},
-        {id: 'insight', stat: 'wis', name: 'Проницательность'},
-        {id: 'intimidation', stat: 'cha', name: 'Запугивание'},
-        {id: 'investigation', stat: 'int', name: 'Расследование'},
-        {id: 'medicine', stat: 'wis', name: 'Медицина'},
-        {id: 'nature', stat: 'int', name: 'Природа'},
-        {id: 'perception', stat: 'wis', name: 'Восприятие'},
-        {id: 'performance', stat: 'cha', name: 'Выступление'},
-        {id: 'persuasion', stat: 'cha', name: 'Убеждение'},
-        {id: 'religion', stat: 'int', name: 'Религия'},
-        {id: 'sleight-of-hand', stat: 'dex', name: 'Ловкость рук'},
-        {id: 'stealth', stat: 'dex', name: 'Скрытность'},
-        {id: 'survival', stat: 'wis', name: 'Выживание'}
+        { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
+        { id: 'animal-handling', stat: 'wis', name: 'Уход за животными' },
+        { id: 'arcana', stat: 'int', name: 'Магия' },
+        { id: 'athletics', stat: 'str', name: 'Атлетика' },
+        { id: 'deception', stat: 'cha', name: 'Обман' },
+        { id: 'history', stat: 'int', name: 'История' },
+        { id: 'insight', stat: 'wis', name: 'Проницательность' },
+        { id: 'intimidation', stat: 'cha', name: 'Запугивание' },
+        { id: 'investigation', stat: 'int', name: 'Расследование' },
+        { id: 'medicine', stat: 'wis', name: 'Медицина' },
+        { id: 'nature', stat: 'int', name: 'Природа' },
+        { id: 'perception', stat: 'wis', name: 'Восприятие' },
+        { id: 'performance', stat: 'cha', name: 'Выступление' },
+        { id: 'persuasion', stat: 'cha', name: 'Убеждение' },
+        { id: 'religion', stat: 'int', name: 'Религия' },
+        { id: 'sleight-of-hand', stat: 'dex', name: 'Ловкость рук' },
+        { id: 'stealth', stat: 'dex', name: 'Скрытность' },
+        { id: 'survival', stat: 'wis', name: 'Выживание' }
       ];
-      // --- Загрузка базы данных ---
-      let raceClassData = {};
-      fetch('data/races-classes.json')
-        .then(r => r.json())
-        .then(data => {
-          raceClassData = data;
-          updateSkillOwnership(); // <-- Обновляем владения навыками
-        })
-        .catch(err => {
-          console.error("❌ Ошибка загрузки базы данных:", err);
-        });
-      // --- Обновление владений навыками ---
-      function updateSkillOwnership() {
-        const raceKey = raceSelect.value;
-        const classKey = classSelect.value;
-        const race = raceClassData.races?.[raceKey];
-        const cls = raceClassData.classes?.[classKey];
-        const ownedSkills = new Set();
-        if (race?.skills) {
-          race.skills.forEach(skill => ownedSkills.add(skill));
-        }
-        if (cls?.skills) {
-          cls.skills.forEach(skill => ownedSkills.add(skill));
-        }
-        const skillList = Array.from(ownedSkills).join(", ") || "—";
-        const skillNotice = document.querySelector(".skill-ownership-notice");
-        if (skillNotice) {
-          skillNotice.innerHTML = `Вы владеете навыками: <strong>${skillList}</strong>. Проставьте галочки ниже.`;
-        }
-      }
+      let skillsHtml = '';
+      skillsData.forEach(skill => {
+        const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
+        const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
+        skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
+      });
+      preview.skillsList.innerHTML = skillsHtml;
 
-      function updateCalculations() {
-        // --- Обновление характеристик ---
-        const stats = {};
-        for (let key in statsInputs) {
-          let val = parseInt(statsInputs[key].value) || 10;
-          val = Math.max(3, Math.min(20, val));
-          statsInputs[key].value = val;
-          stats[key] = val;
-        }
-        // --- Модификаторы ---
-        const mods = {};
-        for (let key in stats) {
-          mods[key] = getMod(stats[key]);
-        }
-        // --- КД (без доспеха) ---
-        const ac = 10 + mods.dex;
-        calculatedAc.textContent = ac;
-        preview.ac.textContent = ac;
-        // --- Скорость ---
-        const speed = parseInt(baseSpeedInput.value) || 30;
-        calculatedSpeed.textContent = speed;
-        preview.speed.textContent = speed;
-        // --- Инициатива ---
-        const init = mods.dex;
-        calculatedInit.textContent = formatMod(init);
-        preview.init.textContent = formatMod(init);
-        // --- Пассивное восприятие ---
-        const passWis = 10 + mods.wis;
-        passivePerception.textContent = passWis;
-        preview.passWis.textContent = passWis;
-        // --- Спасброски (без владения) ---
-        const savesHtml = `
-    <li>Сила: ${formatMod(mods.str)}</li>
-    <li>Ловкость: ${formatMod(mods.dex)}</li>
-    <li>Телосложение: ${formatMod(mods.con)}</li>
-    <li>Интеллект: ${formatMod(mods.int)}</li>
-    <li>Мудрость: ${formatMod(mods.wis)}</li>
-    <li>Харизма: ${formatMod(mods.cha)}</li>
-  `;
-        preview.savesList.innerHTML = savesHtml;
-        // --- Навыки (без бонуса мастерства) ---
-        const proficiencyBonus = Math.ceil(1 + (parseInt(levelInput.value) || 1) / 4);
-        const skillsData = [
-          {id: 'acrobatics', stat: 'dex', name: 'Акробатика'},
-          {id: 'animal-handling', stat: 'wis', name: 'Уход за животными'},
-          {id: 'arcana', stat: 'int', name: 'Магия'},
-          {id: 'athletics', stat: 'str', name: 'Атлетика'},
-          {id: 'deception', stat: 'cha', name: 'Обман'},
-          {id: 'history', stat: 'int', name: 'История'},
-          {id: 'insight', stat: 'wis', name: 'Проницательность'},
-          {id: 'intimidation', stat: 'cha', name: 'Запугивание'},
-          {id: 'investigation', stat: 'int', name: 'Расследование'},
-          {id: 'medicine', stat: 'wis', name: 'Медицина'},
-          {id: 'nature', stat: 'int', name: 'Природа'},
-          {id: 'perception', stat: 'wis', name: 'Восприятие'},
-          {id: 'performance', stat: 'cha', name: 'Выступление'},
-          {id: 'persuasion', stat: 'cha', name: 'Убеждение'},
-          {id: 'religion', stat: 'int', name: 'Религия'},
-          {id: 'sleight-of-hand', stat: 'dex', name: 'Ловкость рук'},
-          {id: 'stealth', stat: 'dex', name: 'Скрытность'},
-          {id: 'survival', stat: 'wis', name: 'Выживание'}
-        ];
-        // --- Бонус мастерства ---
-        document.getElementById("proficiency-bonus").textContent = formatMod(proficiencyBonus);
-        let skillsHtml = '';
-        skillsData.forEach(skill => {
-          const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
-          const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
-          skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
-        });
-        preview.skillsList.innerHTML = skillsHtml;
-        // --- Обновление предпросмотра характеристик ---
-        preview.strVal.textContent = stats.str;
-        preview.dexVal.textContent = stats.dex;
-        preview.conVal.textContent = stats.con;
-        preview.intVal.textContent = stats.int;
-        preview.wisVal.textContent = stats.wis;
-        preview.chaVal.textContent = stats.cha;
-        preview.strMod.textContent = formatMod(mods.str);
-        preview.dexMod.textContent = formatMod(mods.dex);
-        preview.conMod.textContent = formatMod(mods.con);
-        preview.intMod.textContent = formatMod(mods.int);
-        preview.wisMod.textContent = formatMod(mods.wis);
-        preview.chaMod.textContent = formatMod(mods.cha);
-      }
+      // 12. Обновление предпросмотра характеристик
+      preview.strVal.textContent = stats.str;
+      preview.dexVal.textContent = stats.dex;
+      preview.conVal.textContent = stats.con;
+      preview.intVal.textContent = stats.int;
+      preview.wisVal.textContent = stats.wis;
+      preview.chaVal.textContent = stats.cha;
+      preview.strMod.textContent = formatMod(mods.str);
+      preview.dexMod.textContent = formatMod(mods.dex);
+      preview.conMod.textContent = formatMod(mods.con);
+      preview.intMod.textContent = formatMod(mods.int);
+      preview.wisMod.textContent = formatMod(mods.wis);
+      preview.chaMod.textContent = formatMod(mods.cha);
 
-      // --- Обновляем пассивное восприятие ---
-      updatePassivePerception();
-    }
-
-    let skillsHtml = '';
-    skillsData.forEach(skill => {
-      const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
-      const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
-      skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
-    });
-    preview.skillsList.innerHTML = skillsHtml;
-    // --- Обновление предпросмотра характеристик ---
-    preview.strVal.textContent = stats.str;
-    preview.dexVal.textContent = stats.dex;
-    preview.conVal.textContent = stats.con;
-    preview.intVal.textContent = stats.int;
-    preview.wisVal.textContent = stats.wis;
-    preview.chaVal.textContent = stats.cha;
-    preview.strMod.textContent = formatMod(mods.str);
-    preview.dexMod.textContent = formatMod(mods.dex);
-    preview.conMod.textContent = formatMod(mods.con);
-    preview.intMod.textContent = formatMod(mods.int);
-    preview.wisMod.textContent = formatMod(mods.wis);
-    preview.chaMod.textContent = formatMod(mods.cha);
-    preview.profBonus.textContent = formatMod(proficiencyBonus);
-    // --- Обновление характеристик в сводке ---
-    document.getElementById("summary-str-val").textContent = stats.str;
-    document.getElementById("summary-dex-val").textContent = stats.dex;
-    document.getElementById("summary-con-val").textContent = stats.con;
-    document.getElementById("summary-int-val").textContent = stats.int;
-    document.getElementById("summary-wis-val").textContent = stats.wis;
-    document.getElementById("summary-cha-val").textContent = stats.cha;
-    document.getElementById("summary-str-mod").textContent = formatMod(mods.str);
-    document.getElementById("summary-dex-mod").textContent = formatMod(mods.dex);
-    document.getElementById("summary-con-mod").textContent = formatMod(mods.con);
-    document.getElementById("summary-int-mod").textContent = formatMod(mods.int);
-    document.getElementById("summary-wis-mod").textContent = formatMod(mods.wis);
-    document.getElementById("summary-cha-mod").textContent = formatMod(mods.cha);
-    // --- Обновление основной информации ---
-    preview.name.textContent = nameInput.value || "Имя персонажа";
-    preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
-    preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
-    preview.level.textContent = levelInput.value;
-    preview.bg.textContent = bgInput.value || "-";
-    preview.align.textContent = alignSelect.value;
-    preview.hp.textContent = currentHpInput.value || "0";
-    preview.maxHp.textContent = maxHpInput.value || "0";
-    preview.ac.textContent = ac;
-    preview.speed.textContent = speed;
-    preview.init.textContent = formatMod(init);
-    preview.passWis.textContent = 10 + mods.wis;
-    // --- Модификаторы в полях ---
-    document.getElementById("str-mod").textContent = formatMod(mods.str);
-    document.getElementById("dex-mod").textContent = formatMod(mods.dex);
-    document.getElementById("con-mod").textContent = formatMod(mods.con);
-    document.getElementById("int-mod").textContent = formatMod(mods.int);
-    document.getElementById("wis-mod").textContent = formatMod(mods.wis);
-    document.getElementById("cha-mod").textContent = formatMod(mods.cha);
+      // 13. Обновление основной информации в сводке
+      preview.name.textContent = nameInput.value || "Имя персонажа";
+      preview.race.textContent = raceSelect.options[raceSelect.selectedIndex].text;
+      preview.class.textContent = classSelect.options[classSelect.selectedIndex].text;
+      preview.level.textContent = levelInput.value;
+      preview.bg.textContent = bgInput.value || "-";
+      preview.align.textContent = alignSelect.value;
+      preview.hp.textContent = currentHpInput.value || "0";
+      preview.maxHp.textContent = maxHpInput.value || "0";
+      preview.ac.textContent = ac;
+      preview.speed.textContent = speed;
+      preview.init.textContent = formatMod(init);
+      // passiveWis уже обновлен выше
     }
 
     // --- Слушатели ---
     nameInput.addEventListener("input", updateAll);
     raceSelect.addEventListener("change", () => {
-      updateRaceBonuses();
+      updateSkillOwnership();
       updateAll();
     });
     classSelect.addEventListener("change", () => {
-      updateHitDie();
+      updateSkillOwnership();
       updateAll();
     });
-    levelInput.addEventListener("input", () => {
-      updateAll();
-    });
+    levelInput.addEventListener("input", updateAll);
     bgInput.addEventListener("input", updateAll);
     alignSelect.addEventListener("change", updateAll);
     expInput.addEventListener("input", updateAll);
     currentHpInput.addEventListener("input", updateAll);
     maxHpInput.addEventListener("input", updateAll);
-    baseSpeedInput.addEventListener("input", () => {
-      updateAll();
-    });
+    baseSpeedInput.addEventListener("input", updateAll);
     for (let key in statsInputs) {
-      statsInputs[key].addEventListener("input", () => {
-        updateAll();
-      });
+      statsInputs[key].addEventListener("input", updateAll);
     }
     for (let key in skillCheckboxes) {
       skillCheckboxes[key].addEventListener("change", updateAll);
     }
+
     avatarUpload.addEventListener("change", (e) => {
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = (evt) => {
           summaryAvatar.src = evt.target.result;
-          // Сохраняем в localStorage (base64)
           localStorage.setItem('dnd-avatar-temp', evt.target.result);
         };
         reader.readAsDataURL(file);
       }
-      // --- Слушатель на изменение Мудрости ---
-      wisInput.addEventListener("input", () => {
-        let val = parseInt(wisInput.value) || 10;
-        val = Math.max(3, Math.min(20, val));
-        wisInput.value = val;
-        updateAll(); // ✅ Пересчитываем всё
-      });
     });
+
     // --- Сохранение ---
     saveBtn.addEventListener("click", () => {
       const data = {
@@ -1245,9 +1126,9 @@
       localStorage.setItem("dnd-character", JSON.stringify(data));
       alert("✅ Персонаж сохранён!");
     });
+
     // --- Экспорт ---
     exportBtn.addEventListener("click", () => {
-      // Для простоты, экспортим только основные данные
       const data = {
         name: nameInput.value || "Имя персонажа",
         race: raceSelect.options[raceSelect.selectedIndex].text,
@@ -1259,27 +1140,20 @@
         const value = parseInt(statsInputs[key].value);
         data.stats[key] = `${value} (${formatMod(getMod(value))})`;
       }
-      let text = `=== Лист персонажа ===
-`;
-      text += `Имя: ${data.name}
-`;
-      text += `Раса: ${data.race}
-`;
-      text += `Класс: ${data.class}
-`;
-      text += `Уровень: ${data.level}
-`;
-      text += `Характеристики:
-`;
+      let text = `=== Лист персонажа ===\n`;
+      text += `Имя: ${data.name}\n`;
+      text += `Раса: ${data.race}\n`;
+      text += `Класс: ${data.class}\n`;
+      text += `Уровень: ${data.level}\n`;
+      text += `Характеристики:\n`;
       for (let key in data.stats) {
         const name = {
           str: "Сила", dex: "Ловкость", con: "Телосложение",
           int: "Интеллект", wis: "Мудрость", cha: "Харизма"
         }[key];
-        text += `- ${name}: ${data.stats[key]}
-`;
+        text += `- ${name}: ${data.stats[key]}\n`;
       }
-      const blob = new Blob([text], {type: "text/plain"});
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -1289,6 +1163,7 @@
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
     });
+
     // --- Сброс ---
     resetBtn.addEventListener("click", () => {
       if (confirm("🗑️ Очистить форму?")) {
@@ -1311,11 +1186,10 @@
         }
         summaryAvatar.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
         updateAll();
-        updateRaceBonuses();
-        updateHitDie();
-        updatePassivePerception();
+        updateSkillOwnership();
       }
     });
+
     // --- Менеджер персонажей ---
     manageBtn.addEventListener("click", () => {
       // Пока просто заглушка, вы можете реализовать здесь логику открытия менеджера
@@ -1323,6 +1197,29 @@
       // Пример: window.open('character-manager.html', '_blank');
       // Или: window.location.href = 'character-manager.html';
     });
+
+    // --- Загрузка данных из JSON ---
+    fetch('../../rulesdnd/data/races-classes.json') // Исправлен путь
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log("Данные races-classes.json успешно загружены:", data); // Для отладки
+        raceClassData = data;
+        dataLoaded = true; // Устанавливаем флаг
+        updateSkillOwnership();
+        updateAll(); // Пересчитываем всё после загрузки данных
+      })
+      .catch(err => {
+        console.error("❌ Ошибка загрузки базы данных races-classes.json:", err);
+        alert("Ошибка загрузки данных рас и классов. Некоторые функции (бонусы от рас/классов, кость хитов) могут работать некорректно.");
+        // Даже если JSON не загрузился, всё равно запускаем updateAll для базовой функциональности
+        updateAll();
+      });
+
     // --- Загрузка сохранённого ---
     const saved = localStorage.getItem("dnd-character");
     if (saved) {
@@ -1357,16 +1254,13 @@
           summaryAvatar.src = data.avatar;
         }
         updateAll();
-        updateRaceBonuses();
-        updateHitDie();
+        updateSkillOwnership(); // Обновить владения после загрузки сохраненного
       } catch (e) {
         console.error("Ошибка загрузки сохранённого персонажа", e);
       }
     }
-    // --- Первичное обновление ---
-    updateAll();
-    updateRaceBonuses();
-    updateHitDie();
+    // --- Первичное обновление (на случай, если JSON загрузится медленно) ---
+    // updateAll(); // Убираем отсюда, чтобы избежать двойного вызова
   });
 </script>
 </body>
