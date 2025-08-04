@@ -745,7 +745,7 @@
       <p>Лист персонажа для D&D 5e</p>
     </footer>
   </div>
-    <script>
+      <script>
 document.addEventListener("DOMContentLoaded", () => {
   // --- Элементы формы ---
   const nameInput = document.getElementById("char-name");
@@ -806,7 +806,7 @@ document.addEventListener("DOMContentLoaded", () => {
     init: document.getElementById("summary-init"),
     hp: document.getElementById("summary-hp"),
     maxHp: document.getElementById("summary-max-hp"),
-    profBonus: document.getElementById("summary-prof-bonus"), // Исправлено ID
+    profBonus: document.getElementById("summary-prof-bonus"), // Исправлен ID
     // Спасброски и навыки
     savesList: document.getElementById("summary-saves"),
     skillsList: document.getElementById("summary-skills")
@@ -817,9 +817,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const calculatedSpeed = document.getElementById("calculated-speed");
   const calculatedInit = document.getElementById("calculated-init");
   const passivePerception = document.getElementById("passive-perception");
-  const proficiencyBonusElement = document.getElementById("proficiency-bonus"); // Элемент бонуса мастерства
+  const proficiencyBonusElement = document.getElementById("proficiency-bonus");
 
-  // --- Бонусы от расы ---
+  // --- Бонусы от расы и класса ---
   const statBonuses = {
     str: document.getElementById("str-bonus"),
     dex: document.getElementById("dex-bonus"),
@@ -830,10 +830,10 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // --- Данные из JSON ---
-  let raceClassData = {}; // Будет содержать данные из races-classes.json
+  let raceClassData = {};
+  let dataLoaded = false; // Флаг для отслеживания загрузки данных
 
   // --- Функции ---
-  // Функция подсчёта модификатора
   function getMod(value) {
     return Math.floor((value - 10) / 2);
   }
@@ -841,8 +841,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return mod >= 0 ? `+${mod}` : `${mod}`;
   }
 
-  // --- Обновление текста о владении навыками ---
   function updateSkillOwnership() {
+    if (!dataLoaded) return; // Не обновлять, если данные не загружены
     const raceKey = raceSelect.value;
     const classKey = classSelect.value;
     const race = raceClassData.races?.[raceKey];
@@ -861,9 +861,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // --- Обновление всех значений ---
+  // --- Основная функция обновления ---
   function updateAll() {
-
     // 1. Обновление характеристик и их модификаторов
     const stats = {};
     for (let key in statsInputs) {
@@ -886,68 +885,65 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cha-mod").textContent = formatMod(mods.cha);
 
     // 3. Обновление бонусов от расы и класса (подсказки)
-    const raceKey = raceSelect.value;
-    const classKey = classSelect.value;
-    const raceData = raceClassData.races?.[raceKey];
-    const classData = raceClassData.classes?.[classKey];
-
     // Сброс бонусов
     for (let key in statBonuses) {
-      statBonuses[key].textContent = "+0";
-      statBonuses[key].title = "Бонус от расы или класса";
+        statBonuses[key].textContent = "+0";
+        statBonuses[key].title = "Бонус от расы или класса";
+        statBonuses[key].style.display = "inline-block"; // Убедиться, что элемент виден
     }
 
-    // Применение бонусов от расы
-    if (raceData?.stats) {
-        for (let key in raceData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
-                const bonus = raceData.stats[key];
-                // Проверяем, если бонус уже есть (например, от класса), суммируем
-                const currentBonusText = statBonuses[key].textContent;
-                const currentBonusValue = parseInt(currentBonusText) || 0;
-                const newBonusValue = currentBonusValue + bonus;
-                statBonuses[key].textContent = formatMod(newBonusValue);
-                statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
-                // Если уже есть бонус от класса, обновляем тултип
-                if (statBonuses[key].title.includes("Бонус от класса")) {
-                    statBonuses[key].title += `, Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
-                } else {
+    if (dataLoaded) { // Применять бонусы только после загрузки данных
+        const raceKey = raceSelect.value;
+        const classKey = classSelect.value;
+        const raceData = raceClassData.races?.[raceKey];
+        const classData = raceClassData.classes?.[classKey];
+
+        // Применение бонусов от расы
+        if (raceData?.stats) {
+            for (let key in raceData.stats) {
+                if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+                    const bonus = raceData.stats[key];
+                    const currentBonusText = statBonuses[key].textContent;
+                    const currentBonusValue = parseInt(currentBonusText) || 0;
+                    const newBonusValue = currentBonusValue + bonus;
+                    statBonuses[key].textContent = formatMod(newBonusValue);
                     statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
                 }
             }
         }
-    }
 
-    // Применение бонусов от класса (если есть в данных, хотя обычно их нет для характеристик)
-    // Примечание: В стандартных правилах D&D 5e бонусы от класса к характеристикам обычно не применяются.
-    // Эта часть кода оставлена на случай, если в вашем файле races-classes.json они будут указаны.
-    if (classData?.stats) {
-        for (let key in classData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
-                const bonus = classData.stats[key];
-                // Проверяем, если бонус уже есть (например, от расы), суммируем
-                const currentBonusText = statBonuses[key].textContent;
-                const currentBonusValue = parseInt(currentBonusText) || 0;
-                const newBonusValue = currentBonusValue + bonus;
-                statBonuses[key].textContent = formatMod(newBonusValue);
-                // Если уже есть бонус от расы, обновляем тултип
-                if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
-                    statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
-                } else {
-                    statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+        // Применение бонусов от класса (если есть)
+        if (classData?.stats) {
+            for (let key in classData.stats) {
+                if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+                    const bonus = classData.stats[key];
+                    const currentBonusText = statBonuses[key].textContent;
+                    const currentBonusValue = parseInt(currentBonusText) || 0;
+                    const newBonusValue = currentBonusValue + bonus;
+                    statBonuses[key].textContent = formatMod(newBonusValue);
+                    // Обновление тултипа
+                    if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
+                        statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                    } else {
+                        statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                    }
                 }
             }
         }
+
+        // Скорость из расы
+        if (raceData?.speed !== undefined) {
+            baseSpeedInput.value = raceData.speed;
+        }
     }
 
-    // Скорость
-    if (raceData?.speed !== undefined) {
-        baseSpeedInput.value = raceData.speed;
+    // 4. Обновление Кости Хитов из данных класса
+    if (dataLoaded) {
+        const classKey = classSelect.value;
+        const classData = raceClassData.classes?.[classKey];
+        const hd = classData?.hitDie || "1к8";
+        hitDieInput.value = hd;
     }
-
-    // 4. Обновление Кости Хитов
-    const hd = classData?.hitDie || "1к8"; // Значение по умолчанию
-    hitDieInput.value = hd;
 
     // 5. КД (без доспаха)
     const ac = 10 + mods.dex;
@@ -970,7 +966,7 @@ document.addEventListener("DOMContentLoaded", () => {
     proficiencyBonusElement.textContent = formatMod(proficiencyBonus);
     preview.profBonus.textContent = formatMod(proficiencyBonus); // Обновление в сводке
 
-    // 9. Пассивное восприятие
+    // 9. Пассивное восприятие (с учетом владения)
     const isPerceptionProficient = skillCheckboxes['perception'] && skillCheckboxes['perception'].checked;
     const passiveWis = 10 + mods.wis + (isPerceptionProficient ? proficiencyBonus : 0);
     passivePerception.textContent = passiveWis;
@@ -987,7 +983,7 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
     preview.savesList.innerHTML = savesHtml;
 
-    // 11. Навыки
+    // 11. Навыки (с учетом бонуса мастерства)
     const skillsData = [
       { id: 'acrobatics', stat: 'dex', name: 'Акробатика' },
       { id: 'animal-handling', stat: 'wis', name: 'Уход за животными' },
@@ -1047,8 +1043,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- Слушатели ---
   nameInput.addEventListener("input", updateAll);
-  raceSelect.addEventListener("change", () => { updateSkillOwnership(); updateAll(); }); // Обновить владения и пересчитать
-  classSelect.addEventListener("change", () => { updateSkillOwnership(); updateAll(); }); // Обновить владения и пересчитать
+  raceSelect.addEventListener("change", () => { updateSkillOwnership(); updateAll(); });
+  classSelect.addEventListener("change", () => { updateSkillOwnership(); updateAll(); });
   levelInput.addEventListener("input", updateAll);
   bgInput.addEventListener("input", updateAll);
   alignSelect.addEventListener("change", updateAll);
@@ -1131,7 +1127,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }[key];
       text += `- ${name}: ${data.stats[key]}\n`;
     }
-    const blob = new Blob([text], { type: "text/plain;charset=utf-8" }); // Указание кодировки
+    const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
@@ -1163,12 +1159,13 @@ document.addEventListener("DOMContentLoaded", () => {
         skillCheckboxes[key].checked = false;
       }
       summaryAvatar.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
-      updateAll(); // Пересчитать всё после сброса
+      updateAll();
+      updateSkillOwnership();
     }
   });
 
   // --- Загрузка данных из JSON ---
-  fetch('../rulesdnd/data/races-classes.json') // Исправлен путь к файлу
+  fetch('../../rulesdnd/data/races-classes.json') // Исправлен путь
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -1176,92 +1173,22 @@ document.addEventListener("DOMContentLoaded", () => {
         return response.json();
     })
     .then(data => {
+      console.log("Данные races-classes.json успешно загружены:", data); // Для отладки
       raceClassData = data;
-      updateSkillOwnership(); // Обновить владения после загрузки данных
-      // --- Загрузка сохранённого ---
-      const saved = localStorage.getItem("dnd-character");
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          nameInput.value = data.name || "";
-          raceSelect.value = data.race || "human";
-          classSelect.value = data.class || "воин";
-          levelInput.value = data.level || "1";
-          bgInput.value = data.background || "";
-          alignSelect.value = data.alignment || "Нейтральный";
-          expInput.value = data.exp || "0";
-          for (let key in data.stats) {
-            if (statsInputs[key]) {
-              statsInputs[key].value = data.stats[key];
-            }
-          }
-          if (data.combat) {
-             hitDieInput.value = data.combat.hitDie || "";
-             currentHpInput.value = data.combat.currentHp || "";
-             maxHpInput.value = data.combat.maxHp || "";
-             baseSpeedInput.value = data.combat.baseSpeed || "30";
-          }
-          if (data.skills) {
-             for (let key in data.skills) {
-                 if (skillCheckboxes[key] !== undefined) {
-                     skillCheckboxes[key].checked = data.skills[key];
-                 }
-             }
-          }
-          if (data.avatar) {
-            summaryAvatar.src = data.avatar;
-          }
-        } catch (e) {
-          console.error("Ошибка загрузки сохранённого персонажа", e);
-        }
-      }
-      // --- Первичное обновление ---
-      updateAll();
+      dataLoaded = true; // Устанавливаем флаг
+      updateSkillOwnership();
+      updateAll(); // Пересчитываем всё после загрузки данных
     })
     .catch(err => {
       console.error("❌ Ошибка загрузки базы данных races-classes.json:", err);
-      alert("Ошибка загрузки данных рас и классов. Некоторые функции могут работать некорректно.");
-      // --- Загрузка сохранённого даже если JSON не загрузился ---
-      const saved = localStorage.getItem("dnd-character");
-      if (saved) {
-        try {
-          const data = JSON.parse(saved);
-          nameInput.value = data.name || "";
-          raceSelect.value = data.race || "human";
-          classSelect.value = data.class || "воин";
-          levelInput.value = data.level || "1";
-          bgInput.value = data.background || "";
-          alignSelect.value = data.alignment || "Нейтральный";
-          expInput.value = data.exp || "0";
-          for (let key in data.stats) {
-            if (statsInputs[key]) {
-              statsInputs[key].value = data.stats[key];
-            }
-          }
-          if (data.combat) {
-             hitDieInput.value = data.combat.hitDie || "";
-             currentHpInput.value = data.combat.currentHp || "";
-             maxHpInput.value = data.combat.maxHp || "";
-             baseSpeedInput.value = data.combat.baseSpeed || "30";
-          }
-          if (data.skills) {
-             for (let key in data.skills) {
-                 if (skillCheckboxes[key] !== undefined) {
-                     skillCheckboxes[key].checked = data.skills[key];
-                 }
-             }
-          }
-          if (data.avatar) {
-            summaryAvatar.src = data.avatar;
-          }
-        } catch (e) {
-          console.error("Ошибка загрузки сохранённого персонажа", e);
-        }
-      }
-      // --- Первичное обновление с базовыми значениями ---
+      alert("Ошибка загрузки данных рас и классов. Некоторые функции (бонусы от рас/классов, кость хитов) могут работать некорректно.");
+      // Даже если JSON не загрузился, всё равно запускаем updateAll для базовой функциональности
       updateAll();
     });
+
+  // --- Первичное обновление (на случай, если JSON загрузится медленно) ---
+  // updateAll(); // Убираем отсюда, чтобы избежать двойного вызова
 });
-    </script>
+  </script>
 </body>
 </html>
