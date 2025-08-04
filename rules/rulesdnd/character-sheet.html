@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <style>
-    /* === ОСНОВНОЙ МАКЕТ: ВЕРТИКАЛЬНЫЙ ПОТОК === */
+       /* === ОСНОВНОЙ МАКЕТ: ВЕРТИКАЛЬНЫЙ ПОТОК === */
     .main-layout {
       display: flex;
       flex-direction: column;
@@ -66,10 +66,10 @@
       gap: 15px;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: 20px;
-      margin-bottom: 20px;
+      margin-top: 20px; /* Уменьшено расстояние сверху */
+      margin-bottom: 20px; /* Добавлено расстояние снизу */
     }
-    .btn-primary, .btn-secondary, .btn-clear, .btn-manager {
+    .btn-primary, .btn-secondary, .btn-clear, .btn-manager { /* Добавлен .btn-manager */
       padding: 12px 25px;
       border: none;
       border-radius: 8px;
@@ -96,6 +96,7 @@
       background: #8b4513;
       color: #fff;
     }
+    /* Новый стиль для кнопки менеджера */
     .btn-manager {
       background: #4a2f1a;
       color: #d4af37;
@@ -104,14 +105,14 @@
     .btn-primary:hover,
     .btn-secondary:hover,
     .btn-clear:hover,
-    .btn-manager:hover {
+    .btn-manager:hover { /* Добавлен :hover для .btn-manager */
       transform: translateY(-3px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     }
     .btn-primary:active,
     .btn-secondary:active,
     .btn-clear:active,
-    .btn-manager:active {
+    .btn-manager:active { /* Добавлен :active для .btn-manager */
       transform: translateY(1px);
       box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
     }
@@ -193,6 +194,10 @@
       z-index: 100;
       font-size: 0.9em;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    .stat-bonus:hover {
+      background: rgba(212, 175, 55, 0.2);
+      border: 1px solid #d4af37;
     }
     /* === НАВЫКИ === */
     .skills-grid {
@@ -439,16 +444,13 @@
   font-size: 0.9em;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
-.stat-bonus:hover {
-  background: rgba(212, 175, 55, 0.2);
-  border: 1px solid #d4af37;
-}
 .passive-perception {
   font-size: 0.9em;
   color: #d4af37;
   margin-top: 10px;
   font-style: italic;
 }
+
   </style>
 </head>
 <body>
@@ -467,13 +469,12 @@
       <!-- 📝 Основные данные -->
       <section class="form-section">
         <h3>📝 Основные данные</h3>
-        
-        <!-- Кнопки управления -->
+               <!-- Кнопки управления -->
         <div class="form-buttons">
           <button id="save-char" class="btn-primary">💾 Сохранить</button>
           <button id="export-char" class="btn-secondary">📤 Экспорт</button>
           <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
-          <button id="manage-char" class="btn-manager">👥 Менеджер</button>
+          <button id="manage-char" class="btn-manager">👥 Менеджер</button> <!-- Новая кнопка -->
           <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
         </div>
 
