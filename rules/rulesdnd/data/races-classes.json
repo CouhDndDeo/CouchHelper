@@ -19,7 +19,9 @@
         "dex": 2
       },
       "speed": 30,
-      "skills": ["perception"]
+      "skills": [
+        "Восприятие"
+      ]
     },
     "dwarf": {
       "name": "Дварф",
@@ -52,7 +54,13 @@
       },
       "choose": {
         "count": 2,
-        "from": ["str", "dex", "con", "int", "wis"]
+        "from": [
+          "str",
+          "dex",
+          "con",
+          "int",
+          "wis"
+        ]
       },
       "speed": 30,
       "skills": []
@@ -74,156 +82,189 @@
       },
       "speed": 30,
       "skills": []
-    },
-    "aarakocra": {
-      "name": "Ааракокра",
-      "stats": {
-        "dex": 2,
-        "wis": 1
-      },
-      "speed": 25,
-      "fly": 50,
-      "skills": []
-    },
-    "aasimar": {
-      "name": "Аасимар",
-      "stats": {
-        "cha": 2
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "bugbear": {
-      "name": "Багбир",
-      "stats": {
-        "str": 2,
-        "dex": 1
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "gith": {
-      "name": "Гит",
-      "choose": {
-        "count": 1,
-        "from": ["str", "dex", "con", "int", "wis", "cha"]
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "giff": {
-      "name": "Гифф",
-      "stats": {
-        "str": 2,
-        "con": 1
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "simic-hybrid": {
-      "name": "Гибрид Симиков",
-      "stats": {
-        "con": 2
-      },
-      "choose": {
-        "count": 1,
-        "from": ["str", "dex", "int"]
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "verdan": {
-      "name": "Вердан",
-      "stats": {
-        "cha": 2,
-        "con": 1
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "vedalken": {
-      "name": "Ведалкен",
-      "stats": {
-        "int": 2,
-        "wis": 1
-      },
-      "speed": 30,
-      "skills": []
-    },
-    "autognome": {
-      "name": "Автогном",
-      "stats": {
-        "con": 1,
-        "int": 1
-      },
-      "choose": {
-        "count": 1,
-        "from": ["str", "dex", "wis", "cha"]
-      },
-      "speed": 30,
-      "skills": []
     }
   },
   "classes": {
     "воин": {
       "name": "Воин",
       "hitDie": "1к10",
-      "skills": ["acrobatics", "animal-handling", "athletics", "history", "insight", "intimidation", "perception", "survival"]
-    },
-    "маг": {
-      "name": "Маг",
-      "hitDie": "1к6",
-      "skills": ["arcana", "history", "insight", "investigation", "medicine", "religion"]
-    },
-    "жрец": {
-      "name": "Жрец",
-      "hitDie": "1к8",
-      "skills": ["history", "insight", "medicine", "persuasion", "religion"]
-    },
-    "разбойник": {
-      "name": "Разбойник",
-      "hitDie": "1к8",
-      "skills": ["acrobatics", "athletics", "deception", "insight", "intimidation", "investigation", "perception", "performance", "persuasion", "sleight-of-hand", "stealth"]
-    },
-    "паладин": {
-      "name": "Паладин",
-      "hitDie": "1к10",
-      "skills": ["athletics", "insight", "intimidation", "medicine", "persuasion", "religion"]
-    },
-    "следопыт": {
-      "name": "Следопыт",
-      "hitDie": "1к10",
-      "skills": ["acrobatics", "animal-handling", "athletics", "insight", "investigation", "nature", "perception", "stealth", "survival"]
+      "skills": [
+        "Акробатика",
+        "Атлетика",
+        "История",
+        "Проницательность",
+        "Запугивание",
+        "Восприятие",
+        "Выживание",
+        "Уход за животными"
+      ],
+      "skillsLimit": 2
     },
     "варвар": {
       "name": "Варвар",
       "hitDie": "1к12",
-      "skills": ["acrobatics", "animal-handling", "athletics", "intimidation", "nature", "perception", "survival"]
+      "skills": [
+        "Атлетика",
+        "Запугивание",
+        "Природа",
+        "Восприятие",
+        "Выживание",
+        "Уход за животными"
+      ],
+      "skillsLimit": 2
+    },
+    "жрец": {
+      "name": "Жрец",
+      "hitDie": "1к8",
+      "skills": [
+        "История",
+        "Проницательность",
+        "Медицина",
+        "Убеждение",
+        "Религия"
+      ],
+      "skillsLimit": 2
+    },
+    "разбойник": {
+      "name": "Разбойник",
+      "hitDie": "1к8",
+      "skills": [
+        "Акробатика",
+        "Атлетика",
+        "Обман",
+        "Проницательность",
+        "Запугивание",
+        "Расследование",
+        "Восприятие",
+        "Выступление",
+        "Убеждение",
+        "Ловкость рук",
+        "Скрытность"
+      ],
+      "skillsLimit": 4
+    },
+    "паладин": {
+      "name": "Паладин",
+      "hitDie": "1к10",
+      "skills": [
+        "Атлетика",
+        "Проницательность",
+        "Запугивание",
+        "Медицина",
+        "Убеждение",
+        "Религия"
+      ],
+      "skillsLimit": 2
+    },
+    "следопыт": {
+      "name": "Следопыт",
+      "hitDie": "1к10",
+      "skills": [
+        "Акробатика",
+        "Атлетика",
+        "История",
+        "Проницательность",
+        "Расследование",
+        "Природа",
+        "Восприятие",
+        "Скрытность",
+        "Выживание",
+        "Уход за животными"
+      ],
+      "skillsLimit": 3
     },
     "друид": {
       "name": "Друид",
       "hitDie": "1к8",
-      "skills": ["arcana", "animal-handling", "insight", "medicine", "nature", "perception", "religion", "survival"]
+      "skills": [
+        "Магия",
+        "Уход за животными",
+        "Проницательность",
+        "Медицина",
+        "Природа",
+        "Восприятие",
+        "Религия",
+        "Выживание"
+      ],
+      "skillsLimit": 2
     },
     "бард": {
       "name": "Бард",
       "hitDie": "1к8",
-      "skills": ["acrobatics", "animal-handling", "arcana", "athletics", "deception", "history", "insight", "intimidation", "investigation", "medicine", "nature", "perception", "performance", "persuasion", "religion", "sleight-of-hand", "stealth", "survival"]
+      "skills": [
+        "Акробатика",
+        "Уход за животными",
+        "Магия",
+        "Атлетика",
+        "Обман",
+        "История",
+        "Проницательность",
+        "Запугивание",
+        "Расследование",
+        "Медицина",
+        "Природа",
+        "Восприятие",
+        "Выступление",
+        "Убеждение",
+        "Религия",
+        "Ловкость рук",
+        "Скрытность",
+        "Выживание"
+      ],
+      "skillsLimit": 3
     },
     "чародей": {
       "name": "Чародей",
       "hitDie": "1к6",
-      "skills": ["arcana", "deception", "insight", "intimidation", "persuasion", "religion"]
+      "skills": [
+        "Магия",
+        "Обман",
+        "Проницательность",
+        "Запугивание",
+        "Убеждение",
+        "Религия"
+      ],
+      "skillsLimit": 2
     },
     "колдун": {
       "name": "Колдун",
       "hitDie": "1к8",
-      "skills": ["arcana", "deception", "history", "intimidation", "investigation", "nature", "religion"]
+      "skills": [
+        "Магия",
+        "Обман",
+        "История",
+        "Запугивание",
+        "Расследование",
+        "Природа",
+        "Религия"
+      ],
+      "skillsLimit": 2
     },
     "монах": {
       "name": "Монах",
       "hitDie": "1к8",
-      "skills": ["acrobatics", "athletics", "history", "insight", "religion", "stealth"]
+      "skills": [
+        "Акробатика",
+        "Атлетика",
+        "История",
+        "Проницательность",
+        "Религия",
+        "Скрытность"
+      ],
+      "skillsLimit": 2
+    },
+    "волшебник": {
+      "name": "Волшебник",
+      "hitDie": "1к6",
+      "skills": [
+        "История",
+        "Магия",
+        "Медицина",
+        "Проницательность",
+        "Расследование",
+        "Религия"
+      ],
+      "skillsLimit": 2
     }
   }
 }
