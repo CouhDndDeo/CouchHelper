@@ -873,7 +873,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const cls = raceClassData.classes?.[classKey];
       const ownedSkills = new Set();
       if (race?.skills) {
-        race.skills.forEach(skill => ownedSkills.add(skill);
+        race.skills.forEach(skill => ownedSkills.add(skill));
       }
       if (cls?.skills) {
         cls.skills.forEach(skill => ownedSkills.add(skill);
@@ -1334,7 +1334,6 @@ document.getElementById('raceSelect').innerHTML = raceOptions;
     let classOptions = `<option value="">-- Выберите класс --</option>`;
 for (let key in racesClasses.classes) { classOptions += `<option value="${key}">${racesClasses.classes[key].name}</option>`; }
 document.getElementById('classSelect').innerHTML = classOptions;
-  });
 
 function onRaceChange() {
   const raceKey = document.getElementById("raceSelect").value;
