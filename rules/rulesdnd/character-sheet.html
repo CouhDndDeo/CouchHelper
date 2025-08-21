@@ -1324,7 +1324,7 @@ const featureDescriptions = {
 };
 
 let racesClasses = {};
-fetch("races-classes.json")
+fetch('data/races-classes.json')
   .then(r => r.json())
   .then(data => {
     racesClasses = data;
