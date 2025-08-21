@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* === ХАРАКТЕРИСТИКИ === */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr);
       gap: 20px;
       margin: 25px 0;
     }
@@ -234,7 +234,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* === НАВЫКИ === */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr);
       gap: 15px;
       list-style: none;
       padding: 0;
@@ -314,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     .summary-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr);
       gap: 15px;
       margin: 25px 0;
     }
@@ -873,10 +873,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const cls = raceClassData.classes?.[classKey];
       const ownedSkills = new Set();
       if (race?.skills) {
-        race.skills.forEach(skill => ownedSkills.add(skill));
+        race.skills.forEach(skill => ownedSkills.add(skill);
       }
       if (cls?.skills) {
-        cls.skills.forEach(skill => ownedSkills.add(skill));
+        cls.skills.forEach(skill => ownedSkills.add(skill);
       }
       const skillList = Array.from(ownedSkills).join(", ") || "—";
       const skillNotice = document.querySelector(".skill-ownership-notice");
@@ -890,7 +890,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const stats = {};
       for (let key in statsInputs) {
         let val = parseInt(statsInputs[key].value) || 10;
-        val = Math.max(3, Math.min(20, val));
+        val = Math.max(3, Math.min(20, val);
         statsInputs[key].value = val;
         stats[key] = val;
       }
@@ -924,7 +924,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Применение бонусов от расы
         if (raceData?.stats) {
           for (let key in raceData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key) {
               const bonus = raceData.stats[key];
               const currentBonusText = statBonuses[key].textContent;
               const currentBonusValue = parseInt(currentBonusText) || 0;
@@ -937,7 +937,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // Применение бонусов от класса (если есть)
         if (classData?.stats) {
           for (let key in classData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key) {
               const bonus = classData.stats[key];
               const currentBonusText = statBonuses[key].textContent;
               const currentBonusValue = parseInt(currentBonusText) || 0;
@@ -1121,7 +1121,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let key in skillCheckboxes) {
         data.skills[key] = skillCheckboxes[key].checked;
       }
-      localStorage.setItem("dnd-character", JSON.stringify(data));
+      localStorage.setItem("dnd-character", JSON.stringify(data);
       alert("✅ Персонаж сохранён!");
     });
 
@@ -1135,7 +1135,7 @@ document.addEventListener("DOMContentLoaded", () => {
         stats: {};
       for (let key in statsInputs) {
         const value = parseInt(statsInputs[key].value);
-        data.stats[key] = `${value} (${formatMod(getMod(value))})`;
+        data.stats[key] = `${value} (${formatMod(getMod(value)})`;
       }
       let text = `=== Лист персонажа ===\n`;
       text += `Имя: ${data.name}\n`;
@@ -1163,7 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Сброс ---
     resetBtn.addEventListener("click", () => {
-      if (confirm("🗑️ Очистить форму?")) {
+      if (confirm("🗑️ Очистить форму?") {
         nameInput.value = "";
         raceSelect.value = "human";
         classSelect.value = "воин";
@@ -1279,7 +1279,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 }
 }
-}</script>
+}))))))))</script>
 
 <script>
 
@@ -1324,8 +1324,8 @@ const featureDescriptions = {
 };
 
 let racesClasses = {};
-fetch('data/races-classes.json')
-  .then(r => r.json())
+fetch("data/races-classes.json")
+  .then(r => r.json()
   .then(data => {
     racesClasses = data;
     let raceOptions = `<option value="">-- Выберите расу --</option>`;
@@ -1411,8 +1411,10 @@ document.addEventListener("DOMContentLoaded", () => {
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
     });
-});
+};
 
 </script>
 </body>
 </html>
+
+}))))))))))
