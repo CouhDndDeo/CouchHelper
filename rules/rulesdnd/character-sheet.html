@@ -14,11 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
       el.setAttribute("title", skillDescriptions[skillName]);
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
-    }
-  });
+    });
 });
 
-</script>
+
+}</script>
   <style>
     button,
     input[type=button],
@@ -404,7 +404,6 @@ document.addEventListener("DOMContentLoaded", () => {
       .summary-quick-info ul {
         columns: 1;
       }
-    }
     /* === ХАРАКТЕРИСТИКИ: 3 столбца по 2 строки === */
 .stats-grid {
   display: grid;
@@ -772,8 +771,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     // --- Элементы формы ---
     const nameInput = document.getElementById("char-name");
-    const raceSelect = document.getElementById("char-race");
-    const classSelect = document.getElementById("char-class");
+    const raceSelect = document.getElementById("raceSelect");
+    const classSelect = document.getElementById("classSelect");
     const levelInput = document.getElementById("char-level");
     const bgInput = document.getElementById("char-background");
     const alignSelect = document.getElementById("char-alignment");
@@ -884,7 +883,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (skillNotice) {
         skillNotice.innerHTML = `Вы владеете навыками: <strong>${skillList}</strong>. Проставьте галочки ниже.`;
       }
-    }
 
     // --- Основная функция обновления ---
     function updateAll() {
@@ -934,7 +932,6 @@ document.addEventListener("DOMContentLoaded", () => {
               statBonuses[key].textContent = formatMod(newBonusValue);
               statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
             }
-          }
         }
 
         // Применение бонусов от класса (если есть)
@@ -952,15 +949,12 @@ document.addEventListener("DOMContentLoaded", () => {
               } else {
                 statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
               }
-            }
           }
-        }
 
         // Скорость из расы
         if (raceData?.speed !== undefined) {
           baseSpeedInput.value = raceData.speed;
         }
-      }
 
       // 4. Обновление Кости Хитов из данных класса
       if (dataLoaded) {
@@ -1099,8 +1093,7 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('dnd-avatar-temp', evt.target.result);
         };
         reader.readAsDataURL(file);
-      }
-    });
+      });
 
     // --- Сохранение ---
     saveBtn.addEventListener("click", () => {
@@ -1139,8 +1132,7 @@ document.addEventListener("DOMContentLoaded", () => {
         race: raceSelect.options[raceSelect.selectedIndex].text,
         class: classSelect.options[classSelect.selectedIndex].text,
         level: levelInput.value,
-        stats: {}
-      };
+        stats: {};
       for (let key in statsInputs) {
         const value = parseInt(statsInputs[key].value);
         data.stats[key] = `${value} (${formatMod(getMod(value))})`;
@@ -1192,8 +1184,7 @@ document.addEventListener("DOMContentLoaded", () => {
         summaryAvatar.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
         updateAll();
         updateSkillOwnership();
-      }
-    });
+      });
 
     // --- Менеджер персонажей ---
     manageBtn.addEventListener("click", () => {
@@ -1241,7 +1232,6 @@ document.addEventListener("DOMContentLoaded", () => {
           if (statsInputs[key]) {
             statsInputs[key].value = data.stats[key];
           }
-        }
         if (data.combat) {
           hitDieInput.value = data.combat.hitDie || "";
           currentHpInput.value = data.combat.currentHp || "";
@@ -1253,7 +1243,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (skillCheckboxes[key] !== undefined) {
               skillCheckboxes[key].checked = data.skills[key];
             }
-          }
         }
         if (data.avatar) {
           summaryAvatar.src = data.avatar;
@@ -1263,7 +1252,6 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (e) {
         console.error("Ошибка загрузки сохранённого персонажа", e);
       }
-    }
     // --- Первичное обновление (на случай, если JSON загрузится медленно) ---
     // updateAll(); // Убираем отсюда, чтобы избежать двойного вызова
   });
@@ -1276,11 +1264,22 @@ document.addEventListener("DOMContentLoaded", () => {
       el.setAttribute("title", skillDescriptions[skillName]);
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
-    }
-  });
+    });
 });
 
-</script>
+
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}
+}</script>
 
 <script>
 
@@ -1325,7 +1324,7 @@ const featureDescriptions = {
 };
 
 let racesClasses = {};
-fetch("data/races-classes.json")
+fetch("races-classes.json")
   .then(r => r.json())
   .then(data => {
     racesClasses = data;
@@ -1397,12 +1396,9 @@ function onClassChange() {
           let el = document.querySelector(`input[name=skill][value="${name}"]`);
           if (el) el.disabled = false;
         });
-      }
-    });
+      });
   });
-}
-
-    });
+});
   });
 }
 
@@ -1414,8 +1410,7 @@ document.addEventListener("DOMContentLoaded", () => {
       el.setAttribute("title", skillDescriptions[skillName]);
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
-    }
-  });
+    });
 });
 
 </script>
