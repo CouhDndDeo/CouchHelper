@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="../../style.css" />
   <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js">
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {
+  document.querySelectorAll("input[name=skill]").forEach(el => {)
     const label = el.parentElement;
     const skillName = el.value;
     if (skillDescriptions[skillName]) {
@@ -15,7 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
     });
-});
 
 
 }</script>
@@ -791,7 +790,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxHpInput = document.getElementById("max-hp");
     const baseSpeedInput = document.getElementById("base-speed");
     const skillCheckboxes = {};
-    document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {
+    document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {)
       skillCheckboxes[cb.id.replace('skill-', '')] = cb;
     });
     const saveBtn = document.getElementById("save-char");
@@ -873,10 +872,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const cls = raceClassData.classes?.[classKey];
       const ownedSkills = new Set();
       if (race?.skills) {
-        race.skills.forEach(skill => ownedSkills.add(skill));
+        race.skills.forEach(skill => ownedSkills.add(skill);)
       }
       if (cls?.skills) {
-        cls.skills.forEach(skill => ownedSkills.add(skill));
+        cls.skills.forEach(skill => ownedSkills.add(skill);)
       }
       const skillList = Array.from(ownedSkills).join(", ") || "—";
       const skillNotice = document.querySelector(".skill-ownership-notice");
@@ -890,7 +889,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const stats = {};
       for (let key in statsInputs) {
         let val = parseInt(statsInputs[key].value) || 10;
-        val = Math.max(3, Math.min(20, val);
+        val = Math.max(3, Math.min(20, val));
         statsInputs[key].value = val;
         stats[key] = val;
       }
@@ -924,20 +923,20 @@ document.addEventListener("DOMContentLoaded", () => {
         // Применение бонусов от расы
         if (raceData?.stats) {
           for (let key in raceData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
               const bonus = raceData.stats[key];
               const currentBonusText = statBonuses[key].textContent;
               const currentBonusValue = parseInt(currentBonusText) || 0;
               const newBonusValue = currentBonusValue + bonus;
               statBonuses[key].textContent = formatMod(newBonusValue);
-              statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+              statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus})`;
             }
         }
 
         // Применение бонусов от класса (если есть)
         if (classData?.stats) {
           for (let key in classData.stats) {
-            if (["str", "dex", "con", "int", "wis", "cha"].includes(key) {
+            if (["str", "dex", "con", "int", "wis", "cha"].includes(key)) {
               const bonus = classData.stats[key];
               const currentBonusText = statBonuses[key].textContent;
               const currentBonusValue = parseInt(currentBonusText) || 0;
@@ -945,9 +944,9 @@ document.addEventListener("DOMContentLoaded", () => {
               statBonuses[key].textContent = formatMod(newBonusValue);
               // Обновление тултипа
               if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
-                statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus})`;
               } else {
-                statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
+                statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus})`;
               }
           }
 
@@ -993,12 +992,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 10. Спасброски (без владения)
       const savesHtml = `
-      <li>Сила: ${formatMod(mods.str)}</li>
-      <li>Ловкость: ${formatMod(mods.dex)}</li>
-      <li>Телосложение: ${formatMod(mods.con)}</li>
-      <li>Интеллект: ${formatMod(mods.int)}</li>
-      <li>Мудрость: ${formatMod(mods.wis)}</li>
-      <li>Харизма: ${formatMod(mods.cha)}</li>
+      <li>Сила: ${formatMod(mods.str})</li>
+      <li>Ловкость: ${formatMod(mods.dex})</li>
+      <li>Телосложение: ${formatMod(mods.con})</li>
+      <li>Интеллект: ${formatMod(mods.int})</li>
+      <li>Мудрость: ${formatMod(mods.wis})</li>
+      <li>Харизма: ${formatMod(mods.cha})</li>
     `;
       preview.savesList.innerHTML = savesHtml;
 
@@ -1024,10 +1023,10 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 'survival', stat: 'wis', name: 'Выживание' }
       ];
       let skillsHtml = '';
-      skillsData.forEach(skill => {
+      skillsData.forEach(skill => {)
         const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
         const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
-        skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
+        skillsHtml += `<li>${skill.name}: ${formatMod(skillMod})</li>`;
       });
       preview.skillsList.innerHTML = skillsHtml;
 
@@ -1135,7 +1134,7 @@ document.addEventListener("DOMContentLoaded", () => {
         stats: {};
       for (let key in statsInputs) {
         const value = parseInt(statsInputs[key].value);
-        data.stats[key] = `${value} (${formatMod(getMod(value)})`;
+        data.stats[key] = `${value} (${formatMod(getMod(value}))`;
       }
       let text = `=== Лист персонажа ===\n`;
       text += `Имя: ${data.name}\n`;
@@ -1257,7 +1256,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {
+  document.querySelectorAll("input[name=skill]").forEach(el => {)
     const label = el.parentElement;
     const skillName = el.value;
     if (skillDescriptions[skillName]) {
@@ -1265,7 +1264,6 @@ document.addEventListener("DOMContentLoaded", () => {
       label.setAttribute("title", skillDescriptions[skillName]);
       label.classList.add('tooltip-hover');
     });
-});
 
 
 }
@@ -1334,6 +1332,7 @@ document.getElementById('raceSelect').innerHTML = raceOptions;
     let classOptions = `<option value="">-- Выберите класс --</option>`;
 for (let key in racesClasses.classes) { classOptions += `<option value="${key}">${racesClasses.classes[key].name}</option>`; }
 document.getElementById('classSelect').innerHTML = classOptions;
+  });
 
 function onRaceChange() {
   const raceKey = document.getElementById("raceSelect").value;
@@ -1344,13 +1343,13 @@ function onRaceChange() {
   statsBlock.innerHTML = "";
   for (let stat in race.stats) {
     const bonus = race.stats[stat];
-    statsBlock.innerHTML += `<div>+${bonus} к ${stat.toUpperCase()}</div>`;
+    statsBlock.innerHTML += `<div>+${bonus} к ${stat.toUpperCase(})</div>`;
   }
 
   let featuresBlock = document.getElementById("raceFeatures");
   featuresBlock.innerHTML = "";
   if (race.features) {
-    race.features.forEach(f => {
+    race.features.forEach(f => {)
       let desc = featureDescriptions[f] ? featureDescriptions[f] : f;
     featuresBlock.innerHTML += `<li class='tooltip-hover' title='${desc}'>${f}</li>`;
     });
@@ -1368,9 +1367,9 @@ function onClassChange() {
   document.getElementById("hitDie").innerText = cls.hitDie;
 
   let skills = document.querySelectorAll("input[name=skill]");
-  skills.forEach(s => { s.disabled = true; s.checked = false; });
+  skills.forEach(s => { s.disabled = true; s.checked = false; })));
 
-  cls.skills.forEach(name => {
+  cls.skills.forEach(name => {)
     let el = document.querySelector(`input[name=skill][value="${name}"]`);
     if (el) el.disabled = false;
   });
@@ -1378,30 +1377,28 @@ function onClassChange() {
   // Выводим подсказку
   let hintBlock = document.getElementById("skillsHint");
   if (cls.skills && cls.skillsLimit) {
-    hintBlock.innerText = `Выберите ${cls.skillsLimit} навыка(ов) из: ${cls.skills.join(", ")}`;
+    hintBlock.innerText = `Выберите ${cls.skillsLimit} навыка(ов) из: ${cls.skills.join(", "})`;
   } else {
     hintBlock.innerText = "";
   }
 
-  skills.forEach(s => {
+  skills.forEach(s => {)
     s.addEventListener("change", () => {
       const selected = [...skills].filter(x => x.checked).length;
       if (selected >= cls.skillsLimit) {
-        skills.forEach(x => {
+        skills.forEach(x => {)
           if (!x.checked && !x.disabled) x.disabled = true;
         });
       } else {
-        cls.skills.forEach(name => {
+        cls.skills.forEach(name => {)
           let el = document.querySelector(`input[name=skill][value="${name}"]`);
           if (el) el.disabled = false;
         });
-      });
-});
   });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {
+  document.querySelectorAll("input[name=skill]").forEach(el => {)
     const label = el.parentElement;
     const skillName = el.value;
     if (skillDescriptions[skillName]) {
