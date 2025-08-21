@@ -18,6 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector("#raceSelect")) {
+    new Choices("#raceSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+  if (document.querySelector("#classSelect")) {
+    new Choices("#classSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+});
+
 </script>
   <style>
     button,
@@ -487,6 +497,20 @@ document.addEventListener("DOMContentLoaded", () => {
   font-style: italic;
 }
   </style>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js">
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector("#raceSelect")) {
+    new Choices("#raceSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+  if (document.querySelector("#classSelect")) {
+    new Choices("#classSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+});
+
+</script>
+
 </head>
 <body>
   <div class="container">
@@ -557,43 +581,11 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="form-row">
         <label>
           Раса:
-          <select id="char-race">
-            <option value="human">Человек</option>
-            <option value="elf">Эльф</option>
-            <option value="dwarf">Дварф</option>
-            <option value="halfling">Полурослик</option>
-            <option value="gnome">Гном</option>
-            <option value="half-elf">Полуэльф</option>
-            <option value="half-orc">Полуорк</option>
-            <option value="tiefling">Тифлинг</option>
-            <option value="aarakocra">Ааракокра</option>
-            <option value="aasimar">Аасимар</option>
-            <option value="bugbear">Багбир</option>
-            <option value="gith">Гит</option>
-            <option value="giff">Гифф</option>
-            <option value="simic-hybrid">Гибрид Симиков</option>
-            <option value="verdan">Вердан</option>
-            <option value="vedalken">Ведалкен</option>
-            <option value="autognome">Автогном</option>
-            <!-- Добавь больше рас по необходимости -->
-          </select>
+          <select id="raceSelect" onchange="onRaceChange()"></select>
         </label>
         <label>
           Класс:
-          <select id="char-class">
-            <option value="воин">Воин</option>
-            <option value="маг">Маг</option>
-            <option value="жрец">Жрец</option>
-            <option value="разбойник">Разбойник</option>
-            <option value="паладин">Паладин</option>
-            <option value="следопыт">Следопыт</option>
-            <option value="варвар">Варвар</option>
-            <option value="друид">Друид</option>
-            <option value="бард">Бард</option>
-            <option value="чародей">Чародей</option>
-            <option value="колдун">Колдун</option>
-            <option value="монах">Монах</option>
-          </select>
+          <select id="classSelect" onchange="onClassChange()"></select>
         </label>
         <label>
           Уровень:
@@ -1312,6 +1304,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector("#raceSelect")) {
+    new Choices("#raceSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+  if (document.querySelector("#classSelect")) {
+    new Choices("#classSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+});
+
 </script>
 
 <script>
@@ -1393,6 +1395,7 @@ function onRaceChange() {
   document.getElementById("speed").innerText = race.speed + " фт.";
 }
 
+
 function onClassChange() {
   const classKey = document.getElementById("classSelect").value;
   const cls = racesClasses.classes[classKey];
@@ -1407,6 +1410,14 @@ function onClassChange() {
     let el = document.querySelector(`input[name=skill][value="${name}"]`);
     if (el) el.disabled = false;
   });
+
+  // Выводим подсказку
+  let hintBlock = document.getElementById("skillsHint");
+  if (cls.skills && cls.skillsLimit) {
+    hintBlock.innerText = `Выберите ${cls.skillsLimit} навыка(ов) из: ${cls.skills.join(", ")}`;
+  } else {
+    hintBlock.innerText = "";
+  }
 
   skills.forEach(s => {
     s.addEventListener("change", () => {
@@ -1425,6 +1436,10 @@ function onClassChange() {
   });
 }
 
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll("input[name=skill]").forEach(el => {
     const label = el.parentElement;
@@ -1435,6 +1450,16 @@ document.addEventListener("DOMContentLoaded", () => {
       label.classList.add('tooltip-hover');
     }
   });
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  if (document.querySelector("#raceSelect")) {
+    new Choices("#raceSelect", { searchEnabled: true, itemSelectText: '' });
+  }
+  if (document.querySelector("#classSelect")) {
+    new Choices("#classSelect", { searchEnabled: true, itemSelectText: '' });
+  }
 });
 
 </script>
