@@ -876,7 +876,7 @@ document.addEventListener("DOMContentLoaded", () => {
         race.skills.forEach(skill => ownedSkills.add(skill));
       }
       if (cls?.skills) {
-        cls.skills.forEach(skill => ownedSkills.add(skill);
+        cls.skills.forEach(skill => ownedSkills.add(skill));
       }
       const skillList = Array.from(ownedSkills).join(", ") || "—";
       const skillNotice = document.querySelector(".skill-ownership-notice");
@@ -1396,7 +1396,6 @@ function onClassChange() {
           if (el) el.disabled = false;
         });
       });
-  });
 });
   });
 }
