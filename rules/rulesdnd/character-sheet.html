@@ -498,7 +498,7 @@ document.addEventListener("DOMContentLoaded", () => {
 }
   </style>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
 <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js">
 document.addEventListener("DOMContentLoaded", () => {
   if (document.querySelector("#raceSelect")) {
@@ -1359,7 +1359,7 @@ const featureDescriptions = {
 };
 
 let racesClasses = {};
-fetch("data/races-classes.json")
+fetch("races-classes.json")
   .then(r => r.json())
   .then(data => {
     racesClasses = data;
