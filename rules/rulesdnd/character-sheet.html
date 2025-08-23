@@ -5,43 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>🧾 Лист персонажа</title>
   <link rel="stylesheet" href="../../style.css" />
-  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js">
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {)
-    const label = el.parentElement;
-    const skillName = el.value;
-    if (skillDescriptions[skillName]) {
-      el.setAttribute("title", skillDescriptions[skillName]);
-      label.setAttribute("title", skillDescriptions[skillName]);
-      label.classList.add('tooltip-hover');
-    });
-
-
-}</script>
+  <script src="https://cdn.jsdelivr.net/npm/markdown-it/dist/markdown-it.min.js"></script>
   <style>
-    button,
-    input[type=button],
-    input[type=submit] {
-      padding: 8px 16px;
-      margin: 5px;
-      border: none;
-      border-radius: 8px;
-      background: #4a90e2; /* фиксированный цвет */
-      color: white;
-      font-size: 14px;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .tooltip-hover:hover {
-        background-color: #fff7cc;
-        cursor: help;
-    }
-
-    .card { margin-top: 15px; padding: 15px; border: 1px solid #aaa; border-radius: 10px; background: #f9f9f9; }
-    .card h3 { margin-top: 0; }
-    .card h4 { margin-bottom: 5px; margin-top: 10px; }
-    
     /* === ОСНОВНОЙ МАКЕТ: ВЕРТИКАЛЬНЫЙ ПОТОК === */
     .main-layout {
       display: flex;
@@ -154,7 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* === ХАРАКТЕРИСТИКИ === */
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
       gap: 20px;
       margin: 25px 0;
     }
@@ -233,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
     /* === НАВЫКИ === */
     .skills-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 15px;
       list-style: none;
       padding: 0;
@@ -313,7 +278,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     .summary-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 15px;
       margin: 25px 0;
     }
@@ -403,6 +368,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .summary-quick-info ul {
         columns: 1;
       }
+    }
     /* === ХАРАКТЕРИСТИКИ: 3 столбца по 2 строки === */
 .stats-grid {
   display: grid;
@@ -505,11 +471,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <!-- Кнопки управления -->
         <div class="form-buttons">
-          <button id="save-char" class="btn-primary">💾 Сохранить</button>
-          <button id="export-char" class="btn-secondary">📤 Экспорт</button>
-          <button id="reset-char" class="btn-clear">🗑️ Сброс</button>
-          <button id="manage-char" class="btn-manager">👥 Менеджер</button> <!-- Новая кнопка -->
-          <button id="print-char" class="btn-secondary" onclick="window.print()">🖨️ Печать</button>
+          <button id="save-char" class="btn">💾 Сохранить</button>
+          <button id="export-char" class="btn">📤 Экспорт</button>
+          <button id="reset-char" class="btn">🗑️ Сброс</button>
+          <button id="manage-char" class="btn">👥 Менеджер</button> <!-- Новая кнопка -->
+          <button id="print-char" class="btn" onclick="window.print()">🖨️ Печать</button>
         </div>
 
         <div class="form-row">
@@ -555,11 +521,43 @@ document.addEventListener("DOMContentLoaded", () => {
       <div class="form-row">
         <label>
           Раса:
-          <select id="raceSelect" onchange="onRaceChange()"></select>
+          <select id="char-race">
+            <option value="human">Человек</option>
+            <option value="elf">Эльф</option>
+            <option value="dwarf">Дварф</option>
+            <option value="halfling">Полурослик</option>
+            <option value="gnome">Гном</option>
+            <option value="half-elf">Полуэльф</option>
+            <option value="half-orc">Полуорк</option>
+            <option value="tiefling">Тифлинг</option>
+            <option value="aarakocra">Ааракокра</option>
+            <option value="aasimar">Аасимар</option>
+            <option value="bugbear">Багбир</option>
+            <option value="gith">Гит</option>
+            <option value="giff">Гифф</option>
+            <option value="simic-hybrid">Гибрид Симиков</option>
+            <option value="verdan">Вердан</option>
+            <option value="vedalken">Ведалкен</option>
+            <option value="autognome">Автогном</option>
+            <!-- Добавь больше рас по необходимости -->
+          </select>
         </label>
         <label>
           Класс:
-          <select id="classSelect" onchange="onClassChange()"></select>
+          <select id="char-class">
+            <option value="воин">Воин</option>
+            <option value="маг">Маг</option>
+            <option value="жрец">Жрец</option>
+            <option value="разбойник">Разбойник</option>
+            <option value="паладин">Паладин</option>
+            <option value="следопыт">Следопыт</option>
+            <option value="варвар">Варвар</option>
+            <option value="друид">Друид</option>
+            <option value="бард">Бард</option>
+            <option value="чародей">Чародей</option>
+            <option value="колдун">Колдун</option>
+            <option value="монах">Монах</option>
+          </select>
         </label>
         <label>
           Уровень:
@@ -770,8 +768,8 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("DOMContentLoaded", () => {
     // --- Элементы формы ---
     const nameInput = document.getElementById("char-name");
-    const raceSelect = document.getElementById("raceSelect");
-    const classSelect = document.getElementById("classSelect");
+    const raceSelect = document.getElementById("char-race");
+    const classSelect = document.getElementById("char-class");
     const levelInput = document.getElementById("char-level");
     const bgInput = document.getElementById("char-background");
     const alignSelect = document.getElementById("char-alignment");
@@ -790,7 +788,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const maxHpInput = document.getElementById("max-hp");
     const baseSpeedInput = document.getElementById("base-speed");
     const skillCheckboxes = {};
-    document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {)
+    document.querySelectorAll('.skills-grid input[type="checkbox"]').forEach(cb => {
       skillCheckboxes[cb.id.replace('skill-', '')] = cb;
     });
     const saveBtn = document.getElementById("save-char");
@@ -872,16 +870,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const cls = raceClassData.classes?.[classKey];
       const ownedSkills = new Set();
       if (race?.skills) {
-        race.skills.forEach(skill => ownedSkills.add(skill);)
+        race.skills.forEach(skill => ownedSkills.add(skill));
       }
       if (cls?.skills) {
-        cls.skills.forEach(skill => ownedSkills.add(skill);)
+        cls.skills.forEach(skill => ownedSkills.add(skill));
       }
       const skillList = Array.from(ownedSkills).join(", ") || "—";
       const skillNotice = document.querySelector(".skill-ownership-notice");
       if (skillNotice) {
         skillNotice.innerHTML = `Вы владеете навыками: <strong>${skillList}</strong>. Проставьте галочки ниже.`;
       }
+    }
 
     // --- Основная функция обновления ---
     function updateAll() {
@@ -929,8 +928,9 @@ document.addEventListener("DOMContentLoaded", () => {
               const currentBonusValue = parseInt(currentBonusText) || 0;
               const newBonusValue = currentBonusValue + bonus;
               statBonuses[key].textContent = formatMod(newBonusValue);
-              statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus})`;
+              statBonuses[key].title = `Бонус от расы "${raceSelect.options[raceSelect.selectedIndex].text}": ${formatMod(bonus)}`;
             }
+          }
         }
 
         // Применение бонусов от класса (если есть)
@@ -944,16 +944,19 @@ document.addEventListener("DOMContentLoaded", () => {
               statBonuses[key].textContent = formatMod(newBonusValue);
               // Обновление тултипа
               if (statBonuses[key].title && statBonuses[key].title !== "Бонус от расы или класса") {
-                statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus})`;
+                statBonuses[key].title += `, Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
               } else {
-                statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus})`;
+                statBonuses[key].title = `Бонус от класса "${classSelect.options[classSelect.selectedIndex].text}": ${formatMod(bonus)}`;
               }
+            }
           }
+        }
 
         // Скорость из расы
         if (raceData?.speed !== undefined) {
           baseSpeedInput.value = raceData.speed;
         }
+      }
 
       // 4. Обновление Кости Хитов из данных класса
       if (dataLoaded) {
@@ -992,12 +995,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 10. Спасброски (без владения)
       const savesHtml = `
-      <li>Сила: ${formatMod(mods.str})</li>
-      <li>Ловкость: ${formatMod(mods.dex})</li>
-      <li>Телосложение: ${formatMod(mods.con})</li>
-      <li>Интеллект: ${formatMod(mods.int})</li>
-      <li>Мудрость: ${formatMod(mods.wis})</li>
-      <li>Харизма: ${formatMod(mods.cha})</li>
+      <li>Сила: ${formatMod(mods.str)}</li>
+      <li>Ловкость: ${formatMod(mods.dex)}</li>
+      <li>Телосложение: ${formatMod(mods.con)}</li>
+      <li>Интеллект: ${formatMod(mods.int)}</li>
+      <li>Мудрость: ${formatMod(mods.wis)}</li>
+      <li>Харизма: ${formatMod(mods.cha)}</li>
     `;
       preview.savesList.innerHTML = savesHtml;
 
@@ -1023,10 +1026,10 @@ document.addEventListener("DOMContentLoaded", () => {
         { id: 'survival', stat: 'wis', name: 'Выживание' }
       ];
       let skillsHtml = '';
-      skillsData.forEach(skill => {)
+      skillsData.forEach(skill => {
         const isProficient = skillCheckboxes[skill.id] && skillCheckboxes[skill.id].checked;
         const skillMod = mods[skill.stat] + (isProficient ? proficiencyBonus : 0);
-        skillsHtml += `<li>${skill.name}: ${formatMod(skillMod})</li>`;
+        skillsHtml += `<li>${skill.name}: ${formatMod(skillMod)}</li>`;
       });
       preview.skillsList.innerHTML = skillsHtml;
 
@@ -1092,7 +1095,8 @@ document.addEventListener("DOMContentLoaded", () => {
           localStorage.setItem('dnd-avatar-temp', evt.target.result);
         };
         reader.readAsDataURL(file);
-      });
+      }
+    });
 
     // --- Сохранение ---
     saveBtn.addEventListener("click", () => {
@@ -1120,7 +1124,7 @@ document.addEventListener("DOMContentLoaded", () => {
       for (let key in skillCheckboxes) {
         data.skills[key] = skillCheckboxes[key].checked;
       }
-      localStorage.setItem("dnd-character", JSON.stringify(data);
+      localStorage.setItem("dnd-character", JSON.stringify(data));
       alert("✅ Персонаж сохранён!");
     });
 
@@ -1131,10 +1135,11 @@ document.addEventListener("DOMContentLoaded", () => {
         race: raceSelect.options[raceSelect.selectedIndex].text,
         class: classSelect.options[classSelect.selectedIndex].text,
         level: levelInput.value,
-        stats: {};
+        stats: {}
+      };
       for (let key in statsInputs) {
         const value = parseInt(statsInputs[key].value);
-        data.stats[key] = `${value} (${formatMod(getMod(value}))`;
+        data.stats[key] = `${value} (${formatMod(getMod(value))})`;
       }
       let text = `=== Лист персонажа ===\n`;
       text += `Имя: ${data.name}\n`;
@@ -1162,7 +1167,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Сброс ---
     resetBtn.addEventListener("click", () => {
-      if (confirm("🗑️ Очистить форму?") {
+      if (confirm("🗑️ Очистить форму?")) {
         nameInput.value = "";
         raceSelect.value = "human";
         classSelect.value = "воин";
@@ -1183,7 +1188,8 @@ document.addEventListener("DOMContentLoaded", () => {
         summaryAvatar.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Crect width='120' height='120' fill='%233a2a1a'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-size='60' fill='%23d4af37'%3E%F0%9F%91%A4%3C/text%3E%3C/svg%3E";
         updateAll();
         updateSkillOwnership();
-      });
+      }
+    });
 
     // --- Менеджер персонажей ---
     manageBtn.addEventListener("click", () => {
@@ -1231,6 +1237,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (statsInputs[key]) {
             statsInputs[key].value = data.stats[key];
           }
+        }
         if (data.combat) {
           hitDieInput.value = data.combat.hitDie || "";
           currentHpInput.value = data.combat.currentHp || "";
@@ -1242,6 +1249,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (skillCheckboxes[key] !== undefined) {
               skillCheckboxes[key].checked = data.skills[key];
             }
+          }
         }
         if (data.avatar) {
           summaryAvatar.src = data.avatar;
@@ -1251,165 +1259,73 @@ document.addEventListener("DOMContentLoaded", () => {
       } catch (e) {
         console.error("Ошибка загрузки сохранённого персонажа", e);
       }
+    }
     // --- Первичное обновление (на случай, если JSON загрузится медленно) ---
     // updateAll(); // Убираем отсюда, чтобы избежать двойного вызова
   });
-
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {)
-    const label = el.parentElement;
-    const skillName = el.value;
-    if (skillDescriptions[skillName]) {
-      el.setAttribute("title", skillDescriptions[skillName]);
-      label.setAttribute("title", skillDescriptions[skillName]);
-      label.classList.add('tooltip-hover');
-    });
-
-
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}
-}))))))))</script>
+</script>
 
 <script>
-
-const skillDescriptions = {
-  "Акробатика": "Ловкость: баланс, прыжки, акробатические трюки.",
-  "Атлетика": "Сила: лазание, прыжки, плавание, захваты.",
-  "История": "Интеллект: знание событий, цивилизаций и легенд.",
-  "Проницательность": "Мудрость: умение понимать мотивы и эмоции.",
-  "Запугивание": "Харизма: способность внушить страх.",
-  "Восприятие": "Мудрость: замечать детали, скрытые объекты или звуки.",
-  "Выживание": "Мудрость: слежка, охота, ориентирование.",
-  "Уход за животными": "Мудрость: понимание и забота о животных.",
-  "Обман": "Харизма: введение других в заблуждение.",
-  "Магия": "Интеллект: знание законов магии и заклинаний.",
-  "Расследование": "Интеллект: поиск улик, логический анализ.",
-  "Медицина": "Мудрость: оказание первой помощи, диагностика болезней.",
-  "Выступление": "Харизма: музыка, театр, поэзия.",
-  "Убеждение": "Харизма: умение склонять других к своей точке зрения.",
-  "Ловкость рук": "Ловкость: воровство, мелкие трюки руками.",
-  "Скрытность": "Ловкость: умение прятаться и двигаться незаметно.",
-  "Религия": "Интеллект: знание богов, культов и ритуалов.",
-  "Природа": "Интеллект: знание земель, растений и животных."
-};
-
-
-const featureDescriptions = {
-  "Тёмное зрение": "Вы можете видеть в темноте в пределах 60 футов.",
-  "Неустанный": "Вы получаете преимущество на спасброски против усталости.",
-  "Боевой стиль": "Выберите боевой стиль, который даёт особые преимущества.",
-  "Ярость": "В бою вы можете впасть в ярость, увеличивая урон и стойкость.",
-  "Заклинания": "Вы можете накладывать заклинания из списка своего класса.",
-  "Детёныш дракона": "У вас есть дыхательное оружие и сопротивление типу урона.",
-  "Каменная стойкость": "Вы можете уменьшить получаемый урон, укрепив своё тело.",
-  "Хитрость гоблина": "Вы получаете бонус к Скрытности и уклонению.",
-  "Божественное чувство": "Вы можете ощущать добро и зло поблизости.",
-  "Исцелящие руки": "Вы можете лечить существ касанием.",
-  "Песнь вдохновения": "Вы можете вдохновлять союзников своими выступлениями.",
-  "Арканум": "Вы владеете древними знаниями о магии.",
-  "Ки": "Вы можете использовать очки Ки для особых техник.",
-  "Дикий облик": "Вы можете превращаться в животных.",
-  "Детективная интуиция": "Вы лучше видите улики и понимаете скрытые связи."
-};
-
-let racesClasses = {};
-fetch("data/races-classes.json")
-  .then(r => r.json()
-  .then(data => {
-    racesClasses = data;
-    let raceOptions = `<option value="">-- Выберите расу --</option>`;
-for (let key in racesClasses.races) { raceOptions += `<option value="${key}">${racesClasses.races[key].name}</option>`; }
-document.getElementById('raceSelect').innerHTML = raceOptions;
-    let classOptions = `<option value="">-- Выберите класс --</option>`;
-for (let key in racesClasses.classes) { classOptions += `<option value="${key}">${racesClasses.classes[key].name}</option>`; }
-document.getElementById('classSelect').innerHTML = classOptions;
-  });
-
-function onRaceChange() {
-  const raceKey = document.getElementById("raceSelect").value;
-  const race = racesClasses.races[raceKey];
-  if (!race) return;
-
-  let statsBlock = document.getElementById("raceStats");
-  statsBlock.innerHTML = "";
-  for (let stat in race.stats) {
-    const bonus = race.stats[stat];
-    statsBlock.innerHTML += `<div>+${bonus} к ${stat.toUpperCase(})</div>`;
-  }
-
-  let featuresBlock = document.getElementById("raceFeatures");
-  featuresBlock.innerHTML = "";
-  if (race.features) {
-    race.features.forEach(f => {)
-      let desc = featureDescriptions[f] ? featureDescriptions[f] : f;
-    featuresBlock.innerHTML += `<li class='tooltip-hover' title='${desc}'>${f}</li>`;
-    });
-  }
-
-  document.getElementById("speed").innerText = race.speed + " фт.";
-}
-
-
-function onClassChange() {
-  const classKey = document.getElementById("classSelect").value;
-  const cls = racesClasses.classes[classKey];
-  if (!cls) return;
-
-  document.getElementById("hitDie").innerText = cls.hitDie;
-
-  let skills = document.querySelectorAll("input[name=skill]");
-  skills.forEach(s => { s.disabled = true; s.checked = false; })));
-
-  cls.skills.forEach(name => {)
-    let el = document.querySelector(`input[name=skill][value="${name}"]`);
-    if (el) el.disabled = false;
-  });
-
-  // Выводим подсказку
-  let hintBlock = document.getElementById("skillsHint");
-  if (cls.skills && cls.skillsLimit) {
-    hintBlock.innerText = `Выберите ${cls.skillsLimit} навыка(ов) из: ${cls.skills.join(", "})`;
-  } else {
-    hintBlock.innerText = "";
-  }
-
-  skills.forEach(s => {)
-    s.addEventListener("change", () => {
-      const selected = [...skills].filter(x => x.checked).length;
-      if (selected >= cls.skillsLimit) {
-        skills.forEach(x => {)
-          if (!x.checked && !x.disabled) x.disabled = true;
-        });
-      } else {
-        cls.skills.forEach(name => {)
-          let el = document.querySelector(`input[name=skill][value="${name}"]`);
-          if (el) el.disabled = false;
-        });
-  });
-}
-
 document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll("input[name=skill]").forEach(el => {)
-    const label = el.parentElement;
-    const skillName = el.value;
-    if (skillDescriptions[skillName]) {
-      el.setAttribute("title", skillDescriptions[skillName]);
-      label.setAttribute("title", skillDescriptions[skillName]);
-      label.classList.add('tooltip-hover');
-    });
-};
+  // Загружаем races-classes.json
+  fetch("data/races-classes.json")
+    .then(res => res.json())
+    .then(data => {
+      const raceSelect = document.getElementById("char-race");
+      const classSelect = document.getElementById("char-class");
 
+      // Очистим текущие опции
+      raceSelect.innerHTML = "";
+      classSelect.innerHTML = "";
+
+      // Заполняем расы
+      Object.keys(data.races).forEach(raceKey => {
+        const opt = document.createElement("option");
+        opt.value = raceKey;
+        opt.textContent = data.races[raceKey].name;
+        raceSelect.appendChild(opt);
+      });
+
+      // Заполняем классы
+      Object.keys(data.classes).forEach(classKey => {
+        const opt = document.createElement("option");
+        opt.value = classKey;
+        opt.textContent = data.classes[classKey].name;
+        classSelect.appendChild(opt);
+      });
+
+      function updateBonuses() {
+        const raceKey = raceSelect.value;
+        const classKey = classSelect.value;
+
+        if (raceKey && data.races[raceKey]) {
+          const bonuses = data.races[raceKey].bonuses || {};
+          Object.keys(bonuses).forEach(stat => {
+            const el = document.querySelector(`.stat-bonus[data-stat="${stat}"]`);
+            if (el) {
+              el.textContent = (bonuses[stat] >= 0 ? "+" : "") + bonuses[stat];
+              el.setAttribute("title", `Бонус от расы: ${(bonuses[stat] >= 0 ? "+" : "") + bonuses[stat]}`);
+            }
+          });
+        }
+        if (classKey && data.classes[classKey]) {
+          const profs = data.classes[classKey].skills || [];
+          const profBox = document.getElementById("skill-suggestions");
+          if (profBox) {
+            profBox.innerHTML = "Навыки для выбора: " + profs.join(", ");
+          }
+        }
+      }
+
+      raceSelect.addEventListener("change", updateBonuses);
+      classSelect.addEventListener("change", updateBonuses);
+
+      // Первичное обновление
+      updateBonuses();
+    })
+    .catch(err => console.error("Ошибка загрузки races-classes.json:", err));
+});
 </script>
+
 </body>
 </html>
-
-}))))))))))
